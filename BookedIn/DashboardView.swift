@@ -23,7 +23,6 @@ struct DashboardViewCustomer: View {
     var body: some View {
         
         //CUSTOMER DAHSBOARD
-        if Auth.auth().currentUser != nil {
             VStack {
                 HStack {
                     HStack{
@@ -192,9 +191,35 @@ struct DashboardViewCustomer: View {
             
             Spacer()
             
-        }
-        else {
+        
+    
+    }
+    
+    
+    private func startTiming() {
+        Timer.scheduledTimer(withTimeInterval: 2.25, repeats: true) { timer in
+            currentMessageIndex = (currentMessageIndex + 1) % messages.count
             
+        }
+    }
+    
+}
+
+
+
+
+
+struct DashboardViewBusiness: View {
+    @State private var isSwiped = false
+    @State private var currentUserEmail = Auth.auth().currentUser?.email
+    @State private var retrieveCustomerDetails = RetrievingCustomerDetails()
+    @State private var cardOffset: CGSize = .zero
+    @State private var retrieveBusinessDetails = RetrievingBusinessDetails()
+    @State private var currentMessageIndex = 0
+    @State private var messages = ["BookedIn.", "Book", "Eat", "Repeat"]
+    var body: some View {
+        
+        //Business DAHSBOARD
             VStack {
                 HStack {
                     HStack{
@@ -220,6 +245,7 @@ struct DashboardViewCustomer: View {
                     }
                     .onAppear{
                         startTiming()
+                        retrieveCustomerDetails.retrieveCustomerData {}
                         retrieveBusinessDetails.retrieveBusinessDetailsForCustomerBooking()
                     }
                     
@@ -227,12 +253,13 @@ struct DashboardViewCustomer: View {
                 }
                 .padding(.horizontal)
                 
-                Text("G'day, Guest")
-                    .fontWeight(.semibold)
-                    .font(.system(size: 15))
-                    .foregroundStyle(.accent)
-                    .shadow(radius: 10)
-                
+                ForEach(retrieveBusinessDetails.businessDetails, id: \.self){ details in
+                    Text("G'day \(details.businessName)")
+                        .fontWeight(.semibold)
+                        .font(.system(size: 15))
+                        .foregroundStyle(.accent)
+                        .shadow(radius: 10)
+                }
                 HStack {
                     Text("Recommended places to you nearby")
                         .font(.system(size: 12))
@@ -351,20 +378,18 @@ struct DashboardViewCustomer: View {
                     withAnimation {
                         cardOffset.width = -340
                     }
-                    //                    DispatchQueue.main.asyncAfter(deadline: .now() + 6.25) {
-                    //                        withAnimation {
-                    //                            cardOffset.width = 0
-                    //                        }
-                    //                    }
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 6.25) {
+                                            withAnimation {
+                                                cardOffset.width = 0
+                                            }
+                                        }
                 }
             }
             
             Spacer()
             
-            
-            
-            
-        }
+        
+    
     }
     
     
@@ -375,9 +400,5 @@ struct DashboardViewCustomer: View {
         }
     }
     
-}
-
-#Preview {
-    DashboardViewCustomer()
 }
 

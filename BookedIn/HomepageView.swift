@@ -16,9 +16,9 @@ struct HomepageView: View {
     @State private var leftCardViewMessage = ["Hungry?","Book","Eat"]
     @State private var rightMessageIndex = 0
     @State private var rightCardViewMessage = ["Selling Food?","Take Bookings","Earn"]
+    @State private var isCustomerSignInTapped = false
     @State private var isPopoverTrue = false
     @State private var isJoinViewTrue = false
-    @State private var isSkipTapped = false
     
     
     var body: some View {
@@ -61,6 +61,7 @@ struct HomepageView: View {
                         )
                         .onTapGesture {
                             isPopoverTrue = true
+                            isCustomerSignInTapped = true
                         }
                         
                         .padding()
@@ -86,12 +87,14 @@ struct HomepageView: View {
                             })
                         .onTapGesture {
                             isPopoverTrue = true
+                            isCustomerSignInTapped = false
                         }
                         .fullScreenCover(isPresented: $isPopoverTrue, content: {
-                            SignInView()
+                            SignInView(isCustomerIsTapped: $isCustomerSignInTapped)
                         })
                     }
                     HStack{
+                        Spacer()
                         Text("Join")
                             .foregroundStyle(.accent)
                             .fontWeight(.bold)
@@ -102,18 +105,8 @@ struct HomepageView: View {
                             .fullScreenCover(isPresented: $isJoinViewTrue, content: {
                                 JoinView()
                             })
-                            .padding(.leading)
-                        Spacer()
-                        
-                        Text("Skip")
-                            .onTapGesture {
-                                isSkipTapped = true
-                            }
-                            .foregroundStyle(.accent)
-                            .fontWeight(.bold)
-                            .padding(.horizontal)
                             .padding(.trailing)
-                        NavigationLink(destination: DashboardViewCustomer(), isActive: $isSkipTapped){}
+    
                     }
                 }
                 .onAppear{

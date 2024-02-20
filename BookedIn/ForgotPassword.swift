@@ -6,6 +6,9 @@
 //
 
 import SwiftUI
+import FirebaseCore
+import Firebase
+import FirebaseAuth
 
 struct ForgotPassword: View {
     @State var userEmailToReset = ""
@@ -33,7 +36,7 @@ struct ForgotPassword: View {
                     }
                     Button(action: {
                         
-                        
+                        Auth.auth().sendPasswordReset(withEmail: userEmailToReset)
                     }){
                         Text("Send")
                             .fontWeight(.semibold)

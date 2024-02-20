@@ -24,7 +24,6 @@
 		32E895992B3C35EA0089126C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 32E895982B3C35EA0089126C /* GoogleService-Info.plist */; };
 		32E895A12B3C3D5D0089126C /* ForgotPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E895A02B3C3D5D0089126C /* ForgotPassword.swift */; };
 		32E895A32B3C3D7B0089126C /* CustomBackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E895A22B3C3D7B0089126C /* CustomBackButton.swift */; };
-		32E895A52B3D97FD0089126C /* CustomsViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E895A42B3D97FD0089126C /* CustomsViews.swift */; };
 		32E895A72B4044380089126C /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 32E895A62B4044380089126C /* FirebaseAnalytics */; };
 		32E895A92B4044380089126C /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 32E895A82B4044380089126C /* FirebaseAnalyticsOnDeviceConversion */; };
 		32E895AB2B4044380089126C /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 32E895AA2B4044380089126C /* FirebaseAnalyticsSwift */; };
@@ -70,7 +69,6 @@
 		32E8959F2B3C36CA0089126C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		32E895A02B3C3D5D0089126C /* ForgotPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPassword.swift; sourceTree = "<group>"; };
 		32E895A22B3C3D7B0089126C /* CustomBackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBackButton.swift; sourceTree = "<group>"; };
-		32E895A42B3D97FD0089126C /* CustomsViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomsViews.swift; sourceTree = "<group>"; };
 		32E895DC2B404A490089126C /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		32FC04E42B56267E00FE05A0 /* BookedIn.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BookedIn.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -149,7 +147,6 @@
 				32E895A02B3C3D5D0089126C /* ForgotPassword.swift */,
 				32E895892B3C27410089126C /* ExtensionsAndFunc.swift */,
 				32E895A22B3C3D7B0089126C /* CustomBackButton.swift */,
-				32E895A42B3D97FD0089126C /* CustomsViews.swift */,
 				32E895772B3B1BDD0089126C /* Assets.xcassets */,
 				32E895982B3C35EA0089126C /* GoogleService-Info.plist */,
 				32E895792B3B1BDD0089126C /* Preview Content */,
@@ -276,7 +273,6 @@
 				32E895822B3B1C290089126C /* HomepageView.swift in Sources */,
 				32E895882B3B20C80089126C /* DashboardView.swift in Sources */,
 				32E895762B3B1BDC0089126C /* LaunchScreen.swift in Sources */,
-				32E895A52B3D97FD0089126C /* CustomsViews.swift in Sources */,
 				32E895A12B3C3D5D0089126C /* ForgotPassword.swift in Sources */,
 				32E895DD2B404A490089126C /* UserData.swift in Sources */,
 				32E895842B3B1DE20089126C /* SignInView.swift in Sources */,
@@ -422,11 +418,13 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BookedIn/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BookedIn;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -453,11 +451,13 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BookedIn/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BookedIn;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

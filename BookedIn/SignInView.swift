@@ -19,7 +19,7 @@ struct SignInView: View {
     @State private var userPassword: String = ""
     @State var forgotPasswordIsTapped = false
     @State var isSignedIn = false
-    
+    @Binding var isCustomerIsTapped: Bool
     @State var retrievingbusinessDetails = RetrievingBusinessDetails()
     @State var retrievingcustomerDetails = RetrievingCustomerDetails()
     
@@ -98,7 +98,13 @@ struct SignInView: View {
                     .buttonStyle(.borderedProminent)
                     .cornerRadius(5)
                     .padding(7)
-                    NavigationLink(destination: DashboardViewCustomer(), isActive: $isSignedIn){}
+                    
+                    if isCustomerIsTapped {
+                        NavigationLink(destination: DashboardViewCustomer(), isActive: $isSignedIn){}
+                    }
+                    else {
+                        NavigationLink(destination: DashboardViewCustomer(), isActive: $isSignedIn){}
+                    }
                     // Mark: Starting Different SIgnIn Options
                     
                     
@@ -170,8 +176,4 @@ struct SignInView: View {
     }
     
     
-}
-
-#Preview {
-    SignInView()
 }

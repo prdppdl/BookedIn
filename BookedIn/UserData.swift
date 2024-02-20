@@ -130,11 +130,11 @@ class RetrievingBusinessDetails: ObservableObject {
         Firestore.firestore().collection("Business").document("\(uidd!)").getDocument { (document, error) in
             if let document = document, document.exists {
                 let data = document.data() ?? [:]
-                let businessName = data["userName"] as? String ?? ""
-                let businessContactNumber = data["userContactNumber"] as? String ?? ""
-                let businessAddress = data["userAddress"] as? String ?? ""
-                let businessABN = data["userABN"] as? String ?? ""
-                let businessEmail = data["userEmail"] as? String ?? ""
+                let businessName = data["businessName"] as? String ?? ""
+                let businessContactNumber = data["businessContactNumber"] as? String ?? ""
+                let businessAddress = data["businessAddress"] as? String ?? ""
+                let businessABN = data["businessABN"] as? String ?? ""
+                let businessEmail = data["businessEmail"] as? String ?? ""
                 print("Document data: \(data)")
                 
                 self.businessData = BusinessDetails(businessName: businessName, businessContactNumber: businessContactNumber, businessAddress: businessAddress, businessABN: businessABN, businessEmail: businessEmail)
@@ -159,11 +159,11 @@ class RetrievingBusinessDetails: ObservableObject {
             }
             self.businessDetails = data.map { (snapshot) -> BusinessDetails in
                 let data = snapshot.data()
-                let businessName = data["userName"] as? String ?? ""
-                let businessContactNumber = data["userContactNumber"] as? String ?? ""
-                let businessAddress = data["userAddress"] as? String ?? ""
-                let businessEmail = data["userEmail"] as? String ?? ""
-                let businessABN = data["userABN"] as? String ?? ""
+                let businessName = data["businessName"] as? String ?? ""
+                let businessContactNumber = data["businessContactNumber"] as? String ?? ""
+                let businessAddress = data["businessAddress"] as? String ?? ""
+                let businessEmail = data["businessEmail"] as? String ?? ""
+                let businessABN = data["businessABN"] as? String ?? ""
                 return BusinessDetails(businessName: businessName, businessContactNumber: businessContactNumber, businessAddress: businessAddress, businessABN: businessABN, businessEmail: businessEmail)
 
             }
@@ -191,8 +191,9 @@ class BookingDetails: Identifiable {
     let customerEmail: String
     let businessEmail: String
     let businessName: String
+    let noteForBusiness: String
     
-    init(customerName: String, customerContactNumber: String, bookingTime: String, bookingDate: String, numberOfPeople: Int, customerEmail: String, businessEmail: String, businessName: String) {
+    init(customerName: String, customerContactNumber: String, bookingTime: String, bookingDate: String, numberOfPeople: Int, customerEmail: String, businessEmail: String, businessName: String, noteForBusiness: String) {
         self.customerName = customerName
         self.customerContactNumber = customerContactNumber
         self.bookingTime = bookingTime
@@ -201,6 +202,7 @@ class BookingDetails: Identifiable {
         self.customerEmail = customerEmail
         self.businessEmail = businessEmail
         self.businessName = businessName
+        self.noteForBusiness = noteForBusiness
     }
     
     
@@ -223,15 +225,16 @@ class RetrievingBookingDetails: ObservableObject {
             }
             self.bookingDetails = data.map { (snapshot) -> BookingDetails in
                 let data = snapshot.data()
-                let customerName = data["personFullname"] as? String ?? ""
-                let customerContactNumber = data["customerPhoneNumber"] as? String ?? ""
+                let customerName = data["customerFullname"] as? String ?? ""
+                let customerContactNumber = data["customerContactNumber"] as? String ?? ""
                 let bookingTime = data["bookingTime"] as? String ?? ""
                 let bookingDate = data["bookingDate"] as? String ?? ""
                 let numberOfPeople = data["numberOfPeople"] as? Int ?? 0
                 let customerEmail = data["customerEmail"] as? String ?? ""
-                let businessEmail = data["businessEmail"] as? String ?? ""
-                let businessName = data["businessName"] as? String ?? ""
-                return BookingDetails(customerName: customerName, customerContactNumber: customerContactNumber, bookingTime: bookingTime, bookingDate: bookingDate, numberOfPeople: numberOfPeople, customerEmail: customerEmail, businessEmail: businessEmail, businessName: businessName)
+                let businessEmail = data["selectedBusinessEmail"] as? String ?? ""
+                let businessName = data["selectedBusiness"] as? String ?? ""
+                let noteForBusiness = data["noteForBusiness"] as? String ?? ""
+                return BookingDetails(customerName: customerName, customerContactNumber: customerContactNumber, bookingTime: bookingTime, bookingDate: bookingDate, numberOfPeople: numberOfPeople, customerEmail: customerEmail, businessEmail: businessEmail, businessName: businessName, noteForBusiness: noteForBusiness)
                 
             }
             
