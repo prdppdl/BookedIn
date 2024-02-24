@@ -25,6 +25,7 @@ struct JoinView: View {
     @State private var isSecure = true
     @State private var isJoiningAsBusiness = false
     @State private var userABN: String = ""
+    @State var messageLabel = "Create an account and discover thousands of best place to eat around you."
     var body: some View {
         VStack{
             Group {
@@ -41,37 +42,42 @@ struct JoinView: View {
             Spacer()
             
         }
-        if isJoiningAsBusiness == false {
-            VStack {
+        
+        VStack {
+            Spacer()
+            HStack{
+                Image("AppLogo")
+                    .resizable()
+                    .frame(width: 75, height: 75)
+                    .clipShape(RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)))
+                    .shadow(radius: 20)
+                    .padding(.horizontal)
                 Spacer()
-                HStack{
-                    Image("AppLogo")
-                        .resizable()
-                        .frame(width: 75, height: 75)
-                        .clipShape(RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)))
-                        .shadow(radius: 20)
-                        .padding(.horizontal)
-                    Spacer()
-                }
-                HStack{
-                    VStack{
-                        HStack{
-                            Text("Join BookedIn.")
-                                .font(.title)
-                                .fontWeight(.bold)
-                                .padding(.horizontal)
-                            Spacer()
-                        }
-                        HStack {
-                            Text("Create an account and discover thousands of best place to eat around you.")
-                                .fixedSize(horizontal: false, vertical: true)
-                                .font(.system(size: 12))
-                                .font(.subheadline)
-                                .padding(.horizontal)
-                        }
+            }
+            HStack{
+                VStack{
+                    HStack{
+                        Text("Join BookedIn.")
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .padding(.horizontal)
+                        Spacer()
                     }
-                    Spacer()
+                    HStack {
+                        Text("\(messageLabel)")
+                            .fixedSize(horizontal: false, vertical: true)
+                            .font(.system(size: 12))
+                            .font(.subheadline)
+                            .padding(.horizontal)
+                        Spacer()
+                    }
+                   
                 }
+                Spacer()
+            }
+            
+            if isJoiningAsBusiness == false {
+    
                 TextField(" ", text: $userFirstName)
                     .placeholder(when: userFirstName.isEmpty){
                         Text("First Name")
@@ -178,201 +184,183 @@ struct JoinView: View {
                     
                 }
             }
+            
+            
+            else {
+                VStack {
+                    Spacer()
+
+                    TextField(" ", text: $userEmail)
+                        .placeholder(when: userEmail.isEmpty){
+                            Text("Email or Username")
+                                .font(.system(size: 12))
+                                .foregroundColor(.gray)
+                        }
+                        .customTextfield()
+                        .keyboardType(.emailAddress)
+                        .padding(.horizontal)
+                    
+                    HStack {
+                        if isSecure {
+                            VStack {
+                                SecureField(" ", text: $userPassword)
+                                    .placeholder(when: userPassword.isEmpty){
+                                        HStack {
+                                            Text("Password")
+                                                .font(.system(size: 12))
+                                                .foregroundColor(.gray)
+                                        }
+                                        
+                                    }
+                                    .customTextfield()
+                                    .padding(.horizontal)
+                                HStack{
+                                    Text("Combine upper and lowercase letters and numbers.")
+                                        .font(.system(size: 12))
+                                        .font(.subheadline)
+                                        .foregroundStyle(.gray)
+                                        .padding(.horizontal)
+                                    Spacer()
+                                }
+                            }
+                        }
+                        else {
+                            VStack {
+                                TextField(" ", text: $userPassword)
+                                    .placeholder(when: userPassword.isEmpty){
+                                        Text("Password")
+                                            .font(.system(size: 12))
+                                            .foregroundColor(.gray)
+                                        
+                                    }
+                                    .customTextfield()
+                                    .padding(.horizontal)
+                                HStack{
+                                    Text("Check if it matches the requirement of strong password.")
+                                        .fixedSize(horizontal: false, vertical: true)
+                                        .font(.system(size: 12))
+                                        .font(.subheadline)
+                                        .foregroundStyle(.gray)
+                                        .padding(.horizontal)
+                                    Spacer()
+                                }
+                            }
+                        }
+                        Button(action: {
+                            isSecure.toggle()
+                        }, label: {
+                            Image(systemName: isSecure ? "eye.slash" : "eye")
+                                .padding(.trailing, 20)
+                        })
+                    }
+                    
+                    HStack {
+                        Toggle(isOn: $isJoiningAsBusiness, label: {
+                            Text("Joining as Business")
+                                .foregroundStyle(.accent)
+                                .fontWeight(.semibold)
+                            
+                        })
+                        .foregroundStyle(.accent)
+                        .padding(.horizontal)
+                        .padding(.top,20)
+                        
+                    }
+                    
+                    
+                    VStack {
+                        HStack {
+                            TextField("", text: $userABN)
+                                .placeholder(when: userABN.isEmpty){
+                                    Text("Enter your ABN")
+                                        .font(.system(size: 12))
+                                        .foregroundColor(.gray)
+                                    
+                                }
+                                .customTextfield()
+                                .keyboardType(.numberPad)
+                                .padding(.horizontal)
+                            
+                            if verifyABN(userABN) {
+                                Image(systemName: "checkmark.seal.fill")
+                                    .resizable()
+                                    .frame(width: 25, height: 25)
+                                    .foregroundColor(.green)
+                                    .padding(.trailing)
+                            }
+                            else {
+                                Image(systemName: "checkmark.seal")
+                                    .resizable()
+                                    .frame(width: 25, height: 25)
+                                    .foregroundColor(.gray)
+                                    .padding(.trailing)
+                            }
+                            
+                        }
+                        HStack {
+                            Text("This helps us to verify your business.")
+                                .font(.system(size: 12))
+                                .font(.subheadline)
+                                .foregroundStyle(.gray)
+                                .padding(.horizontal)
+                            Spacer()
+                        }
+                        
+                        TextField(" ", text: $businessName)
+                            .placeholder(when: businessName.isEmpty){
+                                Text("Business Name")
+                                    .font(.system(size: 12))
+                                    .foregroundColor(.gray)
+                            }
+                            .customTextfield()
+                            .keyboardType(.default)
+                            .padding(.horizontal)
+                        
+                        TextField(" ", text: $businessContactNumber)
+                            .placeholder(when: businessContactNumber.isEmpty){
+                                Text("Contact Number")
+                                    .font(.system(size: 12))
+                                    .foregroundColor(.gray)
+                            }
+                            .customTextfield()
+                            .keyboardType(.numberPad)
+                            .padding(.horizontal)
+                        
+                        TextField(" ", text: $businessAddress)
+                            .placeholder(when: businessAddress.isEmpty){
+                                Text("Business Address")
+                                    .font(.system(size: 12))
+                                    .foregroundColor(.gray)
+                            }
+                            .customTextfield()
+                            .keyboardType(.default)
+                            .padding(.horizontal)
+                        
+                        HStack {
+                            Text("Let your customer know where to go.")
+                                .font(.system(size: 12))
+                                .font(.subheadline)
+                                .foregroundStyle(.gray)
+                                .padding(.horizontal)
+                            Spacer()
+                        }
+                        
+                    }
+                    
+                    
+                }
+                .onAppear() {
+                    if isJoiningAsBusiness == true {
+                        messageLabel = "Create an account and meet thousands of amazing hungry people."
+                    }
+                    
+                }
+                
+            }
+            
+          
         }
         
-        else {
-                     VStack {
-                         Spacer()
-                         HStack{
-                             Image("AppLogo")
-                                 .resizable()
-                                 .frame(width: 75, height: 75)
-                                 .clipShape(RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)))
-                                 .shadow(radius: 20)
-                                 .padding(.horizontal)
-                             Spacer()
-                         }
-                         HStack{
-                             VStack{
-                                 HStack{
-                                     Text("Join BookedIn.")
-                                         .font(.title)
-                                         .fontWeight(.bold)
-                                         .padding(.horizontal)
-                                     Spacer()
-                                 }
-                                 HStack {
-                                     Text("Create an account and take reservation from amazing people around your place.")
-                                         .fixedSize(horizontal: false, vertical: true)
-                                         .font(.system(size: 12))
-                                         .font(.subheadline)
-                                         .padding(.horizontal)
-                                 }
-                             }
-                             Spacer()
-                         }
-                         
-                         TextField(" ", text: $userEmail)
-                             .placeholder(when: userEmail.isEmpty){
-                                 Text("Email or Username")
-                                     .font(.system(size: 12))
-                                     .foregroundColor(.gray)
-                             }
-                             .customTextfield()
-                             .keyboardType(.emailAddress)
-                             .padding(.horizontal)
-                         
-                         HStack {
-                             if isSecure {
-                                 VStack {
-                                     SecureField(" ", text: $userPassword)
-                                         .placeholder(when: userPassword.isEmpty){
-                                             HStack {
-                                                 Text("Password")
-                                                     .font(.system(size: 12))
-                                                     .foregroundColor(.gray)
-                                             }
-                                             
-                                         }
-                                         .customTextfield()
-                                         .padding(.horizontal)
-                                     HStack{
-                                         Text("Combine upper and lowercase letters and numbers.")
-                                             .font(.system(size: 12))
-                                             .font(.subheadline)
-                                             .foregroundStyle(.gray)
-                                             .padding(.horizontal)
-                                         Spacer()
-                                     }
-                                 }
-                             }
-                             else {
-                                 VStack {
-                                     TextField(" ", text: $userPassword)
-                                         .placeholder(when: userPassword.isEmpty){
-                                             Text("Password")
-                                                 .font(.system(size: 12))
-                                                 .foregroundColor(.gray)
-                                             
-                                         }
-                                         .customTextfield()
-                                         .padding(.horizontal)
-                                     HStack{
-                                         Text("Check if it matches the requirement of strong password.")
-                                             .fixedSize(horizontal: false, vertical: true)
-                                             .font(.system(size: 12))
-                                             .font(.subheadline)
-                                             .foregroundStyle(.gray)
-                                             .padding(.horizontal)
-                                         Spacer()
-                                     }
-                                 }
-                             }
-                             Button(action: {
-                                 isSecure.toggle()
-                             }, label: {
-                                 Image(systemName: isSecure ? "eye.slash" : "eye")
-                                     .padding(.trailing, 20)
-                             })
-                         }
-                         
-                         HStack {
-                             Toggle(isOn: $isJoiningAsBusiness, label: {
-                                 Text("Joining as Business")
-                                     .foregroundStyle(.accent)
-                                     .fontWeight(.semibold)
-                                 
-                             })
-                             .foregroundStyle(.accent)
-                             .padding(.horizontal)
-                             .padding(.top,20)
-                             
-                         }
-                         
-                        
-                             VStack {
-                                 HStack {
-                                 TextField("", text: $userABN)
-                                     .placeholder(when: userABN.isEmpty){
-                                         Text("Enter your ABN")
-                                             .font(.system(size: 12))
-                                             .foregroundColor(.gray)
-                                         
-                                     }
-                                     .customTextfield()
-                                     .keyboardType(.numberPad)
-                                     .padding(.horizontal)
-                                    
-                                     if verifyABN(userABN) {
-                                         Image(systemName: "checkmark.seal.fill")
-                                             .resizable()
-                                             .frame(width: 25, height: 25)
-                                             .foregroundColor(.green)
-                                             .padding(.trailing)
-                                     }
-                                     else {
-                                         Image(systemName: "checkmark.seal")
-                                             .resizable()
-                                             .frame(width: 25, height: 25)
-                                             .foregroundColor(.gray)
-                                             .padding(.trailing)
-                                     }
-                               
-                             }
-                                 HStack {
-                                     Text("This helps us to verify your business.")
-                                         .font(.system(size: 12))
-                                         .font(.subheadline)
-                                         .foregroundStyle(.gray)
-                                         .padding(.horizontal)
-                                     Spacer()
-                                 }
-                                 
-                                 TextField(" ", text: $businessName)
-                                     .placeholder(when: businessName.isEmpty){
-                                         Text("Business Name")
-                                             .font(.system(size: 12))
-                                             .foregroundColor(.gray)
-                                     }
-                                     .customTextfield()
-                                     .keyboardType(.default)
-                                     .padding(.horizontal)
-                                 
-                                 TextField(" ", text: $businessContactNumber)
-                                     .placeholder(when: businessContactNumber.isEmpty){
-                                         Text("Contact Number")
-                                             .font(.system(size: 12))
-                                             .foregroundColor(.gray)
-                                     }
-                                     .customTextfield()
-                                     .keyboardType(.numberPad)
-                                     .padding(.horizontal)
-                                 
-                                 TextField(" ", text: $businessAddress)
-                                     .placeholder(when: businessAddress.isEmpty){
-                                         Text("Business Address")
-                                             .font(.system(size: 12))
-                                             .foregroundColor(.gray)
-                                     }
-                                     .customTextfield()
-                                     .keyboardType(.default)
-                                     .padding(.horizontal)
-                                 
-                                 HStack {
-                                     Text("Let your customer know where to go.")
-                                         .font(.system(size: 12))
-                                         .font(.subheadline)
-                                         .foregroundStyle(.gray)
-                                         .padding(.horizontal)
-                                     Spacer()
-                                 }
-                                 
-                             }
-                         
-                         
-                     }
-            
-        }
                 Button(action: {
                     
                     signUpUser()
@@ -399,6 +387,7 @@ struct JoinView: View {
                         .font(.subheadline)
                         .foregroundStyle(.accent)
                 }
+       
                 // Mark: Starting Different SIgnIn Options
                 
                 
@@ -422,7 +411,7 @@ struct JoinView: View {
                 //            .buttonStyle(.bordered)
                 //            .cornerRadius(5)
                 Spacer()
-        
+       
     }
     
     //VERIFYING BUSINESS ABN
@@ -462,6 +451,7 @@ struct JoinView: View {
                return
             }
             Auth.auth().currentUser?.sendEmailVerification()
+            
             //SAVING USER DETAILS
             if isJoiningAsBusiness {
                 let businessDetails: [String: Any] = [

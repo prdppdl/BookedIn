@@ -181,7 +181,7 @@ class RetrievingBusinessDetails: ObservableObject {
 //BOOKING DATA
 
 
-class BookingDetails: Identifiable {
+class BookingDetails: Identifiable, Codable, Hashable, Equatable {
     
     let customerName: String
     let customerContactNumber: String
@@ -205,6 +205,33 @@ class BookingDetails: Identifiable {
         self.noteForBusiness = noteForBusiness
     }
     
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(customerName)
+        hasher.combine(businessName)
+        hasher.combine(businessEmail)
+        hasher.combine(customerContactNumber)
+        hasher.combine(bookingDate)
+        hasher.combine(bookingTime)
+        hasher.combine(numberOfPeople)
+        hasher.combine(noteForBusiness)
+        hasher.combine(customerEmail)
+    }
+    
+    
+    static func == (lhs: BookingDetails, rhs: BookingDetails) -> Bool {
+        return lhs.id == rhs.id &&
+        lhs.businessName == rhs.businessName &&
+        lhs.businessEmail == rhs.businessEmail &&
+        lhs.customerName == rhs.customerName &&
+        lhs .customerEmail == rhs.customerEmail &&
+        lhs.numberOfPeople == rhs.numberOfPeople &&
+        lhs.customerContactNumber == rhs.customerContactNumber &&
+        lhs.bookingDate == rhs.bookingDate &&
+        lhs.bookingTime == rhs.bookingTime &&
+        lhs.noteForBusiness == rhs.noteForBusiness
+    }
+    
     
 }
 
@@ -225,7 +252,7 @@ class RetrievingBookingDetails: ObservableObject {
             }
             self.bookingDetails = data.map { (snapshot) -> BookingDetails in
                 let data = snapshot.data()
-                let customerName = data["customerFullname"] as? String ?? ""
+                let customerName = data["customerFullName"] as? String ?? ""
                 let customerContactNumber = data["customerContactNumber"] as? String ?? ""
                 let bookingTime = data["bookingTime"] as? String ?? ""
                 let bookingDate = data["bookingDate"] as? String ?? ""

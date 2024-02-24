@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3249D5302B86CA70007804F0 /* backgroundVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 3249D52F2B86CA70007804F0 /* backgroundVideo.mp4 */; };
+		3249D5322B86ED07007804F0 /* MakeBookingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3249D5312B86ED07007804F0 /* MakeBookingView.swift */; };
 		32E895742B3B1BDC0089126C /* BookedInApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E895732B3B1BDC0089126C /* BookedInApp.swift */; };
 		32E895762B3B1BDC0089126C /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E895752B3B1BDC0089126C /* LaunchScreen.swift */; };
 		32E895782B3B1BDD0089126C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 32E895772B3B1BDD0089126C /* Assets.xcassets */; };
@@ -55,6 +57,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3249D52F2B86CA70007804F0 /* backgroundVideo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = backgroundVideo.mp4; sourceTree = "<group>"; };
+		3249D5312B86ED07007804F0 /* MakeBookingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeBookingView.swift; sourceTree = "<group>"; };
 		32E895702B3B1BDC0089126C /* BookedIn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BookedIn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		32E895732B3B1BDC0089126C /* BookedInApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookedInApp.swift; sourceTree = "<group>"; };
 		32E895752B3B1BDC0089126C /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
@@ -137,6 +141,7 @@
 			children = (
 				32FC04E42B56267E00FE05A0 /* BookedIn.entitlements */,
 				32E8959F2B3C36CA0089126C /* Info.plist */,
+				3249D52F2B86CA70007804F0 /* backgroundVideo.mp4 */,
 				32E895732B3B1BDC0089126C /* BookedInApp.swift */,
 				32E895DC2B404A490089126C /* UserData.swift */,
 				32E895752B3B1BDC0089126C /* LaunchScreen.swift */,
@@ -144,6 +149,7 @@
 				32E895832B3B1DE20089126C /* SignInView.swift */,
 				32E895852B3B1EF50089126C /* JoinView.swift */,
 				32E895872B3B20C80089126C /* DashboardView.swift */,
+				3249D5312B86ED07007804F0 /* MakeBookingView.swift */,
 				32E895A02B3C3D5D0089126C /* ForgotPassword.swift */,
 				32E895892B3C27410089126C /* ExtensionsAndFunc.swift */,
 				32E895A22B3C3D7B0089126C /* CustomBackButton.swift */,
@@ -258,6 +264,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				32E8957B2B3B1BDD0089126C /* Preview Assets.xcassets in Resources */,
+				3249D5302B86CA70007804F0 /* backgroundVideo.mp4 in Resources */,
 				32E895782B3B1BDD0089126C /* Assets.xcassets in Resources */,
 				32E895992B3C35EA0089126C /* GoogleService-Info.plist in Resources */,
 			);
@@ -272,6 +279,7 @@
 			files = (
 				32E895822B3B1C290089126C /* HomepageView.swift in Sources */,
 				32E895882B3B20C80089126C /* DashboardView.swift in Sources */,
+				3249D5322B86ED07007804F0 /* MakeBookingView.swift in Sources */,
 				32E895762B3B1BDC0089126C /* LaunchScreen.swift in Sources */,
 				32E895A12B3C3D5D0089126C /* ForgotPassword.swift in Sources */,
 				32E895DD2B404A490089126C /* UserData.swift in Sources */,

@@ -97,13 +97,13 @@ struct SignInView: View {
                     .background(Color.accentColor)
                     .buttonStyle(.borderedProminent)
                     .cornerRadius(5)
-                    .padding(7)
+                    .padding(.bottom, 15)
                     
                     if isCustomerIsTapped {
                         NavigationLink(destination: DashboardViewCustomer(), isActive: $isSignedIn){}
                     }
                     else {
-                        NavigationLink(destination: DashboardViewCustomer(), isActive: $isSignedIn){}
+                        NavigationLink(destination: DashboardViewBusiness(), isActive: $isSignedIn){}
                     }
                     // Mark: Starting Different SIgnIn Options
                     
@@ -127,21 +127,23 @@ struct SignInView: View {
                     //            .background(Color.color)
                     //            .buttonStyle(.bordered)
                     //            .cornerRadius(5)
+                
+                
+                HStack{
                     Spacer()
-                    HStack{
-                        Spacer()
-                        Text("Forgot Password")
-                            .fontWeight(.semibold)
-                            .foregroundStyle(.accent)
-                            .font(.system(size: 16))
-                            .font(.subheadline)
-                            .padding(.trailing)
-                            .onTapGesture {
-                               forgotPasswordIsTapped = true
-                            }
-                        NavigationLink(destination: ForgotPassword(), isActive: $forgotPasswordIsTapped){}
-                    }
+                    Text("Forgot Password")
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.accent)
+                        .font(.system(size: 16))
+                        .font(.subheadline)
+                        .padding(.horizontal)
+                        .padding(.top, 15)
+                        .onTapGesture {
+                            forgotPasswordIsTapped = true
+                        }
+                    NavigationLink(destination: ForgotPassword(), isActive: $forgotPasswordIsTapped){}
                 }
+            }
             }
         }
     }

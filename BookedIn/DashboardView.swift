@@ -20,6 +20,9 @@ struct DashboardViewCustomer: View {
     @State private var retrieveBusinessDetails = RetrievingBusinessDetails()
     @State private var currentMessageIndex = 0
     @State private var messages = ["BookedIn.", "Book", "Eat", "Repeat"]
+    @State var makeBookingView: Bool = false
+    @State var selectedBusinessName = ""
+    @State var selectedBusinessEmail = ""
     var body: some View {
         
         //CUSTOMER DAHSBOARD
@@ -100,6 +103,7 @@ struct DashboardViewCustomer: View {
                                     Image(systemName: "ellipsis.circle")
                                         .foregroundStyle(.black)
                                         .padding(.trailing,10)
+                                       
                                 }
                                 
                                 .padding(.top,20)
@@ -120,7 +124,9 @@ struct DashboardViewCustomer: View {
                                 .padding(.bottom)
                                 HStack{
                                     Button(action: {
-                                        
+                                        selectedBusinessName = details.businessName
+                                        selectedBusinessEmail = details.businessEmail
+                                        makeBookingView = true
                                         
                                     }){
                                         Text("Book")
@@ -165,7 +171,7 @@ struct DashboardViewCustomer: View {
                                 }
                             }
                     )
-                    
+                    NavigationLink(destination: MakeBookingView(businessName: $selectedBusinessName , businessEmail: $selectedBusinessEmail), isActive: $makeBookingView){}
                     Spacer()
                     
                 }
@@ -212,15 +218,18 @@ struct DashboardViewCustomer: View {
 struct DashboardViewBusiness: View {
     @State private var isSwiped = false
     @State private var currentUserEmail = Auth.auth().currentUser?.email
-    @State private var retrieveCustomerDetails = RetrievingCustomerDetails()
+    @State private var retrieveBookingDetails = RetrievingBookingDetails()
     @State private var cardOffset: CGSize = .zero
     @State private var retrieveBusinessDetails = RetrievingBusinessDetails()
     @State private var currentMessageIndex = 0
     @State private var messages = ["BookedIn.", "Book", "Eat", "Repeat"]
+    let businessEmailCheck = Auth.auth().currentUser?.email
+    
     var body: some View {
         
         //Business DAHSBOARD
             VStack {
+            
                 HStack {
                     HStack{
                         
@@ -245,8 +254,8 @@ struct DashboardViewBusiness: View {
                     }
                     .onAppear{
                         startTiming()
-                        retrieveCustomerDetails.retrieveCustomerData {}
-                        retrieveBusinessDetails.retrieveBusinessDetailsForCustomerBooking()
+                        retrieveBookingDetails.retrieveBooking()
+                        retrieveBusinessDetails.retrieveBusinessData() {}
                     }
                     
                     Spacer()
@@ -254,6 +263,7 @@ struct DashboardViewBusiness: View {
                 .padding(.horizontal)
                 
                 ForEach(retrieveBusinessDetails.businessDetails, id: \.self){ details in
+                   
                     Text("G'day \(details.businessName)")
                         .fontWeight(.semibold)
                         .font(.system(size: 15))
@@ -261,7 +271,7 @@ struct DashboardViewBusiness: View {
                         .shadow(radius: 10)
                 }
                 HStack {
-                    Text("Recommended places to you nearby")
+                    Text("Your current bookings")
                         .font(.system(size: 12))
                         .font(.subheadline)
                         .padding(.vertical,15)
@@ -274,71 +284,73 @@ struct DashboardViewBusiness: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack{
                     
-                    ForEach(retrieveBusinessDetails.businessDetails, id: \.self){ details in
+                    ForEach(retrieveBookingDetails.bookingDetails, id: \.self){ details in
                         
-                        VStack{
-                            Color.color
-                        }
-                        .clipShape(RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)))
-                        .shadow(radius: 20)
-                        .overlay(content: {
+                        if businessEmailCheck! == details.businessEmail {
                             
                             VStack{
-                                HStack{
-                                    Text("\(details.businessName)")
-                                        .fontWeight(.semibold)
-                                        .foregroundStyle(.black)
-                                        .padding(.leading,10)
-                                    Text("4.5 \(Image(systemName: "star.fill"))")
-                                        .foregroundStyle(.black)
-                                        .lineSpacing(1.0)
-                                        .padding(.horizontal,10)
-                                    Spacer()
-                                    Image(systemName: "ellipsis.circle")
-                                        .foregroundStyle(.black)
-                                        .padding(.trailing,10)
-                                }
-                                
-                                .padding(.top,20)
-                                HStack{
-                                    Text("\(details.businessAddress)")
-                                        .foregroundStyle(.gray)
-                                        .fontWeight(.semibold)
-                                        .padding(.leading,10)
-                                    Spacer()
-                                }
-                                HStack{
-                                    Text("\(details.businessContactNumber)")
-                                        .foregroundStyle(.gray)
-                                        .fontWeight(.semibold)
-                                        .padding(.leading,10)
-                                    Spacer()
-                                }
-                                .padding(.bottom)
-                                HStack{
-                                    Button(action: {
-                                        
-                                        
-                                    }){
-                                        Text("Book")
-                                            .fontWeight(.semibold)
-                                            .frame(width: 50,height: 25)
-                                            .foregroundColor(.white)
-                                            .font(.system(size: 17))
-                                        
-                                    }
-                                    .background(Color.accentColor)
-                                    .buttonStyle(.borderedProminent)
-                                    .cornerRadius(5)
-                                    .padding(.leading, 20)
-                                    Spacer()
-                                }
-                                
+                                Color.color
                             }
-                            
-                            
-                        })
-                        
+                            .clipShape(RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)))
+                            .shadow(radius: 20)
+                            .overlay(content: {
+                                
+                                VStack{
+                                    HStack{
+                                        Text("\(details.customerName)")
+                                            .fontWeight(.semibold)
+                                            .foregroundStyle(.black)
+                                            .padding(.leading,10)
+                                        
+                                        Spacer()
+                                        
+                                        Image(systemName: "ellipsis.circle")
+                                            .foregroundStyle(.black)
+                                            .padding(.trailing,10)
+                                    }
+                                    
+                                    .padding(.top,20)
+                                    HStack{
+                                        Text("\(details.customerContactNumber)")
+                                            .foregroundStyle(.gray)
+                                            .fontWeight(.semibold)
+                                            .padding(.leading,10)
+                                        Spacer()
+                                    }
+                                    HStack{
+                                        Text("\(details.bookingDate)")
+                                            .foregroundStyle(.gray)
+                                            .fontWeight(.semibold)
+                                            .padding(.horizontal)
+                                        
+                                        Text("\(details.bookingTime)")
+                                            .foregroundStyle(.gray)
+                                            .fontWeight(.semibold)
+                                            .padding(.trailing)
+                                        Spacer()
+                                    }
+                                    
+                                    HStack{
+                                        Text("For \(details.numberOfPeople)")
+                                            .foregroundStyle(.gray)
+                                            .fontWeight(.semibold)
+                                            .padding(.horizontal)
+                                        
+                                        Spacer()
+                                    }
+                                    .padding(.bottom)
+                                    HStack {
+                                        Text("\(details.noteForBusiness)")
+                                            .foregroundStyle(.gray)
+                                            .fontWeight(.semibold)
+                                            .padding(.trailing)
+                                        Spacer()
+                                    }
+                                }
+                                
+                                
+                            })
+                        }
                     }
                     .frame(width: 350, height: 175)
                     .offset(x: cardOffset.width)
