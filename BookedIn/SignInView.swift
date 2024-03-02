@@ -100,7 +100,7 @@ struct SignInView: View {
                     .padding(.bottom, 15)
                     
                     if isCustomerIsTapped {
-                        NavigationLink(destination: DashboardViewCustomer(), isActive: $isSignedIn){}
+                        NavigationLink(destination: DashboardViewCustomer(isCustomerProfileTapped: $isCustomerIsTapped), isActive: $isSignedIn){}
                     }
                     else {
                         NavigationLink(destination: DashboardViewBusiness(), isActive: $isSignedIn){}
@@ -131,7 +131,7 @@ struct SignInView: View {
                 
                 HStack{
                     Spacer()
-                    Text("Forgot Password")
+                    Text("Forgot Password?")
                         .fontWeight(.semibold)
                         .foregroundStyle(.accent)
                         .font(.system(size: 16))
@@ -152,9 +152,6 @@ struct SignInView: View {
     
    // SIGN IN FUNCTION
     func signInUser() {
-        let currentUserEmail = Auth.auth().currentUser?.email
-        
-     
         
         Auth.auth().signIn(withEmail: userEmail, password: userPassword, completion: {authResult, err in
             

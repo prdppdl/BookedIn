@@ -31,5 +31,12 @@ extension View {
             }
         }
     
+    func linearGradient() -> some View {
+        
+        LinearGradient(gradient: Gradient(colors: [Color.color.opacity(0.6), Color.color.opacity(1.0)]), startPoint: .top, endPoint: .bottom)
+         .ignoresSafeArea()
+        
+    }
+    
 }
 

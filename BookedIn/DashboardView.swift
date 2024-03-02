@@ -18,11 +18,15 @@ struct DashboardViewCustomer: View {
     @State private var retrieveCustomerDetails = RetrievingCustomerDetails()
     @State private var cardOffset: CGSize = .zero
     @State private var retrieveBusinessDetails = RetrievingBusinessDetails()
+    @State private var retrieveBookingDetails = RetrievingBookingDetails()
     @State private var currentMessageIndex = 0
     @State private var messages = ["BookedIn.", "Book", "Eat", "Repeat"]
     @State var makeBookingView: Bool = false
     @State var selectedBusinessName = ""
     @State var selectedBusinessEmail = ""
+    @Binding var isCustomerProfileTapped: Bool
+    @State var isProfileTapped = false
+    
     var body: some View {
         
         //CUSTOMER DAHSBOARD
@@ -35,6 +39,10 @@ struct DashboardViewCustomer: View {
                             .frame(width: 30, height: 30)
                             .foregroundColor(Color.accentColor)
                             .shadow(radius: 10)
+                            .border(Color.accentColor)
+                            .onTapGesture {
+                                isProfileTapped = true
+                            }
                         Spacer()
                         Text("\(messages[currentMessageIndex])")
                             .fontWeight(.semibold)
@@ -53,6 +61,7 @@ struct DashboardViewCustomer: View {
                         startTiming()
                         retrieveCustomerDetails.retrieveCustomerData {}
                         retrieveBusinessDetails.retrieveBusinessDetailsForCustomerBooking()
+                        retrieveBookingDetails.retrieveBooking()
                     }
                     
                     Spacer()
@@ -100,10 +109,20 @@ struct DashboardViewCustomer: View {
                                         .lineSpacing(1.0)
                                         .padding(.horizontal,10)
                                     Spacer()
-                                    Image(systemName: "ellipsis.circle")
-                                        .foregroundStyle(.black)
-                                        .padding(.trailing,10)
-                                       
+                                    
+                                    Menu {
+                                        Section {
+                                            Button {} label: {
+                                                Label("About \(details.businessName)", systemImage: "ellipsis.vertical.bubble.fill")
+                                            }
+                                            Button {} label: {
+                                                Label("View Menu", systemImage: "newspaper.fill")
+                                            }
+                                            
+                                        }
+                                    } label: {
+                                        Label("",systemImage: "ellipsis.circle")
+                                    }
                                 }
                                 
                                 .padding(.top,20)
@@ -150,51 +169,62 @@ struct DashboardViewCustomer: View {
                         
                     }
                     .frame(width: 350, height: 175)
-                    .offset(x: cardOffset.width)
-                    
-                    .gesture(
-                        DragGesture()
-                            .onChanged { gesture in
-                                cardOffset.width = gesture.translation.width
-                            }
-                            .onEnded { gesture in
-                                if abs(cardOffset.width) > 100 {
-                                    // Swiped far enough, reset the card offset
-                                    withAnimation {
-                                        cardOffset.width = gesture.translation.width > 0 ? 500 : -500
-                                    }
-                                } else {
-                                    // Not swiped far enough, reset the card offset
-                                    withAnimation {
-                                        cardOffset.width = 0
-                                    }
-                                }
-                            }
-                    )
+
                     NavigationLink(destination: MakeBookingView(businessName: $selectedBusinessName , businessEmail: $selectedBusinessEmail), isActive: $makeBookingView){}
+                    NavigationLink(destination: ProfileView(isCustomerProfile: $isCustomerProfileTapped), isActive: $isProfileTapped){}
                     Spacer()
                     
                 }
             }
-            .background(Color.accentColor)
+            .background(Color.color)
             .navigationBarBackButtonHidden(true)
-            .onAppear {
+        
+        
+        VStack {
+            HStack {
+                Text("Your current bookings")
+                    .font(.system(size: 12))
+                    .font(.subheadline)
+                    .padding(.vertical,15)
+                    .padding(.leading, 20)
                 
-                
-                // Start a timer to automatically swipe the card after a delay
-                Timer.scheduledTimer(withTimeInterval: 3.25, repeats: true) { _ in
-                    
-                    withAnimation {
-                        cardOffset.width = -340
-                    }
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 6.25) {
-                                            withAnimation {
-                                                cardOffset.width = 0
-                                            }
-                                        }
-                }
+                Spacer()
             }
             
+            List(retrieveBookingDetails.bookingDetails) { details in
+                if currentUserEmail! == details.customerEmail {
+                    VStack {
+                        HStack {
+                            Text("At \(details.businessName)")
+                                .fontWeight(.semibold)
+                                .foregroundStyle(.black)
+                                .padding(.leading,10)
+                            Spacer()
+                        }
+                        HStack{
+                            Text("On \(details.bookingDate) at \(details.bookingTime)")
+                                .foregroundColor(.gray)
+                                .padding(.leading, 10)
+                            Spacer()
+                        }
+                        HStack {
+                            Text("For \(details.numberOfPeople) person")
+                                .foregroundColor(.gray)
+                                .padding(.leading, 10)
+                            Spacer()
+                        }
+                    }
+                }
+                
+            }
+            .frame(height: 300)
+            .background(Color.color)
+            
+            
+            
+        }
+        
+        
             Spacer()
             
         
@@ -214,6 +244,7 @@ struct DashboardViewCustomer: View {
 
 
 
+//MARK: BUSINESS DASHBOARD STARTS HERE
 
 struct DashboardViewBusiness: View {
     @State private var isSwiped = false
@@ -253,7 +284,7 @@ struct DashboardViewBusiness: View {
                             .shadow(radius: 10)
                     }
                     .onAppear{
-                        startTiming()
+                       startTiming()
                         retrieveBookingDetails.retrieveBooking()
                         retrieveBusinessDetails.retrieveBusinessData() {}
                     }
@@ -300,6 +331,7 @@ struct DashboardViewBusiness: View {
                                         Text("\(details.customerName)")
                                             .fontWeight(.semibold)
                                             .foregroundStyle(.black)
+                                            .font(.system(size: 15))
                                             .padding(.leading,10)
                                         
                                         Spacer()
@@ -307,6 +339,7 @@ struct DashboardViewBusiness: View {
                                         Image(systemName: "ellipsis.circle")
                                             .foregroundStyle(.black)
                                             .padding(.trailing,10)
+                                       
                                     }
                                     
                                     .padding(.top,20)
@@ -314,89 +347,68 @@ struct DashboardViewBusiness: View {
                                         Text("\(details.customerContactNumber)")
                                             .foregroundStyle(.gray)
                                             .fontWeight(.semibold)
+                                            .font(.system(size: 15))
                                             .padding(.leading,10)
                                         Spacer()
                                     }
                                     HStack{
-                                        Text("\(details.bookingDate)")
+                                        Text("On: \(details.bookingDate)")
                                             .foregroundStyle(.gray)
                                             .fontWeight(.semibold)
-                                            .padding(.horizontal)
+                                            .font(.system(size: 15))
+                                            .padding(.leading, 10)
                                         
-                                        Text("\(details.bookingTime)")
+                                        Text("At: \(details.bookingTime)")
                                             .foregroundStyle(.gray)
                                             .fontWeight(.semibold)
+                                            .font(.system(size: 15))
                                             .padding(.trailing)
                                         Spacer()
                                     }
                                     
                                     HStack{
-                                        Text("For \(details.numberOfPeople)")
+                                        Text("For \(details.numberOfPeople) people")
                                             .foregroundStyle(.gray)
                                             .fontWeight(.semibold)
-                                            .padding(.horizontal)
+                                            .font(.system(size: 15))
+                                            .padding(.leading, 10)
                                         
                                         Spacer()
                                     }
                                     .padding(.bottom)
                                     HStack {
-                                        Text("\(details.noteForBusiness)")
-                                            .foregroundStyle(.gray)
-                                            .fontWeight(.semibold)
-                                            .padding(.trailing)
+                                        VStack {
+                                            Text("Requirements:")
+                                                .foregroundStyle(.black)
+                                                .fontWeight(.semibold)
+                                                .font(.system(size: 15))
+                                                .padding(.leading, 10)
+                                            Text("\(details.noteForBusiness)")
+                                                .foregroundStyle(.gray)
+                                                .font(.system(size: 15))
+                                                .fontWeight(.semibold)
+                                                .padding(.leading, 10)
+                        
+                                        }
+                                        
                                         Spacer()
                                     }
+                                   
                                 }
                                 
                                 
                             })
                         }
                     }
-                    .frame(width: 350, height: 175)
-                    .offset(x: cardOffset.width)
-                    
-                    .gesture(
-                        DragGesture()
-                            .onChanged { gesture in
-                                cardOffset.width = gesture.translation.width
-                            }
-                            .onEnded { gesture in
-                                if abs(cardOffset.width) > 100 {
-                                    // Swiped far enough, reset the card offset
-                                    withAnimation {
-                                        cardOffset.width = gesture.translation.width > 0 ? 500 : -500
-                                    }
-                                } else {
-                                    // Not swiped far enough, reset the card offset
-                                    withAnimation {
-                                        cardOffset.width = 0
-                                    }
-                                }
-                            }
-                    )
+                    .frame(width: 350, height: 200)
                     
                     Spacer()
                     
                 }
             }
-            .background(Color.accentColor)
+            .background(Color.color)
             .navigationBarBackButtonHidden(true)
-            .onAppear {
-                
-                
-                // Start a timer to automatically swipe the card after a delay
-                Timer.scheduledTimer(withTimeInterval: 3.25, repeats: true) { _ in
-                    
-                    withAnimation {
-                        cardOffset.width = -340
-                    }
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 6.25) {
-                                            withAnimation {
-                                                cardOffset.width = 0
-                                            }
-                                        }
-                }
-            }
+           
             
             Spacer()
             

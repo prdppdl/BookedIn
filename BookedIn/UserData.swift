@@ -187,13 +187,13 @@ class BookingDetails: Identifiable, Codable, Hashable, Equatable {
     let customerContactNumber: String
     let bookingTime: String
     let bookingDate: String
-    let numberOfPeople: Int
+    let numberOfPeople: String
     let customerEmail: String
     let businessEmail: String
     let businessName: String
     let noteForBusiness: String
     
-    init(customerName: String, customerContactNumber: String, bookingTime: String, bookingDate: String, numberOfPeople: Int, customerEmail: String, businessEmail: String, businessName: String, noteForBusiness: String) {
+    init(customerName: String, customerContactNumber: String, bookingTime: String, bookingDate: String, numberOfPeople: String, customerEmail: String, businessEmail: String, businessName: String, noteForBusiness: String) {
         self.customerName = customerName
         self.customerContactNumber = customerContactNumber
         self.bookingTime = bookingTime
@@ -256,10 +256,10 @@ class RetrievingBookingDetails: ObservableObject {
                 let customerContactNumber = data["customerContactNumber"] as? String ?? ""
                 let bookingTime = data["bookingTime"] as? String ?? ""
                 let bookingDate = data["bookingDate"] as? String ?? ""
-                let numberOfPeople = data["numberOfPeople"] as? Int ?? 0
+                let numberOfPeople = data["numberOfPeople"] as? String ?? ""
                 let customerEmail = data["customerEmail"] as? String ?? ""
-                let businessEmail = data["selectedBusinessEmail"] as? String ?? ""
-                let businessName = data["selectedBusiness"] as? String ?? ""
+                let businessEmail = data["businessEmail"] as? String ?? ""
+                let businessName = data["businessName"] as? String ?? ""
                 let noteForBusiness = data["noteForBusiness"] as? String ?? ""
                 return BookingDetails(customerName: customerName, customerContactNumber: customerContactNumber, bookingTime: bookingTime, bookingDate: bookingDate, numberOfPeople: numberOfPeople, customerEmail: customerEmail, businessEmail: businessEmail, businessName: businessName, noteForBusiness: noteForBusiness)
                 

@@ -184,11 +184,11 @@ struct MakeBookingView: View {
         Firestore.firestore().collection("Booking Lists").document("\(customerEmail!) in \(businessEmail)").setData(bookingDetails)
         {
          err in
-            if let err = err {
-                
+            if err != nil {
+                print("Error Booking")
             }
             else {
-                
+                print("Booked with \(customerEmail!)")
             }
         }
         

@@ -25,116 +25,130 @@ struct HomepageView: View {
     var body: some View {
         NavigationStack{
             ZStack{
-                //Background Video
-                VideoPlayer(player: player)
-                .ignoresSafeArea(.all)
-                .aspectRatio(contentMode: .fill)
-                            .onAppear {
-                                // Loop the video
-                                NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: nil, queue: nil) { _ in
-                                    self.restartVideo()
-                                }
-                            }
-                      
-                // Gradient Overlay
-                            LinearGradient(gradient: Gradient(colors: [Color.clear, Color.black.opacity(0.9)]), startPoint: .top, endPoint: .bottom)
-                    .ignoresSafeArea()
+                        //Background Video
+                        VideoPlayer(player: player)
+                        .ignoresSafeArea(.all)
+                        .aspectRatio(contentMode: .fill)
+                                    .onAppear {
+                                        // Loop the video
+                                        NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: nil, queue: nil) { _ in
+                                            self.restartVideo()
+                                        }
+                                    }
+                              
+                        // Gradient Overlay
+                                    LinearGradient(gradient: Gradient(colors: [Color.clear, Color.black.opacity(0.9)]), startPoint: .top, endPoint: .bottom)
+                            .ignoresSafeArea()
+                        
+                        
+                        VStack {
+                            Color.clear
+                            RoundedRectangle(cornerRadius: 25.0, style: .circular)
+                                .background(Color.color)
+                                .linearGradient()
+                                .frame(height: 130)
+                        
+                        }
+                        .ignoresSafeArea(.all, edges: .bottom)
+                        
+                        
+                        
+                        
+                        VStack {
                             
-                
-                
-                
-                
-                VStack {
-                    
-                    Spacer()
-                    Text("BookedIn.")
-                        .fontWeight(.bold)
-                        .font(.title)
-                        .foregroundStyle(.accent)
-                        .shadow(radius: 10)
-                    Text("\(messages[currentMessageIndex])")
-                        .font(.system(size: 20))
-                        .fontWeight(.bold)
-                        .shadow(radius: 5)
-                        .foregroundStyle(Color.white)
-                    HStack{
-                        RoundedRectangle(cornerRadius: 20)
-                            .fill(Color.color)
-                            .frame(width: 150, height: 150)
-                            .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
-                            .overlay(
-                                VStack{
-                                    Image(systemName: "fork.knife")
-                                        .resizable()
-                                        .frame(width: 50, height: 50)
-                                        .foregroundColor(.accentColor)
-                                    Text("\(leftCardViewMessage[leftMessageIndex])")
-                                        .fontWeight(.bold)
-                                        .foregroundStyle(Color.black)
-                                        .font(.system(size: 17))
-                                    Text("I'm looking for place to eat")
-                                    
-                                        .font(.system(size: 12))
-                                        .foregroundStyle(.gray)
-                                })
-                        .onTapGesture {
-                            isPopoverTrue = true
-                            isCustomerSignInTapped = true
-                        }
+                            Spacer()
                         
-                        .padding()
-                        
-                        RoundedRectangle(cornerRadius: 20)
-                            .fill(Color.color)
-                            .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
-                            .frame(width: 150, height: 150)
-                            .overlay(
-                                VStack(spacing: 8) {
-                                    Image(systemName: "calendar")
-                                        .resizable()
-                                        .frame(width: 50, height: 50)
-                                        .foregroundColor(.accentColor)
-                                    
-                                    Text(rightCardViewMessage[rightMessageIndex])
-                                        .fontWeight(.bold)
-                                        .font(.system(size: 17))
-                                        .foregroundStyle(Color.black)
-                                    
-                                    Text("I'd Like to offer food to eaters")
-                                        .font(.system(size: 12))
-                                        .foregroundColor(.gray)
-                                }
-                        )
-                        .onTapGesture {
-                            isPopoverTrue = true
-                            isCustomerSignInTapped = false
-                        }
-                        .padding()
-                        .fullScreenCover(isPresented: $isPopoverTrue, content: {
-                            SignInView(isCustomerIsTapped: $isCustomerSignInTapped)
-                        })
-                    }
-                 
-                        
-                        Button(action: {
-                            isJoinViewTrue = true
-                        }){
-                            Text("Join")
-                                .foregroundStyle(Color.accentColor)
+                            Text("BookedIn.")
                                 .fontWeight(.bold)
-                                .padding(.horizontal)
-                                .background(Color.clear)
+                                .font(.title)
+                                .foregroundStyle(.accent)
+                                .shadow(radius: 10)
+                            Text("\(messages[currentMessageIndex])")
+                                .font(.system(size: 20))
+                                .fontWeight(.bold)
+                                .shadow(radius: 5)
+                                .foregroundStyle(Color.white)
+                            HStack{
+                                RoundedRectangle(cornerRadius: 20)
+                                    .fill(Color.color)
+                                    .frame(width: 150, height: 150)
+                                    .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
+                                    .overlay(
+                                        VStack{
+                                            Image(systemName: "fork.knife")
+                                                .resizable()
+                                                .frame(width: 50, height: 50)
+                                                .foregroundColor(.accentColor)
+                                            Text("\(leftCardViewMessage[leftMessageIndex])")
+                                                .fontWeight(.bold)
+                                                .foregroundStyle(Color.black)
+                                                .font(.system(size: 17))
+                                            Text("I'm looking for place to eat")
+                                            
+                                                .font(.system(size: 12))
+                                                .foregroundStyle(.gray)
+                                        })
+                                .onTapGesture {
+                                    isPopoverTrue = true
+                                    isCustomerSignInTapped = true
+                                }
+                                
+                                .padding()
+                                
+                                RoundedRectangle(cornerRadius: 20)
+                                    .fill(Color.color)
+                                    .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
+                                    .frame(width: 150, height: 150)
+                                    .overlay(
+                                        VStack(spacing: 8) {
+                                            Image(systemName: "calendar")
+                                                .resizable()
+                                                .frame(width: 50, height: 50)
+                                                .foregroundColor(.accentColor)
+                                            
+                                            Text(rightCardViewMessage[rightMessageIndex])
+                                                .fontWeight(.bold)
+                                                .font(.system(size: 17))
+                                                .foregroundStyle(Color.black)
+                                            
+                                            Text("I'd Like to offer food to eaters")
+                                                .font(.system(size: 12))
+                                                .foregroundColor(.gray)
+                                        }
+                                )
+                                .onTapGesture {
+                                    isPopoverTrue = true
+                                    isCustomerSignInTapped = false
+                                }
+                                .padding()
+                                .fullScreenCover(isPresented: $isPopoverTrue, content: {
+                                    SignInView(isCustomerIsTapped: $isCustomerSignInTapped)
+                                })
+                            }
+                         
+                                
+                                Button(action: {
+                                    isJoinViewTrue = true
+                                }){
+                                    Text("Join")
+                                        .foregroundStyle(Color.accentColor)
+                                        .fontWeight(.bold)
+                                        .padding(.horizontal)
+                                        .background(Color.clear)
+                                }
+                                .padding(.leading, 290)
+                                .fullScreenCover(isPresented: $isJoinViewTrue, content: {
+                                    JoinView()
+                                })
+                            
+                            
                         }
-                        .padding(.leading, 290)
-                        .fullScreenCover(isPresented: $isJoinViewTrue, content: {
-                            JoinView()
-                        })
-                }
-                .onAppear{
-                    
-                    startTiming()
-                    playVideo()
-                }
+                     
+                        .onAppear{
+                            
+                            startTiming()
+                            playVideo()
+                        }
             }
         }
      
