@@ -17,6 +17,7 @@ struct HomepageView: View {
     @State private var rightMessageIndex = 0
     @State private var rightCardViewMessage = ["Selling Food?","Take Bookings","Earn"]
     @State private var isCustomerSignInTapped = false
+    @State private var isBusinessSignInTapped = false
     @State private var isPopoverTrue = false
     @State private var isJoinViewTrue = false
     
@@ -118,11 +119,12 @@ struct HomepageView: View {
                                 )
                                 .onTapGesture {
                                     isPopoverTrue = true
+                                    isBusinessSignInTapped = true
                                     isCustomerSignInTapped = false
                                 }
                                 .padding()
                                 .fullScreenCover(isPresented: $isPopoverTrue, content: {
-                                    SignInView(isCustomerIsTapped: $isCustomerSignInTapped)
+                                    SignInView(isCustomerIsTapped: $isCustomerSignInTapped, isBusinessIsTapped: $isBusinessSignInTapped)
                                 })
                             }
                          

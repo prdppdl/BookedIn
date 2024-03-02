@@ -24,7 +24,7 @@ struct DashboardViewCustomer: View {
     @State var makeBookingView: Bool = false
     @State var selectedBusinessName = ""
     @State var selectedBusinessEmail = ""
-    @Binding var isCustomerProfileTapped: Bool
+    @Binding public var isCustomerProfileTapped: Bool
     @State var isProfileTapped = false
     
     var body: some View {
@@ -255,6 +255,8 @@ struct DashboardViewBusiness: View {
     @State private var currentMessageIndex = 0
     @State private var messages = ["BookedIn.", "Book", "Eat", "Repeat"]
     let businessEmailCheck = Auth.auth().currentUser?.email
+    @State var isProfileTapped = false
+    @Binding var isBusinessProfileTapped: Bool
     
     var body: some View {
         
@@ -269,6 +271,11 @@ struct DashboardViewBusiness: View {
                             .frame(width: 30, height: 30)
                             .foregroundColor(Color.accentColor)
                             .shadow(radius: 10)
+                            .onTapGesture {
+                                isProfileTapped = true
+                                
+                            }
+                        
                         Spacer()
                         Text("\(messages[currentMessageIndex])")
                             .fontWeight(.semibold)
@@ -401,7 +408,7 @@ struct DashboardViewBusiness: View {
                         }
                     }
                     .frame(width: 350, height: 200)
-                    
+                    NavigationLink(destination: ProfileView(isCustomerProfile: $isBusinessProfileTapped), isActive: $isProfileTapped){}
                     Spacer()
                     
                 }

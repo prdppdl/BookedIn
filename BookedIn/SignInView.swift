@@ -20,6 +20,7 @@ struct SignInView: View {
     @State var forgotPasswordIsTapped = false
     @State var isSignedIn = false
     @Binding var isCustomerIsTapped: Bool
+    @Binding var isBusinessIsTapped: Bool
     @State var retrievingbusinessDetails = RetrievingBusinessDetails()
     @State var retrievingcustomerDetails = RetrievingCustomerDetails()
     
@@ -103,7 +104,8 @@ struct SignInView: View {
                         NavigationLink(destination: DashboardViewCustomer(isCustomerProfileTapped: $isCustomerIsTapped), isActive: $isSignedIn){}
                     }
                     else {
-                        NavigationLink(destination: DashboardViewBusiness(), isActive: $isSignedIn){}
+                        
+                        NavigationLink(destination: DashboardViewBusiness(isBusinessProfileTapped: $isBusinessIsTapped), isActive: $isSignedIn){}
                     }
                     // Mark: Starting Different SIgnIn Options
                     
