@@ -25,6 +25,7 @@ struct DashboardViewCustomer: View {
     @State var selectedBusinessName = ""
     @State var selectedBusinessEmail = ""
     @Binding public var isCustomerProfileTapped: Bool
+    @State var isBusinessProfileTapped = false
     @State var isProfileTapped = false
     
     var body: some View {
@@ -39,7 +40,6 @@ struct DashboardViewCustomer: View {
                             .frame(width: 30, height: 30)
                             .foregroundColor(Color.accentColor)
                             .shadow(radius: 10)
-                            .border(Color.accentColor)
                             .onTapGesture {
                                 isProfileTapped = true
                             }
@@ -171,7 +171,7 @@ struct DashboardViewCustomer: View {
                     .frame(width: 350, height: 175)
 
                     NavigationLink(destination: MakeBookingView(businessName: $selectedBusinessName , businessEmail: $selectedBusinessEmail), isActive: $makeBookingView){}
-                    NavigationLink(destination: ProfileView(isCustomerProfile: $isCustomerProfileTapped), isActive: $isProfileTapped){}
+                    NavigationLink(destination: ProfileView(isCustomerProfile: $isCustomerProfileTapped, isBusinessProfile: $isBusinessProfileTapped), isActive: $isProfileTapped){}
                     Spacer()
                     
                 }
@@ -257,6 +257,7 @@ struct DashboardViewBusiness: View {
     let businessEmailCheck = Auth.auth().currentUser?.email
     @State var isProfileTapped = false
     @Binding var isBusinessProfileTapped: Bool
+    @State var isCustomerProfileTapped = false
     
     var body: some View {
         
@@ -408,7 +409,7 @@ struct DashboardViewBusiness: View {
                         }
                     }
                     .frame(width: 350, height: 200)
-                    NavigationLink(destination: ProfileView(isCustomerProfile: $isBusinessProfileTapped), isActive: $isProfileTapped){}
+                    NavigationLink(destination: ProfileView(isCustomerProfile: $isCustomerProfileTapped, isBusinessProfile: $isBusinessProfileTapped), isActive: $isProfileTapped){}
                     Spacer()
                     
                 }

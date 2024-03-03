@@ -92,6 +92,7 @@ struct HomepageView: View {
                                 .onTapGesture {
                                     isPopoverTrue = true
                                     isCustomerSignInTapped = true
+                                    isBusinessSignInTapped = false
                                 }
                                 
                                 .padding()

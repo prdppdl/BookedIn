@@ -38,5 +38,73 @@ extension View {
         
     }
     
+    func myImageModifier() -> some View {
+        modifier(MyImageFrameModifier())
+    }
+
+    
+    
+    
+    
+    
+    
+    
+    
 }
 
+
+struct MyImageFrameModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+        .frame(width: 80, height: 80)
+        .clipShape(Circle())
+        .cornerRadius(40)
+        .scaledToFill()
+        
+        
+    }
+}
+
+
+
+
+
+struct ImagePickerView: UIViewControllerRepresentable {
+    @Binding var selectedImage: UIImage?
+    @Environment(\.presentationMode) private var presentationMode
+    
+    func makeUIViewController(context: Context) -> UIImagePickerController {
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.delegate = context.coordinator
+        return imagePickerController
+    }
+    
+    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator(selectedImage: $selectedImage, presentationMode: presentationMode)
+    }
+    
+    class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+        @Binding var selectedImage: UIImage?
+        private let presentationMode: Binding<PresentationMode>
+        
+        init(selectedImage: Binding<UIImage?>, presentationMode: Binding<PresentationMode>) {
+            _selectedImage = selectedImage
+            self.presentationMode = presentationMode
+        }
+        
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+            guard let selectedImage = info[.originalImage] as? UIImage else {
+                return
+            }
+            self.selectedImage = selectedImage
+            presentationMode.wrappedValue.dismiss()
+        }
+        
+        func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+            presentationMode.wrappedValue.dismiss()
+        }
+    }
+}

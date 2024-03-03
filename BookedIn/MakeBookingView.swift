@@ -178,7 +178,8 @@ struct MakeBookingView: View {
             "numberOfPeople" : "\(numberOfPeople)",
             "noteForBusiness" : "\(noteForBusiness)",
             "businessName" : "\(businessName)",
-            "businessEmail" : "\(businessEmail)"
+            "businessEmail" : "\(businessEmail)",
+            "customerEmail" : "\(customerEmail!))"
      
      ]
         Firestore.firestore().collection("Booking Lists").document("\(customerEmail!) in \(businessEmail)").setData(bookingDetails)

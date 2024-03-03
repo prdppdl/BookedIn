@@ -17,12 +17,14 @@ import FirebaseCore
 class CustomerDetails: Identifiable, Codable, Hashable, Equatable {
     
     let userName: String
+    let userLastName: String
     let userEmail: String
     let contactNumber: String
     let joinedDate: String
     
-    init(userName: String, userEmail: String, contactNumber: String, joinedDate: String) {
+    init(userName: String, userEmail: String, contactNumber: String, joinedDate: String, userLastName: String) {
         self.userName = userName
+        self.userLastName = userLastName
         self.userEmail = userEmail
         self.contactNumber = contactNumber
         self.joinedDate = joinedDate
@@ -30,6 +32,7 @@ class CustomerDetails: Identifiable, Codable, Hashable, Equatable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
         hasher.combine(userName)
+        hasher.combine(userLastName)
         hasher.combine(contactNumber)
         hasher.combine(userEmail)
         hasher.combine(joinedDate)
@@ -37,6 +40,7 @@ class CustomerDetails: Identifiable, Codable, Hashable, Equatable {
     static func == (lhs: CustomerDetails, rhs: CustomerDetails) -> Bool {
         return lhs.id == rhs.id &&
         lhs.userName == rhs.userName &&
+        lhs.userLastName == rhs.userLastName &&
         lhs.contactNumber == rhs.contactNumber &&
         lhs.userEmail == rhs.userEmail &&
         lhs.joinedDate == rhs.joinedDate
@@ -60,12 +64,13 @@ class RetrievingCustomerDetails: ObservableObject {
                 let data = document.data() ?? [:]
                 
                 let userName = data["userName"] as? String ?? ""
-                let userPhoneNumber = data["userContactNumber"] as? String ?? ""
+                let userLastName = data["userLastName"] as? String ?? ""
+                let userContactNumber = data["userContactNumber"] as? String ?? ""
                 let userEmail = data["userEmail"] as? String ?? ""
                 let joinedDate = data["joinedDate"] as? String ?? ""
                 print("Document data: \(data)")
                 
-                self.customerData = CustomerDetails(userName: userName, userEmail: userEmail, contactNumber: userPhoneNumber, joinedDate: joinedDate)
+                self.customerData = CustomerDetails(userName: userName,userEmail: userEmail, contactNumber: userContactNumber, joinedDate: joinedDate, userLastName: userLastName)
                 self.customerDetails = [self.customerData!]
                 completion()
             } else {
