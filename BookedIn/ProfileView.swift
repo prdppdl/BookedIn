@@ -24,10 +24,12 @@ struct ProfileView: View {
     let currentUserEmail = Auth.auth().currentUser?.email
     public let screenSize: CGRect = UIScreen.main.bounds
     @State var profilePhotoURL: String?
+    @State var emailIsVerified = false
     
     
     var body: some View {
         ZStack {
+            Color.color.ignoresSafeArea()
             if isCustomerProfile == true {
                 VStack {
                     if let image = selectedImage {
@@ -37,7 +39,7 @@ struct ProfileView: View {
                             .clipShape(Circle())
                             .scaledToFill()
                             .padding(.top, 180)
-                            
+                        
                             .onTapGesture {
                                 isImagePickerSheetPresented = true
                             }
@@ -69,7 +71,14 @@ struct ProfileView: View {
                     Spacer()
                 }
                 .frame(width: screenSize.width)
-                .background(Color.accentColor)
+                .background(
+                    Image("backgroundImage") // Replace "background_image_name" with the name of your image asset
+                        .resizable()
+                        .scaledToFill()
+                        .edgesIgnoringSafeArea(.all)
+                        .opacity(0.8)
+                    
+                )
                 .sheet(isPresented: $isImagePickerSheetPresented){
                     ImagePickerView(selectedImage: $selectedImage)
                 }
@@ -77,10 +86,11 @@ struct ProfileView: View {
                 .onAppear{
                     retrieveCustomerDetails.retrieveCustomerData(){}
                     retrieveImages()
+                    emailVerifier()
                 }
-               
+                
                 .ignoresSafeArea(.all, edges: .top)
-           
+                
                 VStack {
                     
                     ForEach(retrieveCustomerDetails.customerDetails) {details in
@@ -99,7 +109,77 @@ struct ProfileView: View {
                             Spacer()
                         }
                     }
-                    
+                  
+                        List (retrieveCustomerDetails.customerDetails) { details in
+                            Section {
+                                HStack {
+                                    if emailIsVerified == true {
+                                        Image(systemName: "e.circle.fill")
+                                            .resizable()
+                                            .frame(width: 25, height: 25)
+                                            .foregroundColor(Color.accentColor)
+                                        
+                                    }
+                                    else {
+                                        Image(systemName: "e.circle")
+                                            .resizable()
+                                            .frame(width: 25, height: 25)
+                                            .foregroundColor(.gray)
+                                      
+                                    }
+                                    Text("\(details.userEmail)")
+                                        .padding(.horizontal)
+                                    Spacer()
+                                    
+                                }
+                              
+                                
+                                HStack {
+                                    Image(systemName: "phone.circle.fill")
+                                        .resizable()
+                                        .frame(width: 25, height: 25)
+                                        .foregroundColor(Color.accentColor)
+                                    Text("\(details.contactNumber)")
+                                        .padding(.horizontal)
+                                    Spacer()
+                                }
+                                
+                                
+                                HStack{
+                                    Image(systemName: "person.fill")
+                                        .resizable()
+                                        .frame(width: 25, height: 25)
+                                        .foregroundColor(Color.accentColor)
+                                    
+                                    VStack{
+                                        Text("Member Since")
+                                            .font(.system(size: 12))
+                                            .foregroundColor(.gray)
+                                            .padding(.leading)
+                                        Text("\(details.joinedDate)")
+                                            .fontWeight(.bold)
+                                            .padding(.trailing, 20)
+                                        
+                                    }
+                                    
+                                }
+                                
+                                
+                            }
+                        header: {
+                            Text("Your Details")
+                                .foregroundStyle(.black)
+                                .fontWeight(.semibold)
+                                .font(.system(size: 12))
+                                .font(.subheadline)
+                        }
+                        
+                            
+                        }
+                        .backgroundStyle(Color.color)
+                        .scrollContentBackground(.hidden)
+                        .frame(width: screenSize.width)
+                        .disabled(true)
                     
                     if selectedImage != nil {
                         
@@ -137,7 +217,7 @@ struct ProfileView: View {
                 .shadow(radius: 20)
                 .padding(.top, 180)
                 .ignoresSafeArea(.all, edges: .bottom)
-                
+                Spacer()
                 
                 
             }
@@ -180,14 +260,14 @@ struct ProfileView: View {
                 .padding(.top, 180)
                 .ignoresSafeArea(.all, edges: .bottom)
                 
-               
+                
                 
                 
                 
             }
-          
             
-         
+            
+            
             
         }
         .navigationBarItems(leading: CustomBackButton())
@@ -229,23 +309,44 @@ struct ProfileView: View {
             
         }
     }
-
+    
     
     
     
     
     //MARK: THIS FUNCTION IS TO RETRIEVE IMAGE FROM DATABASE
     
-   public func retrieveImages() {
-       Storage.storage().reference().child("Images/\(String(describing: currentUserEmail))/Profile Picture/profilepicture.jpg").downloadURL { (url, error) in
+    public func retrieveImages() {
+        Storage.storage().reference().child("Images/\(String(describing: currentUserEmail))/Profile Picture/profilepicture.jpg").downloadURL { (url, error) in
             if error != nil {
                 
-             
+                
                 
                 return
             }
             profilePhotoURL = url?.absoluteString
         }
     }
+    //MARK: THIS FUNCTION VERIFIES IF USER VERIFIED THEIR EMAIL OR NOT
+    
+    func emailVerifier(){
+        
+        guard let user = Auth.auth().currentUser else {
+            
+            return
+        }
+        if user.isEmailVerified {
+            emailIsVerified = true
+        }
+        else {
+            emailIsVerified = false
+        }
+        
+        
+    }
+    
+    
+    
+    
 }
 

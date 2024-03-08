@@ -217,9 +217,9 @@ struct DashboardViewCustomer: View {
                 }
                 
             }
-            .frame(height: 300)
-            .background(Color.color)
-            
+            .backgroundStyle(Color.color)
+            .scrollContentBackground(.hidden)
+            .disabled(true)
             
             
         }
