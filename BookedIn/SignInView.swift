@@ -27,6 +27,7 @@ struct SignInView: View {
     var body: some View {
         NavigationStack{
             ZStack{
+                Color.color.ignoresSafeArea()
                 VStack{
                     Group {
                         Image(systemName: "chevron.up")
@@ -58,9 +59,11 @@ struct SignInView: View {
                             Text("Welcome to BookedIn.")
                                 .font(.title)
                                 .fontWeight(.bold)
+                                .foregroundStyle(.black)
                                 .padding(.horizontal)
                             Text("Please enter your registration email and password.")
                                 .font(.system(size: 12))
+                                .foregroundStyle(.black)
                                 .font(.subheadline)
                         }
                         Spacer()

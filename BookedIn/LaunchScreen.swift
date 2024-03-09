@@ -29,6 +29,7 @@ struct LaunchScreen: View {
                         .clipShape(RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)))
                         .shadow(radius: 30)
                     ProgressView()
+                        .foregroundColor(.accentColor)
                         .padding(.vertical)
                     
                     Text("\(messageLabel)")
@@ -36,6 +37,7 @@ struct LaunchScreen: View {
                         .foregroundStyle(.gray)
                     
                 }
+                .background(Color.color)
                 .onAppear {
                     
                     fadeInAnimation = true

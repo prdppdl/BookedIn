@@ -285,7 +285,7 @@ struct JoinView: View {
                                 Image(systemName: "checkmark.seal.fill")
                                     .resizable()
                                     .frame(width: 25, height: 25)
-                                    .foregroundColor(.green)
+                                    .foregroundColor(Color.accentColor)
                                     .padding(.trailing)
                             }
                             else {
@@ -414,6 +414,12 @@ struct JoinView: View {
        
     }
     
+    
+    let joinedDate: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM-yyyy"
+        return formatter
+    }()
     //VERIFYING BUSINESS ABN
     //
     //
@@ -459,8 +465,8 @@ struct JoinView: View {
                   "businessABN" : "\(userABN)",
                     "businessName" : "\(businessName)",
                     "businessContactNumber" : "\(businessContactNumber)",
-                    "businessAddress" : "\(businessAddress)"
-                    
+                    "businessAddress" : "\(businessAddress)",
+                    "joinedDate" : "\(joinedDate)"
                 ]
                 
                 Firestore.firestore().collection("Business").document("\(userEmail)").setData(businessDetails)
@@ -471,7 +477,8 @@ struct JoinView: View {
                     "userEmail" : "\(userEmail)",
                     "userName" : "\(userFirstName)",
                     "userContactNumber" : "\(userContactNumber)",
-                    "userLastName" : "\(userLastName)"
+                    "userLastName" : "\(userLastName)",
+                    "joinedDate" : "\(joinedDate)"
                 ]
                 Firestore.firestore().collection("Customer").document("\(userEmail)").setData(customerDetails)
                 

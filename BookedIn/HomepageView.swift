@@ -43,7 +43,7 @@ struct HomepageView: View {
                         
                         
                         VStack {
-                            Color.clear
+                          Color.clear
                             RoundedRectangle(cornerRadius: 25.0, style: .circular)
                                 .background(Color.color)
                                 .linearGradient()

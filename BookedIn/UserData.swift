@@ -70,7 +70,7 @@ class RetrievingCustomerDetails: ObservableObject {
                 let joinedDate = data["joinedDate"] as? String ?? ""
                 print("Document data: \(data)")
                 
-                self.customerData = CustomerDetails(userName: userName,userEmail: userEmail, contactNumber: userContactNumber, joinedDate: joinedDate, userLastName: userLastName)
+                self.customerData = CustomerDetails(userName: userName, userEmail: userEmail, contactNumber: userContactNumber, joinedDate: joinedDate, userLastName: userLastName)
                 self.customerDetails = [self.customerData!]
                 completion()
             } else {

@@ -52,6 +52,7 @@ struct ForgotPassword: View {
                     Spacer()
                     
                 }
+                .background(Color.color)
             }
             
             .navigationTitle("Forgot password")

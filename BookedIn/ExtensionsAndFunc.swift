@@ -20,6 +20,17 @@ extension View {
             .padding(1)
         
     }
+    
+    func customText() -> some View {
+        self
+            .padding(.horizontal)
+            .overlay(Rectangle().frame(height: 1))
+            .foregroundColor(Color.gray)
+        
+    }
+    
+    
+    
     func placeholder<Content: View>(
         when shouldShow: Bool,
         alignment: Alignment = .leading,
@@ -65,6 +76,17 @@ struct MyImageFrameModifier: ViewModifier {
     }
 }
 
+struct Lining : View {
+    
+    public let screenSize: CGRect = UIScreen.main.bounds
+    
+    var body: some View {
+        Rectangle()
+            .frame(height: 0.5)
+            .foregroundStyle(Color.secondary)
+            .padding(.leading, 50)
+    }
+}
 
 
 
