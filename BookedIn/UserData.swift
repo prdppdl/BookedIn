@@ -93,13 +93,15 @@ class BusinessDetails: Identifiable, Codable, Hashable, Equatable {
     let businessAddress: String
     let businessABN: String
     let businessEmail: String
+    let joinedDate: String
     
-    init(businessName: String, businessContactNumber: String, businessAddress: String, businessABN: String, businessEmail: String) {
+    init(businessName: String, businessContactNumber: String, businessAddress: String, businessABN: String, businessEmail: String, joinedDate: String) {
         self.businessName = businessName
         self.businessContactNumber = businessContactNumber
         self.businessAddress = businessAddress
         self.businessABN = businessABN
         self.businessEmail = businessEmail
+        self.joinedDate = joinedDate
     }
     
     func hash(into hasher: inout Hasher) {
@@ -109,6 +111,7 @@ class BusinessDetails: Identifiable, Codable, Hashable, Equatable {
         hasher.combine(businessAddress)
         hasher.combine(businessABN)
         hasher.combine(businessEmail)
+        hasher.combine(joinedDate)
     }
     static func == (lhs: BusinessDetails, rhs: BusinessDetails) -> Bool {
         return lhs.id == rhs.id &&
@@ -116,7 +119,8 @@ class BusinessDetails: Identifiable, Codable, Hashable, Equatable {
         lhs.businessContactNumber == rhs.businessContactNumber &&
         lhs.businessABN == rhs.businessABN &&
         lhs.businessAddress == rhs.businessAddress &&
-        lhs.businessEmail == rhs.businessEmail
+        lhs.businessEmail == rhs.businessEmail &&
+        lhs.joinedDate == rhs.joinedDate
     }
     
 }
@@ -140,9 +144,10 @@ class RetrievingBusinessDetails: ObservableObject {
                 let businessAddress = data["businessAddress"] as? String ?? ""
                 let businessABN = data["businessABN"] as? String ?? ""
                 let businessEmail = data["businessEmail"] as? String ?? ""
+                let joinedDate = data["joinedDate"] as? String ?? ""
                 print("Document data: \(data)")
                 
-                self.businessData = BusinessDetails(businessName: businessName, businessContactNumber: businessContactNumber, businessAddress: businessAddress, businessABN: businessABN, businessEmail: businessEmail)
+                self.businessData = BusinessDetails(businessName: businessName, businessContactNumber: businessContactNumber, businessAddress: businessAddress, businessABN: businessABN, businessEmail: businessEmail, joinedDate: joinedDate)
                 self.businessDetails = [self.businessData!]
                 completion()
             } else {
@@ -169,7 +174,8 @@ class RetrievingBusinessDetails: ObservableObject {
                 let businessAddress = data["businessAddress"] as? String ?? ""
                 let businessEmail = data["businessEmail"] as? String ?? ""
                 let businessABN = data["businessABN"] as? String ?? ""
-                return BusinessDetails(businessName: businessName, businessContactNumber: businessContactNumber, businessAddress: businessAddress, businessABN: businessABN, businessEmail: businessEmail)
+                let joinedDate = data["joinedDate"] as? String ?? ""
+                return BusinessDetails(businessName: businessName, businessContactNumber: businessContactNumber, businessAddress: businessAddress, businessABN: businessABN, businessEmail: businessEmail, joinedDate: joinedDate)
 
             }
 

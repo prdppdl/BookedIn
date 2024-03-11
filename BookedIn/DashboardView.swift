@@ -75,6 +75,17 @@ struct DashboardViewCustomer: View {
                         .foregroundStyle(.accent)
                         .shadow(radius: 10)
                 }
+                
+                HStack {
+                    Text(Date().formatted(.dateTime.day().weekday().month()))
+                        .font(.system(size: 15))
+                        .font(.subheadline)
+                        .padding(.leading, 20)
+                    
+                    Spacer()
+
+                }
+                
                 HStack {
                     Text("Recommended places to you nearby")
                         .font(.system(size: 12))
@@ -308,6 +319,17 @@ struct DashboardViewBusiness: View {
                         .font(.system(size: 15))
                         .foregroundStyle(.accent)
                         .shadow(radius: 10)
+                }
+                
+                HStack {
+                    Text(Date().formatted(.dateTime.day().weekday().month()))
+                        .fontWeight(.semibold)
+                        .font(.system(size: 15))
+                        .font(.subheadline)
+                        .padding(.leading, 20)
+                    
+                    Spacer()
+
                 }
                 HStack {
                     Text("Your current bookings")
