@@ -11,6 +11,7 @@ import Firebase
 import FirebaseAuth
 import FirebaseStorage
 import FirebaseFirestore
+import WeatherKit
 
 struct DashboardViewCustomer: View {
     @State private var isSwiped = false
@@ -27,6 +28,9 @@ struct DashboardViewCustomer: View {
     @Binding public var isCustomerProfileTapped: Bool
     @State var isBusinessProfileTapped = false
     @State var isProfileTapped = false
+    @ObservedObject var currentWeather = CurrentWeather()
+    @StateObject var locationManager = LocationManager()
+    @State private var weather: Weather?
     
     var body: some View {
         
@@ -83,7 +87,21 @@ struct DashboardViewCustomer: View {
                         .padding(.leading, 20)
                     
                     Spacer()
-
+                    
+                    var currentTemp = currentWeather.temp
+                    var symbol = currentWeather.symbol
+                    
+                    Text("\(symbol)\(currentTemp)")
+                        .task{
+                            await currentWeather.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
+                        }
+//                    Label(currentWeather.temp, systemImage: currentWeather.symbol)
+//                               .task {
+//                                  await currentWeather.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
+//                               }
+                               .font(.system(size: 15))
+                               .font(.subheadline)
+                               .padding(.trailing, 20)
                 }
                 
                 HStack {

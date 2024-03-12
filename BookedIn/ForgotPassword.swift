@@ -17,13 +17,18 @@ struct ForgotPassword: View {
             ZStack{
                 Color.color
                 VStack {
+                    
+                          Text("Forgot password")
+                              .fontWeight(.semibold)
+                              .foregroundStyle(.black)
+                              .font(.system(size: 20))
+                              .padding(.bottom, 10)
                     TextField(" ", text: $userEmailToReset)
                         .placeholder(when: userEmailToReset.isEmpty){
                             Text("Email")
                                 .foregroundColor(.gray)
                         }
                         .customTextfield()
-                        .padding(.top, 50)
                         .padding(.horizontal)
                     HStack{
                         Text("Your confirmation link will be sent to your email address.")
@@ -55,7 +60,7 @@ struct ForgotPassword: View {
                 .background(Color.color)
             }
             
-            .navigationTitle("Forgot password")
+            
             .navigationBarBackButtonHidden(true)
             
             .navigationBarItems(leading: CustomBackButton())

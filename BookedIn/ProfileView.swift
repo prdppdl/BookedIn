@@ -18,6 +18,7 @@ struct ProfileView: View {
     @Binding var isCustomerProfile: Bool
     @Binding var isBusinessProfile: Bool
     @State private var retrieveCustomerDetails = RetrievingCustomerDetails()
+    @State private var retrieveBusinessDetails = RetrievingBusinessDetails()
     @State private var profilePhotoURL: String?
     @State private var emailIsVerified = false
     
@@ -26,9 +27,10 @@ struct ProfileView: View {
     
     
     var body: some View {
+        if isCustomerProfile {
         ZStack {
             Color.color.ignoresSafeArea()
-            if isCustomerProfile {
+            
                 VStack {
                 }
                 .frame(width: screenSize.width)
@@ -57,8 +59,7 @@ struct ProfileView: View {
                 
                 VStack {
                     ForEach(retrieveCustomerDetails.customerDetails) {details in
-                        if currentUserEmail == details.userEmail {
-                            
+                       
                             Text("\(details.userName)")
                                 .fontWeight(.semibold)
                                 .foregroundStyle(Color.accentColor)
@@ -72,7 +73,7 @@ struct ProfileView: View {
                                 .foregroundStyle(Color.black)
                                 .padding(.bottom)
                             Spacer()
-                        }
+                        
                         
                         VStack {
                             HStack {
@@ -229,26 +230,227 @@ struct ProfileView: View {
                 .padding(.top, 200)
                 Spacer()
             }
+        .navigationBarItems(leading: CustomBackButton())
+        .navigationBarBackButtonHidden()
             
-            
-            
+        }
+     
+         //
+        //
+        //
+        //
+        //
+        //
     //MARK: BUSINESS PROFILE
             
             else {
-                
-                
-                
-                
-                
-                
-                
-                
+                ZStack {
+                    VStack{
+                        Image("backgroundImageBusiness")
+                            .resizable()
+                            .ignoresSafeArea(.all, edges: .top)
+                            .frame(width: screenSize.width, height: screenSize.height / 3.5)
+                            Spacer()
+                            
+                    }
+                    RoundedRectangle(cornerRadius: 25.0)
+                        .foregroundColor(Color.color)
+                        .ignoresSafeArea(.all, edges: .bottom)
+                        .padding(.top, screenSize.height / 4.5)
+                    
+                    
+                    
+                    VStack{
+
+                            if let image = selectedImage {
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .frame(width: 80, height: 80)
+                                    .clipShape(Circle())
+                                
+                                    .onTapGesture {
+                                        print("Tapped")
+                                        isImagePickerSheetPresented = true
+                                    }
+                            }
+                            else if let urlimage = profilePhotoURL {
+                                WebImage(url: URL(string: urlimage))
+                                    .resizable()
+                                    .frame(width: 80, height: 80)
+                                    .clipShape(Circle())
+                                    .scaledToFill()
+                                    .onTapGesture {
+                                        print("Tapped")
+                                        isImagePickerSheetPresented = true
+                                    }
+                            }
+                            
+                            else {
+                                Image(systemName: "person.circle")
+                                    .resizable()
+                                    .myImageModifier()
+                                    .onTapGesture {
+                                        print("Tapped")
+                                        isImagePickerSheetPresented = true
+                                    }
+                                    .onAppear{
+                                        retrieveImages()
+                                        retrieveBusinessDetails.retrieveBusinessData() {}
+                                    }
+                        
+                        }
+                            
+                        
+                        
+                        ForEach(retrieveBusinessDetails.businessDetails) { details in
+                            
+                        
+                            Text("\(details.businessName)")
+                            .fontWeight(.semibold)
+                            .foregroundStyle(Color.accentColor)
+                            .font(.system(size: 18))
+                            .shadow(radius: 10)
+                        
+                        HStack {
+                            Text("YOUR DETAILS")
+                                .fontWeight(.semibold)
+                                .foregroundStyle(.black)
+                                .font(.system(size: 11))
+                                .padding(.vertical, 12)
+                            Spacer()
+                        }
+                        .padding(.leading, 20)
+                        
+                        HStack {
+                            if emailIsVerified == true {
+                                Image(systemName: "e.circle.fill")
+                                    .resizable()
+                                    .frame(width: 25, height: 25)
+                                    .foregroundColor(Color.accentColor)
+                                
+                            }
+                            else {
+                                Image(systemName: "e.circle")
+                                    .resizable()
+                                    .frame(width: 25, height: 25)
+                                    .foregroundColor(.gray)
+                                
+                            }
+                            Text("\(details.businessEmail)")
+                                .foregroundStyle(.black)
+                                .padding(.horizontal)
+                            Spacer()
+                            
+                        }
+                        .padding(.leading, 20)
+                        Lining()
+                        
+                        
+                        HStack {
+                            Image(systemName: "phone.circle.fill")
+                                .resizable()
+                                .frame(width: 25, height: 25)
+                                .foregroundColor(Color.accentColor)
+                            Text("\(details.businessContactNumber)")
+                                .foregroundStyle(.black)
+                                .padding(.horizontal)
+                            Spacer()
+                        }
+                        .padding(.leading, 20)
+                        Lining()
+                        
+                        
+                        HStack {
+                            Image(systemName: "phone.circle.fill")
+                                .resizable()
+                                .frame(width: 25, height: 25)
+                                .foregroundColor(Color.accentColor)
+                            Text("\(details.businessAddress)")
+                                .foregroundStyle(.black)
+                                .padding(.horizontal)
+                            Spacer()
+                        }
+                        .padding(.leading, 20)
+                        Lining()
+                        
+                        
+                        HStack {
+                            Image(systemName: "a.circle.fill")
+                                .resizable()
+                                .frame(width: 25, height: 25)
+                                .foregroundColor(Color.accentColor)
+                            Text("\(details.businessABN)")
+                                .foregroundStyle(.black)
+                                .padding(.horizontal)
+                            Spacer()
+                        }
+                        .padding(.leading, 20)
+                        Lining()
+                        
+                        
+                        HStack{
+                            Image(systemName: "person.fill")
+                                .resizable()
+                                .frame(width: 25, height: 25)
+                                .foregroundColor(Color.accentColor)
+                            
+                            VStack{
+                                Text("Member Since")
+                                    .font(.system(size: 12))
+                                    .foregroundColor(.gray)
+                                    .padding(.leading)
+                                Text("\(details.joinedDate)")
+                                    .foregroundStyle(.black)
+                                    .padding(.leading, 20)
+                                
+                            }
+                            Spacer()
+                            
+                        }
+                        .padding(.leading, 20)
+                    }
+                        Spacer()
+                           if selectedImage != nil {
+                               
+                               Button(action: {
+                                   
+                                   uploadImageToFirebaseStorage(image: selectedImage!) { result in
+                                       switch result {
+                                       case .success(let url):
+                                           print("Image uploaded successfully at \(url.absoluteString)")
+                                           
+                                       case .failure(let error):
+                                           print("Failed to upload image \(error.localizedDescription)")
+                                       }
+                                       
+                                   }
+                                   
+                               }) {
+                                   Text("Save")
+                                       .fontWeight(.semibold)
+                                       .frame(width: 320,height: 25)
+                                       .foregroundColor(.white)
+                                       .font(.system(size: 17))
+                                   
+                               }
+                               .background(Color.accentColor)
+                               .buttonStyle(.borderedProminent)
+                               .cornerRadius(5)
+                               .padding(.top, 50)
+                           }
+                    }
+                    
+                    .sheet(isPresented: $isImagePickerSheetPresented){
+                        ImagePickerView(selectedImage: $selectedImage)
+                    }
+                    .frame(width: screenSize.width, height: screenSize.height / 2)
+                    
+                }
+               
             }
             
             
-        }
-        .navigationBarItems(leading: CustomBackButton())
-        .navigationBarBackButtonHidden()
+       
     }
     
     
@@ -329,5 +531,5 @@ struct ProfileView: View {
 
 
 #Preview {
-    ProfileView(isCustomerProfile: .constant(true), isBusinessProfile: .constant(false))
+    ProfileView(isCustomerProfile: .constant(false), isBusinessProfile: .constant(true))
 }

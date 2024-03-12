@@ -9,6 +9,11 @@ import Foundation
 import SwiftUI
 import FirebaseAuth
 import FirebaseCore
+import WeatherKit
+import Combine
+import MapKit
+import CoreLocation
+
 
 extension View {
     
@@ -53,14 +58,7 @@ extension View {
         modifier(MyImageFrameModifier())
     }
 
-    
-    
-    
-    
-    
-    
-    
-    
+
 }
 
 
@@ -68,6 +66,7 @@ struct MyImageFrameModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
         .frame(width: 80, height: 80)
+        .foregroundColor(Color.accentColor)
         .clipShape(Circle())
         .cornerRadius(40)
         .scaledToFill()
@@ -130,3 +129,123 @@ struct ImagePickerView: UIViewControllerRepresentable {
         }
     }
 }
+
+
+
+
+//MARK: FOR WEATHER STATUS
+@MainActor class CurrentWeather: ObservableObject {
+    @Published var weather: Weather?
+    @Published var temp: String = ""
+    @Published var symbol: String = "-"
+        
+    func getWeather(latitude: Double, longitude: Double) async {
+        do {
+            let fetchedWeather = try await WeatherService.shared.weather(for: .init(latitude: latitude, longitude: longitude))
+            DispatchQueue.main.async {
+                self.weather = fetchedWeather
+                self.temp = fetchedWeather.currentWeather.temperature.converted(to: .celsius).description
+                self.symbol = fetchedWeather.currentWeather.symbolName
+            }
+        } catch {
+            fatalError("\(error)")
+        }
+    }
+}
+
+
+
+//@MainActor class CurrentWeather: ObservableObject {
+//    @Published var weather: Weather?
+//        
+//    func getWeather(latitude: Double, longitude: Double) async {
+//            do {
+//                weather = try await Task.detached(priority: .userInitiated) {
+//                    return try await WeatherService.shared.weather(for: .init(latitude: latitude, longitude: longitude))
+//                }.value
+//            } catch {
+//                fatalError("\(error)")
+//            }
+//        }
+//        
+//        var symbol: String {
+//            weather?.currentWeather.symbolName ?? "minus"
+//        }
+//        
+//        var temp: String {
+//            let temp =
+//            weather?.currentWeather.temperature
+//            
+//            let convert = temp?.converted(to: .celsius).description
+//            return convert ?? ""
+//            
+//        }
+//        
+//    }
+    
+
+
+class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
+    
+    var locationManager = CLLocationManager()
+       @Published var authorizationStatus: CLAuthorizationStatus?
+       
+       var latitude: Double {
+           locationManager.location?.coordinate.latitude ?? 0.0
+       }
+       var longitude: Double {
+           locationManager.location?.coordinate.longitude ?? 0.0
+       }
+       
+       
+       override init() {
+           super.init()
+           locationManager.delegate = self
+       }
+       
+       func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+           
+           switch manager.authorizationStatus {
+               
+           case .notDetermined:        // Authorization not determined yet.
+               print("You must provide location to run this app properly.")
+               authorizationStatus = .notDetermined
+               manager.requestWhenInUseAuthorization()
+               break
+               
+           case .authorizedWhenInUse:  // Location services are available.
+               print("Updating Location")
+               authorizationStatus = .authorizedWhenInUse
+               locationManager.requestLocation()
+               break
+               
+               
+           case .denied:  // Location services currently unavailable.
+               print("Please allow location to locate nearby places.")
+               authorizationStatus = .denied
+               break
+               
+           
+           default:
+               break
+           }
+       }
+       
+       func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+           // Insert code to handle location updates
+       }
+       
+       func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+           print("error: \(error.localizedDescription)")
+       }
+       
+       
+    
+    
+    
+}
+
+
+
+
+
