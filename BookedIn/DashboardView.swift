@@ -31,235 +31,272 @@ struct DashboardViewCustomer: View {
     @ObservedObject var currentWeather = CurrentWeather()
     @StateObject var locationManager = LocationManager()
     @State private var weather: Weather?
-    
+    let screenSize: CGRect = UIScreen.main.bounds
     var body: some View {
-        
-        //CUSTOMER DAHSBOARD
+        VStack {
+            //CUSTOMER DAHSBOARD
             VStack {
-                HStack {
-                    HStack{
-                        
-                        Image(systemName: "person.circle")
-                            .resizable()
-                            .frame(width: 30, height: 30)
-                            .foregroundColor(Color.accentColor)
-                            .shadow(radius: 10)
-                            .onTapGesture {
-                                isProfileTapped = true
+                
+                RoundedRectangle(cornerRadius: 50.0)
+                    .frame(width: screenSize.width, height: 200)
+                    .foregroundStyle(Color.accentColor)
+                    .shadow(color: Color.black.opacity(1), radius: 15)
+                    .overlay {
+                        VStack {
+                            Spacer()
+                            HStack{
+                                
+                                Image(systemName: "person.circle")
+                                    .resizable()
+                                    .frame(width: 35, height: 35)
+                                    .foregroundColor(.black)
+                                    .shadow(radius: 10)
+                                    .onTapGesture {
+                                        isProfileTapped = true
+                                    }
+                                Spacer()
+                                Text("\(messages[currentMessageIndex])")
+                                    .fontWeight(.semibold)
+                                    .font(.system(size: 15))
+                                    .foregroundStyle(.black)
+                                    .shadow(radius: 10)
+                                Spacer()
+                                
+                                Image(systemName: "ellipsis.circle")
+                                    .resizable()
+                                    .frame(width: 35, height: 35)
+                                    .foregroundColor(.black)
+                                    .shadow(radius: 10)
                             }
-                        Spacer()
-                        Text("\(messages[currentMessageIndex])")
-                            .fontWeight(.semibold)
-                            .font(.system(size: 15))
-                            .foregroundStyle(.accent)
-                            .shadow(radius: 10)
-                        Spacer()
-                        
-                        Image(systemName: "magnifyingglass.circle")
-                            .resizable()
-                            .frame(width: 30, height: 30)
-                            .foregroundColor(Color.accentColor)
-                            .shadow(radius: 10)
-                    }
-                    .onAppear{
-                        startTiming()
-                        retrieveCustomerDetails.retrieveCustomerData {}
-                        retrieveBusinessDetails.retrieveBusinessDetailsForCustomerBooking()
-                        retrieveBookingDetails.retrieveBooking()
-                    }
-                    
-                    Spacer()
-                }
-                .padding(.horizontal)
-                
-                ForEach(retrieveCustomerDetails.customerDetails, id: \.self){ details in
-                    Text("G'day \(details.userName)")
-                        .fontWeight(.semibold)
-                        .font(.system(size: 15))
-                        .foregroundStyle(.accent)
-                        .shadow(radius: 10)
-                }
-                
-                HStack {
-                    Text(Date().formatted(.dateTime.day().weekday().month()))
-                        .font(.system(size: 15))
-                        .font(.subheadline)
-                        .padding(.leading, 20)
-                    
-                    Spacer()
-                    
-                    var currentTemp = currentWeather.temp
-                    var symbol = currentWeather.symbol
-                    
-                    Text("\(symbol)\(currentTemp)")
-                        .task{
-                            await currentWeather.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
+                            .onAppear{
+                                startTiming()
+                                retrieveCustomerDetails.retrieveCustomerData {}
+                                retrieveBusinessDetails.retrieveBusinessDetailsForCustomerBooking()
+                                retrieveBookingDetails.retrieveBooking()
+                            }
+                            .padding(.horizontal)
+                            .padding(.top)
+                            
+                            ForEach(retrieveCustomerDetails.customerDetails, id: \.self){ details in
+                                Text("G'day, \(details.userName)")
+                                    .fontWeight(.semibold)
+                                    .font(.system(size: 15))
+                                    .foregroundStyle(.black)
+                                    .padding(.bottom, 15)
+                                
+                            }
+                            Spacer()
+                            RoundedRectangle(cornerRadius: 20.0)
+                                .frame(width: screenSize.width - 30, height: 50)
+                                .foregroundStyle(Color.bar)
+                                .shadow(color: Color.black.opacity(0.6), radius: 15)
+                                .overlay {
+                                    HStack {
+                                        Text(Date().formatted(.dateTime.day().weekday().month()))
+                                            .font(.system(size: 15))
+                                            .font(.subheadline)
+                                            .foregroundColor(.black)
+                                            .padding(.leading, 20)
+                                        
+                                        
+                                        Spacer()
+                                        
+                                        let currentTemp = currentWeather.temp
+                                        let symbol = currentWeather.symbol
+                                        
+                                        Image(systemName: "\(symbol)")
+                                            .font(.system(size: 15))
+                                            .foregroundColor(.black)
+                                            .padding(.leading, 20)
+                                        
+                                        Text("\(currentTemp)")
+                                            .font(.system(size: 15))
+                                            .font(.subheadline)
+                                            .foregroundColor(.black)
+                                            .padding(.trailing, 20)
+                                    }
+                                    .task{
+                                        await currentWeather.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
+                                    }
+                                }
+                                .offset(y: 10)
                         }
-//                    Label(currentWeather.temp, systemImage: currentWeather.symbol)
-//                               .task {
-//                                  await currentWeather.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
-//                               }
-                               .font(.system(size: 15))
-                               .font(.subheadline)
-                               .padding(.trailing, 20)
-                }
+                    }
+                
+                    .ignoresSafeArea(.all, edges: .top)
                 
                 HStack {
                     Text("Recommended places to you nearby")
+                        .font(.system(size: 13))
+                        .font(.subheadline)
+                        .foregroundStyle(.black)
+                        .padding(.leading, 20)
+                        .offset(y: -15)
+                    Spacer()
+                }
+                
+            }
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+               
+                    HStack {
+                        ForEach(retrieveBusinessDetails.businessDetails, id: \.self){ details in
+                        RoundedRectangle(cornerRadius: 50.0)
+                            .containerRelativeFrame(.horizontal, count: 1, spacing: 15)
+                            .foregroundStyle(Color.scroll)
+                        
+                            .scrollTransition {content, phase in
+                                content
+                                    .opacity(phase.isIdentity ? 1.0 : 0.3)
+                                    .scaleEffect(x: phase.isIdentity ? 1.0 : 0.8, y: phase.isIdentity ? 1.0 : 0.8)
+                                    .offset(y: phase.isIdentity ? 0 : 50)
+                            }
+                            .overlay {
+                                
+                                HStack {
+                                    VStack{
+                                        HStack{
+                                            Text("\(details.businessName)")
+                                                .fontWeight(.semibold)
+                                                .foregroundStyle(.black)
+                                                .padding(.leading,10)
+                                            Text("4.5 \(Image(systemName: "star.fill"))")
+                                                .foregroundStyle(.black)
+                                                .lineSpacing(1.0)
+                                                .padding(.horizontal,10)
+                                            Spacer()
+                                            
+                                            Menu {
+                                                Section {
+                                                    Button {} label: {
+                                                        Label("About \(details.businessName)", systemImage: "ellipsis.vertical.bubble.fill")
+                                                    }
+                                                    Button {} label: {
+                                                        Label("View Menu", systemImage: "newspaper.fill")
+                                                    }
+                                                    
+                                                }
+                                            } label: {
+                                                Label("",systemImage: "ellipsis.circle")
+                                            }
+                                        }
+                                        .padding(.top,20)
+                                        
+                                        HStack{
+                                            Text("\(details.businessAddress)")
+                                                .foregroundStyle(.gray)
+                                                .fontWeight(.semibold)
+                                                .padding(.leading,10)
+                                            Spacer()
+                                        }
+                                        HStack{
+                                            Text("\(details.businessContactNumber)")
+                                                .foregroundStyle(.gray)
+                                                .fontWeight(.semibold)
+                                                .padding(.leading,10)
+                                            Spacer()
+                                        }
+                                        .padding(.bottom)
+                                        HStack{
+                                            Button(action: {
+                                                selectedBusinessName = details.businessName
+                                                selectedBusinessEmail = details.businessEmail
+                                                makeBookingView = true
+                                                
+                                            }){
+                                                Text("Book")
+                                                    .fontWeight(.semibold)
+                                                    .frame(width: 50,height: 25)
+                                                    .foregroundColor(.white)
+                                                    .font(.system(size: 17))
+                                                
+                                            }
+                                            .background(Color.accentColor)
+                                            .buttonStyle(.borderedProminent)
+                                            .cornerRadius(5)
+                                            .padding(.leading, 20)
+                                            Spacer()
+                                        }
+                                        
+                                    }
+                                    
+                                    
+                                    
+                                }
+                            }
+                    }
+                    
+                }
+                    .scrollTargetLayout()
+                
+            }
+            .shadow(color: Color.black.opacity(0.5), radius: 15)
+            .contentMargins(10)
+            .scrollTargetBehavior(.viewAligned)
+            .frame(width: screenSize.width, height: 180)
+            .offset(y: -15)
+            .scrollContentBackground(.hidden)
+            
+            
+            NavigationLink(destination: MakeBookingView(businessName: $selectedBusinessName , businessEmail: $selectedBusinessEmail), isActive: $makeBookingView){}
+            NavigationLink(destination: ProfileView(isCustomerProfile: $isCustomerProfileTapped, isBusinessProfile: $isBusinessProfileTapped), isActive: $isProfileTapped){}
+            
+            
+            
+            VStack {
+                HStack {
+                    Text("Your current bookings")
                         .font(.system(size: 12))
                         .font(.subheadline)
+                        .foregroundStyle(.black)
                         .padding(.vertical,15)
                         .padding(.leading, 20)
                     
                     Spacer()
                 }
                 
-            }
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack{
-                    
-                    ForEach(retrieveBusinessDetails.businessDetails, id: \.self){ details in
-                        
-                        VStack{
-                            Color.color
-                        }
-                        .clipShape(RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)))
-                        .shadow(radius: 20)
-                        .overlay(content: {
-                            
-                            VStack{
-                                HStack{
-                                    Text("\(details.businessName)")
-                                        .fontWeight(.semibold)
-                                        .foregroundStyle(.black)
-                                        .padding(.leading,10)
-                                    Text("4.5 \(Image(systemName: "star.fill"))")
-                                        .foregroundStyle(.black)
-                                        .lineSpacing(1.0)
-                                        .padding(.horizontal,10)
-                                    Spacer()
-                                    
-                                    Menu {
-                                        Section {
-                                            Button {} label: {
-                                                Label("About \(details.businessName)", systemImage: "ellipsis.vertical.bubble.fill")
-                                            }
-                                            Button {} label: {
-                                                Label("View Menu", systemImage: "newspaper.fill")
-                                            }
-                                            
-                                        }
-                                    } label: {
-                                        Label("",systemImage: "ellipsis.circle")
-                                    }
-                                }
-                                
-                                .padding(.top,20)
-                                HStack{
-                                    Text("\(details.businessAddress)")
-                                        .foregroundStyle(.gray)
-                                        .fontWeight(.semibold)
-                                        .padding(.leading,10)
-                                    Spacer()
-                                }
-                                HStack{
-                                    Text("\(details.businessContactNumber)")
-                                        .foregroundStyle(.gray)
-                                        .fontWeight(.semibold)
-                                        .padding(.leading,10)
-                                    Spacer()
-                                }
-                                .padding(.bottom)
-                                HStack{
-                                    Button(action: {
-                                        selectedBusinessName = details.businessName
-                                        selectedBusinessEmail = details.businessEmail
-                                        makeBookingView = true
-                                        
-                                    }){
-                                        Text("Book")
-                                            .fontWeight(.semibold)
-                                            .frame(width: 50,height: 25)
-                                            .foregroundColor(.white)
-                                            .font(.system(size: 17))
-                                        
-                                    }
-                                    .background(Color.accentColor)
-                                    .buttonStyle(.borderedProminent)
-                                    .cornerRadius(5)
-                                    .padding(.leading, 20)
-                                    Spacer()
-                                }
-                                
+                List(retrieveBookingDetails.bookingDetails) { details in
+                    if currentUserEmail! == details.customerEmail {
+                        VStack {
+                            HStack {
+                                Text("At \(details.businessName)")
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(.black)
+                                    .padding(.leading,10)
+                                Spacer()
                             }
-                            
-                            
-                        })
-                        
+                            HStack{
+                                Text("On \(details.bookingDate) at \(details.bookingTime)")
+                                    .foregroundColor(.gray)
+                                    .padding(.leading, 10)
+                                Spacer()
+                            }
+                            HStack {
+                                Text("For \(details.numberOfPeople) person")
+                                    .foregroundColor(.gray)
+                                    .padding(.leading, 10)
+                                Spacer()
+                            }
+                        }
                     }
-                    .frame(width: 350, height: 175)
-
-                    NavigationLink(destination: MakeBookingView(businessName: $selectedBusinessName , businessEmail: $selectedBusinessEmail), isActive: $makeBookingView){}
-                    NavigationLink(destination: ProfileView(isCustomerProfile: $isCustomerProfileTapped, isBusinessProfile: $isBusinessProfileTapped), isActive: $isProfileTapped){}
-                    Spacer()
                     
                 }
-            }
-            .background(Color.color)
-            .navigationBarBackButtonHidden(true)
-        
-        
-        VStack {
-            HStack {
-                Text("Your current bookings")
-                    .font(.system(size: 12))
-                    .font(.subheadline)
-                    .padding(.vertical,15)
-                    .padding(.leading, 20)
+                .backgroundStyle(Color.color)
+                .scrollContentBackground(.hidden)
+                .disabled(true)
                 
-                Spacer()
+                
             }
             
-            List(retrieveBookingDetails.bookingDetails) { details in
-                if currentUserEmail! == details.customerEmail {
-                    VStack {
-                        HStack {
-                            Text("At \(details.businessName)")
-                                .fontWeight(.semibold)
-                                .foregroundStyle(.black)
-                                .padding(.leading,10)
-                            Spacer()
-                        }
-                        HStack{
-                            Text("On \(details.bookingDate) at \(details.bookingTime)")
-                                .foregroundColor(.gray)
-                                .padding(.leading, 10)
-                            Spacer()
-                        }
-                        HStack {
-                            Text("For \(details.numberOfPeople) person")
-                                .foregroundColor(.gray)
-                                .padding(.leading, 10)
-                            Spacer()
-                        }
-                    }
-                }
-                
-            }
-            .backgroundStyle(Color.color)
-            .scrollContentBackground(.hidden)
-            .disabled(true)
+            
+            Spacer()
+            
             
             
         }
-        
-        
-            Spacer()
-            
-        
-    
+        .background(Color.color)
+        .navigationBarBackButtonHidden(true)
     }
-    
     
     private func startTiming() {
         Timer.scheduledTimer(withTimeInterval: 2.25, repeats: true) { timer in
@@ -291,177 +328,177 @@ struct DashboardViewBusiness: View {
     var body: some View {
         
         //Business DAHSBOARD
-            VStack {
+        VStack {
             
-                HStack {
-                    HStack{
-                        
-                        Image(systemName: "person.circle")
-                            .resizable()
-                            .frame(width: 30, height: 30)
-                            .foregroundColor(Color.accentColor)
-                            .shadow(radius: 10)
-                            .onTapGesture {
-                                isProfileTapped = true
-                                
-                            }
-                        
-                        Spacer()
-                        Text("\(messages[currentMessageIndex])")
-                            .fontWeight(.semibold)
-                            .font(.system(size: 15))
-                            .foregroundStyle(.accent)
-                            .shadow(radius: 10)
-                        Spacer()
-                        
-                        Image(systemName: "magnifyingglass.circle")
-                            .resizable()
-                            .frame(width: 30, height: 30)
-                            .foregroundColor(Color.accentColor)
-                            .shadow(radius: 10)
-                    }
-                    .onAppear{
-                       startTiming()
-                        retrieveBookingDetails.retrieveBooking()
-                        retrieveBusinessDetails.retrieveBusinessData() {}
-                    }
+            HStack {
+                HStack{
+                    
+                    Image(systemName: "person.circle")
+                        .resizable()
+                        .frame(width: 30, height: 30)
+                        .foregroundColor(Color.accentColor)
+                        .shadow(radius: 10)
+                        .onTapGesture {
+                            isProfileTapped = true
+                            
+                        }
                     
                     Spacer()
-                }
-                .padding(.horizontal)
-                
-                ForEach(retrieveBusinessDetails.businessDetails, id: \.self){ details in
-                   
-                    Text("G'day \(details.businessName)")
+                    Text("\(messages[currentMessageIndex])")
                         .fontWeight(.semibold)
                         .font(.system(size: 15))
                         .foregroundStyle(.accent)
                         .shadow(radius: 10)
+                    Spacer()
+                    
+                    Image(systemName: "magnifyingglass.circle")
+                        .resizable()
+                        .frame(width: 30, height: 30)
+                        .foregroundColor(Color.accentColor)
+                        .shadow(radius: 10)
+                }
+                .onAppear{
+                    startTiming()
+                    retrieveBookingDetails.retrieveBooking()
+                    retrieveBusinessDetails.retrieveBusinessData() {}
                 }
                 
-                HStack {
-                    Text(Date().formatted(.dateTime.day().weekday().month()))
-                        .fontWeight(.semibold)
-                        .font(.system(size: 15))
-                        .font(.subheadline)
-                        .padding(.leading, 20)
-                    
-                    Spacer()
-
-                }
-                HStack {
-                    Text("Your current bookings")
-                        .font(.system(size: 12))
-                        .font(.subheadline)
-                        .padding(.vertical,15)
-                        .padding(.leading, 20)
-                    
-                    Spacer()
-                }
+                Spacer()
+            }
+            .padding(.horizontal)
+            
+            ForEach(retrieveBusinessDetails.businessDetails, id: \.self){ details in
+                
+                Text("G'day \(details.businessName)")
+                    .fontWeight(.semibold)
+                    .font(.system(size: 15))
+                    .foregroundStyle(.accent)
+                    .shadow(radius: 10)
+            }
+            
+            HStack {
+                Text(Date().formatted(.dateTime.day().weekday().month()))
+                    .fontWeight(.semibold)
+                    .font(.system(size: 15))
+                    .font(.subheadline)
+                    .padding(.leading, 20)
+                
+                Spacer()
                 
             }
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack{
+            HStack {
+                Text("Your current bookings")
+                    .font(.system(size: 12))
+                    .font(.subheadline)
+                    .padding(.vertical,15)
+                    .padding(.leading, 20)
+                
+                Spacer()
+            }
+            
+        }
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack{
+                
+                ForEach(retrieveBookingDetails.bookingDetails, id: \.self){ details in
                     
-                    ForEach(retrieveBookingDetails.bookingDetails, id: \.self){ details in
+                    if businessEmailCheck! == details.businessEmail {
                         
-                        if businessEmailCheck! == details.businessEmail {
+                        VStack{
+                            Color.color
+                        }
+                        .clipShape(RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)))
+                        .shadow(radius: 20)
+                        .overlay(content: {
                             
                             VStack{
-                                Color.color
-                            }
-                            .clipShape(RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)))
-                            .shadow(radius: 20)
-                            .overlay(content: {
-                                
-                                VStack{
-                                    HStack{
-                                        Text("\(details.customerName)")
-                                            .fontWeight(.semibold)
-                                            .foregroundStyle(.black)
-                                            .font(.system(size: 15))
-                                            .padding(.leading,10)
-                                        
-                                        Spacer()
-                                        
-                                        Image(systemName: "ellipsis.circle")
-                                            .foregroundStyle(.black)
-                                            .padding(.trailing,10)
-                                       
-                                    }
+                                HStack{
+                                    Text("\(details.customerName)")
+                                        .fontWeight(.semibold)
+                                        .foregroundStyle(.black)
+                                        .font(.system(size: 15))
+                                        .padding(.leading,10)
                                     
-                                    .padding(.top,20)
-                                    HStack{
-                                        Text("\(details.customerContactNumber)")
-                                            .foregroundStyle(.gray)
-                                            .fontWeight(.semibold)
-                                            .font(.system(size: 15))
-                                            .padding(.leading,10)
-                                        Spacer()
-                                    }
-                                    HStack{
-                                        Text("On: \(details.bookingDate)")
-                                            .foregroundStyle(.gray)
-                                            .fontWeight(.semibold)
-                                            .font(.system(size: 15))
-                                            .padding(.leading, 10)
-                                        
-                                        Text("At: \(details.bookingTime)")
-                                            .foregroundStyle(.gray)
-                                            .fontWeight(.semibold)
-                                            .font(.system(size: 15))
-                                            .padding(.trailing)
-                                        Spacer()
-                                    }
+                                    Spacer()
                                     
-                                    HStack{
-                                        Text("For \(details.numberOfPeople) people")
-                                            .foregroundStyle(.gray)
-                                            .fontWeight(.semibold)
-                                            .font(.system(size: 15))
-                                            .padding(.leading, 10)
-                                        
-                                        Spacer()
-                                    }
-                                    .padding(.bottom)
-                                    HStack {
-                                        VStack {
-                                            Text("Requirements:")
-                                                .foregroundStyle(.black)
-                                                .fontWeight(.semibold)
-                                                .font(.system(size: 15))
-                                                .padding(.leading, 10)
-                                            Text("\(details.noteForBusiness)")
-                                                .foregroundStyle(.gray)
-                                                .font(.system(size: 15))
-                                                .fontWeight(.semibold)
-                                                .padding(.leading, 10)
-                        
-                                        }
-                                        
-                                        Spacer()
-                                    }
-                                   
+                                    Image(systemName: "ellipsis.circle")
+                                        .foregroundStyle(.black)
+                                        .padding(.trailing,10)
+                                    
                                 }
                                 
+                                .padding(.top,20)
+                                HStack{
+                                    Text("\(details.customerContactNumber)")
+                                        .foregroundStyle(.gray)
+                                        .fontWeight(.semibold)
+                                        .font(.system(size: 15))
+                                        .padding(.leading,10)
+                                    Spacer()
+                                }
+                                HStack{
+                                    Text("On: \(details.bookingDate)")
+                                        .foregroundStyle(.gray)
+                                        .fontWeight(.semibold)
+                                        .font(.system(size: 15))
+                                        .padding(.leading, 10)
+                                    
+                                    Text("At: \(details.bookingTime)")
+                                        .foregroundStyle(.gray)
+                                        .fontWeight(.semibold)
+                                        .font(.system(size: 15))
+                                        .padding(.trailing)
+                                    Spacer()
+                                }
                                 
-                            })
-                        }
+                                HStack{
+                                    Text("For \(details.numberOfPeople) people")
+                                        .foregroundStyle(.gray)
+                                        .fontWeight(.semibold)
+                                        .font(.system(size: 15))
+                                        .padding(.leading, 10)
+                                    
+                                    Spacer()
+                                }
+                                .padding(.bottom)
+                                HStack {
+                                    VStack {
+                                        Text("Requirements:")
+                                            .foregroundStyle(.black)
+                                            .fontWeight(.semibold)
+                                            .font(.system(size: 15))
+                                            .padding(.leading, 10)
+                                        Text("\(details.noteForBusiness)")
+                                            .foregroundStyle(.gray)
+                                            .font(.system(size: 15))
+                                            .fontWeight(.semibold)
+                                            .padding(.leading, 10)
+                                        
+                                    }
+                                    
+                                    Spacer()
+                                }
+                                
+                            }
+                            
+                            
+                        })
                     }
-                    .frame(width: 350, height: 200)
-                    NavigationLink(destination: ProfileView(isCustomerProfile: $isCustomerProfileTapped, isBusinessProfile: $isBusinessProfileTapped), isActive: $isProfileTapped){}
-                    Spacer()
-                    
                 }
+                .frame(width: 350, height: 200)
+                NavigationLink(destination: ProfileView(isCustomerProfile: $isCustomerProfileTapped, isBusinessProfile: $isBusinessProfileTapped), isActive: $isProfileTapped){}
+                Spacer()
+                
             }
-            .background(Color.color)
-            .navigationBarBackButtonHidden(true)
-           
-            
-            Spacer()
-            
+        }
+        .background(Color.color)
+        .navigationBarBackButtonHidden(true)
         
-    
+        
+        Spacer()
+        
+        
+        
     }
     
     
