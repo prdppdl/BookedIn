@@ -32,12 +32,14 @@ struct DashboardViewCustomer: View {
     @StateObject var locationManager = LocationManager()
     @State private var weather: Weather?
     let screenSize: CGRect = UIScreen.main.bounds
+    
+    
     var body: some View {
         VStack {
             //CUSTOMER DAHSBOARD
             VStack {
                 
-                RoundedRectangle(cornerRadius: 50.0)
+                RoundedRectangle(cornerRadius: 40.0)
                     .frame(width: screenSize.width, height: 200)
                     .foregroundStyle(Color.accentColor)
                     .shadow(color: Color.black.opacity(1), radius: 15)
@@ -51,6 +53,7 @@ struct DashboardViewCustomer: View {
                                     .frame(width: 35, height: 35)
                                     .foregroundColor(.black)
                                     .shadow(radius: 10)
+                                    
                                     .onTapGesture {
                                         isProfileTapped = true
                                     }
@@ -64,10 +67,11 @@ struct DashboardViewCustomer: View {
                                 
                                 Image(systemName: "ellipsis.circle")
                                     .resizable()
-                                    .frame(width: 35, height: 35)
+                                    .frame(width: 30, height: 30)
                                     .foregroundColor(.black)
                                     .shadow(radius: 10)
                             }
+                            .offset(y: 20)
                             .onAppear{
                                 startTiming()
                                 retrieveCustomerDetails.retrieveCustomerData {}
@@ -83,43 +87,72 @@ struct DashboardViewCustomer: View {
                                     .font(.system(size: 15))
                                     .foregroundStyle(.black)
                                     .padding(.bottom, 15)
-                                
+                                    .offset(y: 20)
                             }
-                            Spacer()
-                            RoundedRectangle(cornerRadius: 20.0)
-                                .frame(width: screenSize.width - 30, height: 50)
-                                .foregroundStyle(Color.bar)
-                                .shadow(color: Color.black.opacity(0.6), radius: 15)
-                                .overlay {
-                                    HStack {
-                                        Text(Date().formatted(.dateTime.day().weekday().month()))
-                                            .font(.system(size: 15))
-                                            .font(.subheadline)
-                                            .foregroundColor(.black)
-                                            .padding(.leading, 20)
-                                        
-                                        
-                                        Spacer()
-                                        
-                                        let currentTemp = currentWeather.temp
-                                        let symbol = currentWeather.symbol
-                                        
-                                        Image(systemName: "\(symbol)")
-                                            .font(.system(size: 15))
-                                            .foregroundColor(.black)
-                                            .padding(.leading, 20)
-                                        
-                                        Text("\(currentTemp)")
-                                            .font(.system(size: 15))
-                                            .font(.subheadline)
-                                            .foregroundColor(.black)
-                                            .padding(.trailing, 20)
-                                    }
-                                    .task{
-                                        await currentWeather.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
-                                    }
+                        
+                            VStack {
+                                let currentTemp = currentWeather.temp
+                                let symbol = currentWeather.symbol
+
+                                HStack {
+                               
+                                    Image(systemName: "cloud.fill")
+                                        .resizable()
+                                        .frame(width: 50, height: 30)
+                                        .offset(x: 50, y: 25)
+                                        .foregroundStyle(Color.skyBlue)
+                                        .shadow(radius: 20)
+                                    Image(systemName: "cloud.fill")
+                                        .resizable()
+                                        .frame(width: 50, height: 30)
+                                        .offset(x: 60, y: 25)
+                                        .foregroundStyle(Color.skyBlue)
+                                        .shadow(radius: 10)
+                                    Image(systemName: "cloud.fill")
+                                        .resizable()
+                                        .frame(width: 50, height: 30)
+                                        .offset(x: -30, y: 25)
+                                        .foregroundStyle(Color.skyBlue)
+                                        .shadow(radius: 10)
+                                    Spacer()
+                                    Image(systemName: "\(symbol).fill")
+                                        .resizable()
+                                        .frame(width: 40, height: 40)
+                                        .offset(x: -50, y: 27)
+                                        .foregroundStyle(Color.yellow)
+                                        .shadow(radius: 20)
+                                    
                                 }
-                                .offset(y: 10)
+                                .frame(height: 30)
+                                
+                                RoundedRectangle(cornerRadius: 25.0)
+                                    .frame(width: screenSize.width - 90, height: 50)
+                                    .foregroundStyle(Color.bar)
+                                    .shadow(color: Color.black.opacity(0.5), radius: 15)
+                                    .overlay {
+                                        HStack {
+                                            Text(Date().formatted(.dateTime.day().weekday().month()))
+                                                .font(.system(size: 15))
+                                                .font(.subheadline)
+                                                .foregroundColor(.black)
+                                                .padding(.leading, 20)
+                                            
+                                            
+                                            Spacer()
+                                            
+                                            Text("\(currentTemp)")
+                                                .font(.system(size: 15))
+                                                .font(.subheadline)
+                                                .foregroundColor(.black)
+                                                .padding(.trailing, 20)
+                                        }
+                                        .task{
+                                            await currentWeather.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
+                                        }
+                                    }
+                                    .offset(y: 10)
+                            }
+                            
                         }
                     }
                 
@@ -138,10 +171,10 @@ struct DashboardViewCustomer: View {
             }
             
             ScrollView(.horizontal, showsIndicators: false) {
-               
-                    HStack {
-                        ForEach(retrieveBusinessDetails.businessDetails, id: \.self){ details in
-                        RoundedRectangle(cornerRadius: 50.0)
+                
+                HStack {
+                    ForEach(retrieveBusinessDetails.businessDetails, id: \.self){ details in
+                        RoundedRectangle(cornerRadius: 20.0)
                             .containerRelativeFrame(.horizontal, count: 1, spacing: 15)
                             .foregroundStyle(Color.scroll)
                         
@@ -152,7 +185,17 @@ struct DashboardViewCustomer: View {
                                     .offset(y: phase.isIdentity ? 0 : 50)
                             }
                             .overlay {
-                                
+                                HStack{
+                                    Spacer()
+                                    Image("AppLogo")
+                                        .resizable()
+                                        .frame(width: 280 , height: 160)
+                                        .clipShape(CustomCorner(radius: 20, corners: [.topRight, .bottomRight]))
+                                        .overlay{
+                                            LinearGradient(gradient: Gradient(colors: [Color.clear, Color.scroll.opacity(1.0)]), startPoint: .trailing, endPoint: .leading)
+                                        }
+                                        
+                                }
                                 HStack {
                                     VStack{
                                         HStack{
@@ -160,6 +203,7 @@ struct DashboardViewCustomer: View {
                                                 .fontWeight(.semibold)
                                                 .foregroundStyle(.black)
                                                 .padding(.leading,10)
+                                            
                                             Text("4.5 \(Image(systemName: "star.fill"))")
                                                 .foregroundStyle(.black)
                                                 .lineSpacing(1.0)
@@ -177,7 +221,10 @@ struct DashboardViewCustomer: View {
                                                     
                                                 }
                                             } label: {
-                                                Label("",systemImage: "ellipsis.circle")
+                                                Image(systemName: "ellipsis.circle")
+                                                    .foregroundStyle(Color.black)
+                                                    .padding(.trailing, 10)
+                                                
                                             }
                                         }
                                         .padding(.top,20)
@@ -187,6 +234,7 @@ struct DashboardViewCustomer: View {
                                                 .foregroundStyle(.gray)
                                                 .fontWeight(.semibold)
                                                 .padding(.leading,10)
+                                            
                                             Spacer()
                                         }
                                         HStack{
@@ -215,19 +263,18 @@ struct DashboardViewCustomer: View {
                                             .buttonStyle(.borderedProminent)
                                             .cornerRadius(5)
                                             .padding(.leading, 20)
+                                            .padding(.bottom, 25)
                                             Spacer()
                                         }
                                         
                                     }
-                                    
-                                    
                                     
                                 }
                             }
                     }
                     
                 }
-                    .scrollTargetLayout()
+                .scrollTargetLayout()
                 
             }
             .shadow(color: Color.black.opacity(0.5), radius: 15)
@@ -511,3 +558,7 @@ struct DashboardViewBusiness: View {
     
 }
 
+
+#Preview {
+    DashboardViewCustomer(isCustomerProfileTapped: .constant(true))
+}

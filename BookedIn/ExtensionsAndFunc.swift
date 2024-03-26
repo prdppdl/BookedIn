@@ -47,13 +47,6 @@ extension View {
             }
         }
     
-    func linearGradient() -> some View {
-        
-        LinearGradient(gradient: Gradient(colors: [Color.color.opacity(0.6), Color.color.opacity(1.0)]), startPoint: .top, endPoint: .bottom)
-         .ignoresSafeArea()
-        
-    }
-    
     func myImageModifier() -> some View {
         modifier(MyImageFrameModifier())
     }
@@ -137,7 +130,7 @@ struct ImagePickerView: UIViewControllerRepresentable {
 @MainActor class CurrentWeather: ObservableObject {
     @Published var weather: Weather?
     @Published var temp: String = ""
-    @Published var symbol: String = "-"
+    @Published var symbol: String = "sun"
         
     func getWeather(latitude: Double, longitude: Double) async {
         do {
@@ -214,6 +207,21 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     
 }
 
+
+
+struct CustomCorner: Shape {
+    var radius: CGFloat = .infinity
+    var corners: UIRectCorner = .allCorners
+
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(
+            roundedRect: rect,
+            byRoundingCorners: corners,
+            cornerRadii: CGSize(width: radius, height: radius)
+        )
+        return Path(path.cgPath)
+    }
+}
 
 
 
