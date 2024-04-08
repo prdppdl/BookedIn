@@ -17,12 +17,17 @@ struct CustomBackButton: View {
             self.presentationMode.wrappedValue.dismiss()
             
         }){
-            Image(systemName: "chevron.left")
-                .frame(width: 14, height: 14)
-                .foregroundColor(Color.accentColor)
+            RoundedRectangle(cornerRadius: 6)
+                .frame(width: 25, height: 25)
+                .shadow(color: Color.black.opacity(0.9), radius: 4)
+                .overlay {
+                    Image(systemName: "chevron.left")
+                        .frame(width: 10, height: 10)
+                        .foregroundColor(Color.color)
+                }
         }
+        
     }
-      
 }
 
 #Preview {

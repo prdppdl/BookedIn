@@ -14,12 +14,15 @@ import SDWebImageSwiftUI
 
 struct ProfileView: View {
     @State private var selectedImage: UIImage?
+    @State private var selectedCoverImage: UIImage?
     @State private var isImagePickerSheetPresented = false
+    @State private var isImagePickerSheetPresentedCover = false
     @Binding var isCustomerProfile: Bool
     @Binding var isBusinessProfile: Bool
     @State private var retrieveCustomerDetails = RetrievingCustomerDetails()
     @State private var retrieveBusinessDetails = RetrievingBusinessDetails()
     @State private var profilePhotoURL: String?
+    @State private var coverPhotoURL: String?
     @State private var emailIsVerified = false
     
     let screenSize: CGRect = UIScreen.main.bounds
@@ -28,9 +31,9 @@ struct ProfileView: View {
     
     var body: some View {
         if isCustomerProfile {
-        ZStack {
-            Color.color.ignoresSafeArea()
-            
+            ZStack {
+                Color.color.ignoresSafeArea()
+                
                 VStack {
                 }
                 .frame(width: screenSize.width)
@@ -42,6 +45,7 @@ struct ProfileView: View {
                         .ignoresSafeArea(.all, edges: .top)
                         .opacity(0.7)
                         .padding(.bottom, 400)
+                    
                     
                     
                 )
@@ -59,20 +63,20 @@ struct ProfileView: View {
                 
                 VStack {
                     ForEach(retrieveCustomerDetails.customerDetails) {details in
-                       
-                            Text("\(details.userName)")
-                                .fontWeight(.semibold)
-                                .foregroundStyle(Color.accentColor)
-                                .font(.system(size: 18))
-                                .padding(.top, 45)
-                                .shadow(radius: 10)
-                            
-                            Text("\(details.userLastName)")
-                                .font(.system(size: 15))
-                                .font(.subheadline)
-                                .foregroundStyle(Color.black)
-                                .padding(.bottom)
-                            Spacer()
+                        
+                        Text("\(details.userName)")
+                            .fontWeight(.semibold)
+                            .foregroundStyle(Color.accentColor)
+                            .font(.system(size: 18))
+                            .padding(.top, 45)
+                            .shadow(radius: 10)
+                        
+                        Text("\(details.userLastName)")
+                            .font(.system(size: 15))
+                            .font(.subheadline)
+                            .foregroundStyle(Color.black)
+                            .padding(.bottom)
+                        Spacer()
                         
                         
                         VStack {
@@ -230,82 +234,146 @@ struct ProfileView: View {
                 .padding(.top, 200)
                 Spacer()
             }
-        .navigationBarItems(leading: CustomBackButton())
-        .navigationBarBackButtonHidden()
+            .navigationBarItems(leading: CustomBackButton())
+            .navigationBarBackButtonHidden()
             
         }
-     
-         //
+        
         //
         //
         //
         //
         //
-    //MARK: BUSINESS PROFILE
-            
-            else {
-                ZStack {
-                    VStack{
+        //
+        //MARK: BUSINESS PROFILE
+        
+        else {
+            ZStack {
+                VStack{
+                    if let image = selectedCoverImage {
+                        Image(uiImage: image)
+                            .resizable()
+                            .ignoresSafeArea(.all, edges: .top)
+                            .frame(width: screenSize.width, height: screenSize.height / 3.5)
+                            .overlay {
+                                HStack {
+                                    Spacer ()
+                                    Image(systemName: "square.and.pencil")
+                                        .resizable()
+                                        .bold()
+                                        .frame(width: 20, height: 20)
+                                        .foregroundStyle(Color.accentColor)
+                                        .onTapGesture {
+                                            isImagePickerSheetPresentedCover = true
+                                        }
+                                    
+                                }
+                                .offset(x: 5, y: 50)
+                                .padding(.trailing, 20)
+                            }
+                    }
+                    else if let urlimage = coverPhotoURL {
+                        WebImage(url: URL(string: urlimage))
+                            .resizable()
+                            .ignoresSafeArea(.all, edges: .top)
+                            .frame(width: screenSize.width, height: screenSize.height / 3.5)
+                            .overlay {
+                                HStack {
+                                    Spacer ()
+                                    Image(systemName: "square.and.pencil")
+                                        .resizable()
+                                        .bold()
+                                        .frame(width: 20, height: 20)
+                                        .foregroundStyle(Color.accentColor)
+                                        .onTapGesture {
+                                            isImagePickerSheetPresentedCover = true
+                                        }
+                                    
+                                }
+                                .offset(x: 5, y: 50)
+                                .padding(.trailing, 20)
+                            }
+                    }
+                
+                    else {
                         Image("backgroundImageBusiness")
                             .resizable()
                             .ignoresSafeArea(.all, edges: .top)
                             .frame(width: screenSize.width, height: screenSize.height / 3.5)
-                            Spacer()
-                            
+                            .overlay {
+                                HStack {
+                                    Spacer ()
+                                    Image(systemName: "square.and.pencil")
+                                        .resizable()
+                                        .bold()
+                                        .frame(width: 20, height: 20)
+                                        .foregroundStyle(Color.accentColor)
+                                        .onTapGesture {
+                                            isImagePickerSheetPresentedCover = true
+                                        }
+                                    
+                                }
+                                .offset(x: 5, y: 50)
+                                .padding(.trailing, 20)
+                            }
                     }
-                    RoundedRectangle(cornerRadius: 25.0)
-                        .foregroundColor(Color.color)
-                        .ignoresSafeArea(.all, edges: .bottom)
-                        .padding(.top, screenSize.height / 4.5)
+                    Spacer()
                     
+                }
+                RoundedRectangle(cornerRadius: 25.0)
+                    .foregroundColor(Color.color)
+                    .ignoresSafeArea(.all, edges: .bottom)
+                    .padding(.top, screenSize.height / 4.5)
+                
+                
+                
+                VStack{
                     
-                    
-                    VStack{
-
-                            if let image = selectedImage {
-                                Image(uiImage: image)
-                                    .resizable()
-                                    .frame(width: 80, height: 80)
-                                    .clipShape(Circle())
-                                
-                                    .onTapGesture {
-                                        print("Tapped")
-                                        isImagePickerSheetPresented = true
-                                    }
+                    if let image = selectedImage {
+                        Image(uiImage: image)
+                            .resizable()
+                            .frame(width: 80, height: 80)
+                            .clipShape(Circle())
+                        
+                            .onTapGesture {
+                                print("Tapped")
+                                isImagePickerSheetPresented = true
                             }
-                            else if let urlimage = profilePhotoURL {
-                                WebImage(url: URL(string: urlimage))
-                                    .resizable()
-                                    .frame(width: 80, height: 80)
-                                    .clipShape(Circle())
-                                    .scaledToFill()
-                                    .onTapGesture {
-                                        print("Tapped")
-                                        isImagePickerSheetPresented = true
-                                    }
+                    }
+                    else if let urlimage = profilePhotoURL {
+                        WebImage(url: URL(string: urlimage))
+                            .resizable()
+                            .frame(width: 80, height: 80)
+                            .clipShape(Circle())
+                            .scaledToFill()
+                            .onTapGesture {
+                                print("Tapped")
+                                isImagePickerSheetPresented = true
                             }
-                            
-                            else {
-                                Image(systemName: "person.circle")
-                                    .resizable()
-                                    .myImageModifier()
-                                    .onTapGesture {
-                                        print("Tapped")
-                                        isImagePickerSheetPresented = true
-                                    }
-                                    .onAppear{
-                                        retrieveImages()
-                                        retrieveBusinessDetails.retrieveBusinessData() {}
-                                    }
+                    }
+                    
+                    else {
+                        Image(systemName: "person.circle")
+                            .resizable()
+                            .myImageModifier()
+                            .onTapGesture {
+                                print("Tapped")
+                                isImagePickerSheetPresented = true
+                            }
+                            .onAppear{
+                                retrieveImages()
+                                retrieveCoverImages()
+                                retrieveBusinessDetails.retrieveBusinessData() {}
+                            }
                         
-                        }
-                            
+                    }
+                    
+                    
+                    
+                    ForEach(retrieveBusinessDetails.businessDetails) { details in
                         
                         
-                        ForEach(retrieveBusinessDetails.businessDetails) { details in
-                            
-                        
-                            Text("\(details.businessName)")
+                        Text("\(details.businessName)")
                             .fontWeight(.semibold)
                             .foregroundStyle(Color.accentColor)
                             .font(.system(size: 18))
@@ -409,48 +477,66 @@ struct ProfileView: View {
                         }
                         .padding(.leading, 20)
                     }
-                        Spacer()
-                           if selectedImage != nil {
-                               
-                               Button(action: {
-                                   
-                                   uploadImageToFirebaseStorage(image: selectedImage!) { result in
-                                       switch result {
-                                       case .success(let url):
-                                           print("Image uploaded successfully at \(url.absoluteString)")
-                                           
-                                       case .failure(let error):
-                                           print("Failed to upload image \(error.localizedDescription)")
-                                       }
-                                       
-                                   }
-                                   
-                               }) {
-                                   Text("Save")
-                                       .fontWeight(.semibold)
-                                       .frame(width: 320,height: 25)
-                                       .foregroundColor(.white)
-                                       .font(.system(size: 17))
-                                   
-                               }
-                               .background(Color.accentColor)
-                               .buttonStyle(.borderedProminent)
-                               .cornerRadius(5)
-                               .padding(.top, 50)
-                           }
+                    Spacer()
+                    if selectedImage != nil || selectedCoverImage != nil {
+                        
+                        Button(action: {
+                            
+                            if selectedImage != nil {
+                                uploadImageToFirebaseStorage(image: selectedImage!) { result in
+                                    switch result {
+                                    case .success(let url):
+                                        print("Image uploaded successfully at \(url.absoluteString)")
+                                        
+                                    case .failure(let error):
+                                        print("Failed to upload image \(error.localizedDescription)")
+                                    }
+                                    
+                                }
+                            }
+                            else {
+                                uploadImageToFirebaseStorage(image: selectedCoverImage!) { result in
+                                    switch result {
+                                    case .success(let url):
+                                        print("Image uploaded successfully at \(url.absoluteString)")
+                                        
+                                    case .failure(let error):
+                                        print("Failed to upload image \(error.localizedDescription)")
+                                    }
+                                    
+                                }
+                            }
+                        }) {
+                            Text("Save")
+                                .fontWeight(.semibold)
+                                .frame(width: 320,height: 25)
+                                .foregroundColor(.white)
+                                .font(.system(size: 17))
+                            
+                        }
+                        .background(Color.accentColor)
+                        .buttonStyle(.borderedProminent)
+                        .cornerRadius(5)
+                        .padding(.top, 50)
                     }
-                    
-                    .sheet(isPresented: $isImagePickerSheetPresented){
-                        ImagePickerView(selectedImage: $selectedImage)
-                    }
-                    .frame(width: screenSize.width, height: screenSize.height / 2)
-                    
                 }
-               
+                
+                .sheet(isPresented: $isImagePickerSheetPresented){
+                    
+                    ImagePickerView(selectedImage: $selectedImage)
+                }
+                .sheet(isPresented: $isImagePickerSheetPresentedCover){
+                    
+                    ImagePickerView(selectedImage: $selectedCoverImage)
+                }
+                .frame(width: screenSize.width, height: screenSize.height / 2)
+                
             }
             
-            
-       
+        }
+        
+        
+        
     }
     
     
@@ -458,44 +544,89 @@ struct ProfileView: View {
     //MARK: THIS FUNCTION IS TO UPLOAD IMAGE TO FIREBASE
     
     public func uploadImageToFirebaseStorage(image: UIImage, completion: @escaping (Result<URL, Error>) -> Void) {
-        guard let imageData = image.jpegData(compressionQuality: 0.8) else {
-            completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to convert image to JPEG data"])))
-            return
-        }
-        // let uid = Auth.auth().currentUser?.uid
-        let email = Auth.auth().currentUser?.email
-        let path = "Profile Picture/profilepicture.jpg"
-        
-        let storageRef = Storage.storage().reference().child("Images/\(String(describing: email))/\(path)")
-        let metadata = StorageMetadata()
-        metadata.contentType = "image/jpeg"
-        
-        storageRef.putData(imageData, metadata: metadata) { metadata, error in
-            if let error = error {
-                completion(.failure(error))
+        if selectedImage != nil {
+            guard let imageData = image.jpegData(compressionQuality: 0.8) else {
+                completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to convert image to JPEG data"])))
                 return
             }
+            // let uid = Auth.auth().currentUser?.uid
+            let email = Auth.auth().currentUser?.email
+            let path = "Profile Picture/profilepicture.jpg"
             
-            storageRef.downloadURL { url, error in
+            let storageRef = Storage.storage().reference().child("Images/\(String(describing: email))/\(path)")
+            let metadata = StorageMetadata()
+            metadata.contentType = "image/jpeg"
+            
+            storageRef.putData(imageData, metadata: metadata) { metadata, error in
                 if let error = error {
                     completion(.failure(error))
-                } else if let url = url {
-                    completion(.success(url))
-                } else {
-                    completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to get download URL"])))
+                    return
                 }
+                
+                storageRef.downloadURL { url, error in
+                    if let error = error {
+                        completion(.failure(error))
+                    } else if let url = url {
+                        completion(.success(url))
+                    } else {
+                        completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to get download URL"])))
+                    }
+                }
+                
+            }
+        }
+        
+        
+        //UPLOADING COVER PHOTO
+        
+        else {
+            
+            guard let imageData = image.jpegData(compressionQuality: 0.8) else {
+                completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to convert image to JPEG data"])))
+                return
+            }
+            // let uid = Auth.auth().currentUser?.uid
+            let email = Auth.auth().currentUser?.email
+            let path = "Cover Picture/coverpicture.jpg"
+            
+            let storageRef = Storage.storage().reference().child("Images/\(String(describing: email))/\(path)")
+            let metadata = StorageMetadata()
+            metadata.contentType = "image/jpeg"
+            
+            storageRef.putData(imageData, metadata: metadata) { metadata, error in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                
+                storageRef.downloadURL { url, error in
+                    if let error = error {
+                        completion(.failure(error))
+                    } else if let url = url {
+                        completion(.success(url))
+                    } else {
+                        completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to get download URL"])))
+                    }
+                }
+                
             }
             
+            
+            
         }
+        
+        
+        
+        
+        
     }
-    
-    
     
     
     
     //MARK: THIS FUNCTION IS TO RETRIEVE IMAGE FROM DATABASE
     
     public func retrieveImages() {
+        
         Storage.storage().reference().child("Images/\(String(describing: currentUserEmail))/Profile Picture/profilepicture.jpg").downloadURL { (url, error) in
             if error != nil {
                 
@@ -504,6 +635,19 @@ struct ProfileView: View {
                 return
             }
             profilePhotoURL = url?.absoluteString
+        }
+    }
+    
+    public func retrieveCoverImages() {
+        
+        Storage.storage().reference().child("Images/\(String(describing: currentUserEmail))/Cover Picture/coverpicture.jpg").downloadURL { (url, error) in
+            if error != nil {
+                
+                
+                
+                return
+            }
+            coverPhotoURL = url?.absoluteString
         }
     }
     //MARK: THIS FUNCTION VERIFIES IF USER VERIFIED THEIR EMAIL OR NOT

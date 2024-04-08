@@ -12,6 +12,7 @@ import FirebaseAuth
 import FirebaseStorage
 import FirebaseFirestore
 import WeatherKit
+import SDWebImageSwiftUI
 
 struct DashboardViewCustomer: View {
     @State private var isSwiped = false
@@ -32,7 +33,9 @@ struct DashboardViewCustomer: View {
     @StateObject var locationManager = LocationManager()
     @State private var weather: Weather?
     let screenSize: CGRect = UIScreen.main.bounds
-    
+    @State private var isAnimatingLeft = false
+    @State private var isAnimatingRight = false
+    @State var aboutBusinessPage: Bool = false
     
     var body: some View {
         VStack {
@@ -77,6 +80,9 @@ struct DashboardViewCustomer: View {
                                 retrieveCustomerDetails.retrieveCustomerData {}
                                 retrieveBusinessDetails.retrieveBusinessDetailsForCustomerBooking()
                                 retrieveBookingDetails.retrieveBooking()
+                                isAnimatingLeft.toggle()
+                                isAnimatingRight.toggle()
+                                
                             }
                             .padding(.horizontal)
                             .padding(.top)
@@ -93,31 +99,36 @@ struct DashboardViewCustomer: View {
                             VStack {
                                 let currentTemp = currentWeather.temp
                                 let symbol = currentWeather.symbol
-
-                                HStack {
-                               
-                                    Image(systemName: "cloud.fill")
-                                        .resizable()
-                                        .frame(width: 50, height: 30)
-                                        .offset(x: 50, y: 25)
-                                        .foregroundStyle(Color.skyBlue)
-                                        .shadow(radius: 20)
-                                    Image(systemName: "cloud.fill")
-                                        .resizable()
-                                        .frame(width: 50, height: 30)
-                                        .offset(x: 60, y: 25)
-                                        .foregroundStyle(Color.skyBlue)
-                                        .shadow(radius: 10)
-                                    Image(systemName: "cloud.fill")
-                                        .resizable()
-                                        .frame(width: 50, height: 30)
-                                        .offset(x: -30, y: 25)
-                                        .foregroundStyle(Color.skyBlue)
-                                        .shadow(radius: 10)
+                                let animation = Animation.linear(duration: 27.0).repeatForever(autoreverses: true)
+                                
+                            HStack {
+                                        Image(systemName: "cloud.fill")
+                                            .resizable()
+                                            .frame(width: 50, height: 30)
+                                            .offset(x: isAnimatingLeft ? 20 : 50, y: 25)
+                                            .foregroundStyle(Color.skyBlue)
+                                            .shadow(radius: 20)
+                                            .animation(animation)
+                                        
+                                        Image(systemName: "cloud.fill")
+                                            .resizable()
+                                            .frame(width: 50, height: 30)
+                                            .offset(x: isAnimatingRight ? -20 : 60, y: 25)
+                                            .foregroundStyle(Color.skyBlue)
+                                            .shadow(radius: 20)
+                                            .animation(animation)
+                                        
+                                        Image(systemName: "cloud.fill")
+                                            .resizable()
+                                            .frame(width: 50, height: 30)
+                                            .offset(x: -30, y: 25)
+                                            .foregroundStyle(Color.skyBlue)
+                                            .shadow(radius: 20)
+                                    
                                     Spacer()
                                     Image(systemName: "\(symbol).fill")
                                         .resizable()
-                                        .frame(width: 40, height: 40)
+                                        .frame(width: 50, height: 30)
                                         .offset(x: -50, y: 27)
                                         .foregroundStyle(Color.yellow)
                                         .shadow(radius: 20)
@@ -177,13 +188,6 @@ struct DashboardViewCustomer: View {
                         RoundedRectangle(cornerRadius: 20.0)
                             .containerRelativeFrame(.horizontal, count: 1, spacing: 15)
                             .foregroundStyle(Color.scroll)
-                        
-                            .scrollTransition {content, phase in
-                                content
-                                    .opacity(phase.isIdentity ? 1.0 : 0.3)
-                                    .scaleEffect(x: phase.isIdentity ? 1.0 : 0.8, y: phase.isIdentity ? 1.0 : 0.8)
-                                    .offset(y: phase.isIdentity ? 0 : 50)
-                            }
                             .overlay {
                                 HStack{
                                     Spacer()
@@ -212,7 +216,10 @@ struct DashboardViewCustomer: View {
                                             
                                             Menu {
                                                 Section {
-                                                    Button {} label: {
+                                                    Button {
+                                                        self.aboutBusinessPage = true
+                                                        
+                                                    } label: {
                                                         Label("About \(details.businessName)", systemImage: "ellipsis.vertical.bubble.fill")
                                                     }
                                                     Button {} label: {
@@ -271,6 +278,12 @@ struct DashboardViewCustomer: View {
                                     
                                 }
                             }
+                            .scrollTransition {content, phase in
+                                content
+                                    .opacity(phase.isIdentity ? 1.0 : 0.3)
+                                    .scaleEffect(x: phase.isIdentity ? 1.0 : 0.8, y: phase.isIdentity ? 1.0 : 0.8)
+                                    .offset(y: phase.isIdentity ? 0 : 50)
+                            }
                     }
                     
                 }
@@ -287,8 +300,7 @@ struct DashboardViewCustomer: View {
             
             NavigationLink(destination: MakeBookingView(businessName: $selectedBusinessName , businessEmail: $selectedBusinessEmail), isActive: $makeBookingView){}
             NavigationLink(destination: ProfileView(isCustomerProfile: $isCustomerProfileTapped, isBusinessProfile: $isBusinessProfileTapped), isActive: $isProfileTapped){}
-            
-            
+            NavigationLink(destination: BusinessDetailsView(), isActive: $aboutBusinessPage){}
             
             VStack {
                 HStack {
