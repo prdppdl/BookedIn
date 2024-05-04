@@ -127,16 +127,19 @@ struct ImagePickerView: UIViewControllerRepresentable {
 
 
 //MARK: FOR WEATHER STATUS
-@MainActor class CurrentWeather: ObservableObject {
-    @Published var weather: Weather?
-    @Published var temp: String = ""
+@MainActor
+class CurrentWeather: ObservableObject {
+    @Published var weatherData : Weather?
+    @Published var temp: String = "N/A"
     @Published var symbol: String = "sun"
         
+  
+    
     func getWeather(latitude: Double, longitude: Double) async {
         do {
             let fetchedWeather = try await WeatherService.shared.weather(for: .init(latitude: latitude, longitude: longitude))
             DispatchQueue.main.async {
-                self.weather = fetchedWeather
+                self.weatherData = fetchedWeather
                 self.temp = fetchedWeather.currentWeather.temperature.converted(to: .celsius).description
                 self.symbol = fetchedWeather.currentWeather.symbolName
             }

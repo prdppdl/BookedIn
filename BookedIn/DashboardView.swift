@@ -13,6 +13,7 @@ import FirebaseStorage
 import FirebaseFirestore
 import WeatherKit
 import SDWebImageSwiftUI
+import Combine
 
 struct DashboardViewCustomer: View {
     @State private var isSwiped = false
@@ -36,8 +37,16 @@ struct DashboardViewCustomer: View {
     @State private var isAnimatingLeft = false
     @State private var isAnimatingRight = false
     @State var aboutBusinessPage: Bool = false
-    
+    @State private var coverPhotoURL: String?
+    @State var seeAllBusiness: Bool = false
+    private var animation : Animation {
+        .linear(duration: 25)
+        .repeatForever(autoreverses: true)
+    }
+    @State var currentTemp = ""
+    @State var symbol = ""
     var body: some View {
+        
         VStack {
             //CUSTOMER DAHSBOARD
             VStack {
@@ -96,11 +105,8 @@ struct DashboardViewCustomer: View {
                                     .offset(y: 20)
                             }
                         
+                           
                             VStack {
-                                let currentTemp = currentWeather.temp
-                                let symbol = currentWeather.symbol
-                                let animation = Animation.linear(duration: 27.0).repeatForever(autoreverses: true)
-                                
                             HStack {
                                         Image(systemName: "cloud.fill")
                                             .resizable()
@@ -126,13 +132,14 @@ struct DashboardViewCustomer: View {
                                             .shadow(radius: 20)
                                     
                                     Spacer()
+                                
                                     Image(systemName: "\(symbol).fill")
                                         .resizable()
                                         .frame(width: 50, height: 30)
                                         .offset(x: -50, y: 27)
                                         .foregroundStyle(Color.yellow)
                                         .shadow(radius: 20)
-                                    
+                                
                                 }
                                 .frame(height: 30)
                                 
@@ -150,18 +157,20 @@ struct DashboardViewCustomer: View {
                                             
                                             
                                             Spacer()
+                                         
+                                                Text("\(currentTemp)")
+                                                    .font(.system(size: 15))
+                                                    .font(.subheadline)
+                                                    .foregroundColor(.black)
+                                                    .padding(.trailing, 20)
                                             
-                                            Text("\(currentTemp)")
-                                                .font(.system(size: 15))
-                                                .font(.subheadline)
-                                                .foregroundColor(.black)
-                                                .padding(.trailing, 20)
                                         }
-                                        .task{
-                                            await currentWeather.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
-                                        }
+                                      
                                     }
                                     .offset(y: 10)
+                                    .task{
+                                        await currentWeather.getWeather(latitude: locationManager.latitude, longitude: locationManager.longitude)
+                                    }
                             }
                             
                         }
@@ -191,14 +200,25 @@ struct DashboardViewCustomer: View {
                             .overlay {
                                 HStack{
                                     Spacer()
-                                    Image("AppLogo")
-                                        .resizable()
-                                        .frame(width: 280 , height: 160)
-                                        .clipShape(CustomCorner(radius: 20, corners: [.topRight, .bottomRight]))
-                                        .overlay{
-                                            LinearGradient(gradient: Gradient(colors: [Color.clear, Color.scroll.opacity(1.0)]), startPoint: .trailing, endPoint: .leading)
-                                        }
-                                        
+                                    
+                                    if let urlimage = coverPhotoURL {
+                                        WebImage(url: URL(string: urlimage))
+                                            .resizable()
+                                            .frame(width: 280 , height: 160)
+                                            .clipShape(CustomCorner(radius: 20, corners: [.topRight, .bottomRight]))
+                                            .overlay{
+                                                LinearGradient(gradient: Gradient(colors: [Color.clear, Color.scroll.opacity(1.0)]), startPoint: .trailing, endPoint: .leading)
+                                            }
+                                    }
+                                    else {
+                                        Image("AppLogo")
+                                            .resizable()
+                                            .frame(width: 280 , height: 160)
+                                            .clipShape(CustomCorner(radius: 20, corners: [.topRight, .bottomRight]))
+                                            .overlay{
+                                                LinearGradient(gradient: Gradient(colors: [Color.clear, Color.scroll.opacity(1.0)]), startPoint: .trailing, endPoint: .leading)
+                                            }
+                                    }
                                 }
                                 HStack {
                                     VStack{
@@ -217,10 +237,10 @@ struct DashboardViewCustomer: View {
                                             Menu {
                                                 Section {
                                                     Button {
-                                                        self.aboutBusinessPage = true
+                                                       
                                                         
                                                     } label: {
-                                                        Label("About \(details.businessName)", systemImage: "ellipsis.vertical.bubble.fill")
+                                                        Label("Go to \(details.businessName)", systemImage: "location.fill")
                                                     }
                                                     Button {} label: {
                                                         Label("View Menu", systemImage: "newspaper.fill")
@@ -277,6 +297,9 @@ struct DashboardViewCustomer: View {
                                     }
                                     
                                 }
+                                .onAppear{
+                                    retrieveCoverImages()
+                                }
                             }
                             .scrollTransition {content, phase in
                                 content
@@ -284,6 +307,8 @@ struct DashboardViewCustomer: View {
                                     .scaleEffect(x: phase.isIdentity ? 1.0 : 0.8, y: phase.isIdentity ? 1.0 : 0.8)
                                     .offset(y: phase.isIdentity ? 0 : 50)
                             }
+                     
+                    
                     }
                     
                 }
@@ -300,7 +325,32 @@ struct DashboardViewCustomer: View {
             
             NavigationLink(destination: MakeBookingView(businessName: $selectedBusinessName , businessEmail: $selectedBusinessEmail), isActive: $makeBookingView){}
             NavigationLink(destination: ProfileView(isCustomerProfile: $isCustomerProfileTapped, isBusinessProfile: $isBusinessProfileTapped), isActive: $isProfileTapped){}
-            NavigationLink(destination: BusinessDetailsView(), isActive: $aboutBusinessPage){}
+            
+            NavigationLink(destination: SeeAllBusiness(), isActive: $seeAllBusiness){}
+            
+            
+            HStack {
+                Spacer()
+                RoundedRectangle(cornerRadius: 10)
+                    .frame(width: 50, height: 30)
+                    .foregroundStyle(Color.color)
+                    .shadow(color: Color.accentColor.opacity(0.9), radius: 10)
+                    .offset(x: -15)
+                    .padding(.bottom, 5)
+                    .overlay{
+                        Text("See all")
+                            .bold()
+                            .font(.system(size: 12))
+                            .font(.subheadline)
+                            .foregroundStyle(.black)
+                            .offset(x: -15)
+                            .padding(.bottom, 5)
+                    }
+                    .onTapGesture {
+                        self.seeAllBusiness = true
+                    }
+            }
+            
             
             VStack {
                 HStack {
@@ -313,38 +363,7 @@ struct DashboardViewCustomer: View {
                     
                     Spacer()
                 }
-                
-                List(retrieveBookingDetails.bookingDetails) { details in
-                    if currentUserEmail! == details.customerEmail {
-                        VStack {
-                            HStack {
-                                Text("At \(details.businessName)")
-                                    .fontWeight(.semibold)
-                                    .foregroundStyle(.black)
-                                    .padding(.leading,10)
-                                Spacer()
-                            }
-                            HStack{
-                                Text("On \(details.bookingDate) at \(details.bookingTime)")
-                                    .foregroundColor(.gray)
-                                    .padding(.leading, 10)
-                                Spacer()
-                            }
-                            HStack {
-                                Text("For \(details.numberOfPeople) person")
-                                    .foregroundColor(.gray)
-                                    .padding(.leading, 10)
-                                Spacer()
-                            }
-                        }
-                    }
-                    
-                }
-                .backgroundStyle(Color.color)
-                .scrollContentBackground(.hidden)
-                .disabled(true)
-                
-                
+               
             }
             
             
@@ -362,7 +381,23 @@ struct DashboardViewCustomer: View {
             currentMessageIndex = (currentMessageIndex + 1) % messages.count
             
         }
+        
     }
+    
+    func retrieveCoverImages() {
+            
+            Storage.storage().reference().child("Images/\(String(describing: selectedBusinessEmail))/Cover Picture/coverpicture.jpg").downloadURL { (url, error) in
+                if error != nil {
+                    
+                    
+                    
+                    return
+                }
+                coverPhotoURL = url?.absoluteString
+            }
+        }
+    
+ 
     
 }
 
@@ -567,6 +602,8 @@ struct DashboardViewBusiness: View {
             
         }
     }
+    
+
     
 }
 

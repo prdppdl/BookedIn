@@ -104,6 +104,7 @@ struct ProfileView: View {
                                     
                                 }
                                 Text("\(details.userEmail)")
+                                    .foregroundStyle(Color.black)
                                     .padding(.horizontal)
                                 Spacer()
                                 
@@ -117,6 +118,7 @@ struct ProfileView: View {
                                     .frame(width: 25, height: 25)
                                     .foregroundColor(Color.accentColor)
                                 Text("\(details.contactNumber)")
+                                    .foregroundStyle(Color.black)
                                     .padding(.horizontal)
                                 Spacer()
                             }
@@ -136,6 +138,7 @@ struct ProfileView: View {
                                         .foregroundColor(.gray)
                                         .padding(.leading)
                                     Text("\(details.joinedDate)")
+                                        .foregroundStyle(Color.black)
                                         .fontWeight(.bold)
                                         .padding(.trailing, 20)
                                     
@@ -648,6 +651,7 @@ struct ProfileView: View {
                 return
             }
             coverPhotoURL = url?.absoluteString
+        
         }
     }
     //MARK: THIS FUNCTION VERIFIES IF USER VERIFIED THEIR EMAIL OR NOT

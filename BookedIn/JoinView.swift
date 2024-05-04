@@ -27,6 +27,7 @@ struct JoinView: View {
     @State private var isJoiningAsBusiness = false
     @State private var userABN: String = ""
     @State var messageLabel = "Create an account and discover thousands of best place to eat around you."
+    
     var body: some View {
         VStack{
             Group {
@@ -338,7 +339,7 @@ struct JoinView: View {
                             .padding(.horizontal)
                         
                         HStack {
-                            Text("Let your customer know where to go.")
+                            Text("Let your customer know where to go and make sure your address is correct.")
                                 .font(.system(size: 12))
                                 .font(.subheadline)
                                 .foregroundStyle(.gray)
@@ -444,7 +445,8 @@ struct JoinView: View {
             return sum % 89 == 0
         }
     
-    
+
+   
     
     
     //SIGNING UP USER

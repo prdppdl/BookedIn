@@ -36,7 +36,7 @@ struct MakeBookingView: View {
                 .frame(width: 75, height: 75)
                 .clipShape(RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)))
                 .shadow(radius: 20)
-                .padding(.horizontal)
+                .padding(.leading)
             Spacer()
         }
             HStack {
@@ -44,7 +44,7 @@ struct MakeBookingView: View {
                     Text("Lets BookedIn.")
                         .font(.title)
                         .fontWeight(.bold)
-                        .padding(.horizontal)
+                        .padding(.leading)
                     Text("Enter your details to book in at \(businessName)")
                         .font(.system(size: 12))
                         .font(.subheadline)
