@@ -21,11 +21,7 @@ struct MakeBookingView: View {
     @State var noteForBusiness = ""
     @Binding var businessName: String
     @Binding var businessEmail: String
-    
-    
-    
-    
-    
+    @Binding var businessAddress: String
     
     var body: some View {
         VStack {
@@ -179,7 +175,8 @@ struct MakeBookingView: View {
             "noteForBusiness" : "\(noteForBusiness)",
             "businessName" : "\(businessName)",
             "businessEmail" : "\(businessEmail)",
-            "customerEmail" : "\(customerEmail!))"
+            "customerEmail" : "\(customerEmail!)",
+            "businessAddress" : "\(businessAddress)"
      
      ]
         Firestore.firestore().collection("Booking Lists").document("\(customerEmail!) in \(businessEmail)").setData(bookingDetails)

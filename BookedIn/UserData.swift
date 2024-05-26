@@ -202,9 +202,10 @@ class BookingDetails: Identifiable, Codable, Hashable, Equatable {
     let customerEmail: String
     let businessEmail: String
     let businessName: String
+    let businessAddress: String
     let noteForBusiness: String
     
-    init(customerName: String, customerContactNumber: String, bookingTime: String, bookingDate: String, numberOfPeople: String, customerEmail: String, businessEmail: String, businessName: String, noteForBusiness: String) {
+    init(customerName: String, customerContactNumber: String, bookingTime: String, bookingDate: String, numberOfPeople: String, customerEmail: String, businessEmail: String, businessName: String, noteForBusiness: String, businessAddress: String) {
         self.customerName = customerName
         self.customerContactNumber = customerContactNumber
         self.bookingTime = bookingTime
@@ -213,6 +214,7 @@ class BookingDetails: Identifiable, Codable, Hashable, Equatable {
         self.customerEmail = customerEmail
         self.businessEmail = businessEmail
         self.businessName = businessName
+        self.businessAddress = businessAddress
         self.noteForBusiness = noteForBusiness
     }
     
@@ -221,6 +223,7 @@ class BookingDetails: Identifiable, Codable, Hashable, Equatable {
         hasher.combine(customerName)
         hasher.combine(businessName)
         hasher.combine(businessEmail)
+        hasher.combine(businessAddress)
         hasher.combine(customerContactNumber)
         hasher.combine(bookingDate)
         hasher.combine(bookingTime)
@@ -240,7 +243,8 @@ class BookingDetails: Identifiable, Codable, Hashable, Equatable {
         lhs.customerContactNumber == rhs.customerContactNumber &&
         lhs.bookingDate == rhs.bookingDate &&
         lhs.bookingTime == rhs.bookingTime &&
-        lhs.noteForBusiness == rhs.noteForBusiness
+        lhs.noteForBusiness == rhs.noteForBusiness &&
+        lhs.businessAddress == rhs.businessAddress
     }
     
     
@@ -272,7 +276,8 @@ class RetrievingBookingDetails: ObservableObject {
                 let businessEmail = data["businessEmail"] as? String ?? ""
                 let businessName = data["businessName"] as? String ?? ""
                 let noteForBusiness = data["noteForBusiness"] as? String ?? ""
-                return BookingDetails(customerName: customerName, customerContactNumber: customerContactNumber, bookingTime: bookingTime, bookingDate: bookingDate, numberOfPeople: numberOfPeople, customerEmail: customerEmail, businessEmail: businessEmail, businessName: businessName, noteForBusiness: noteForBusiness)
+                let businessAddress = data["businessAddress"] as? String ?? ""
+                return BookingDetails(customerName: customerName, customerContactNumber: customerContactNumber, bookingTime: bookingTime, bookingDate: bookingDate, numberOfPeople: numberOfPeople, customerEmail: customerEmail, businessEmail: businessEmail, businessName: businessName, noteForBusiness: noteForBusiness, businessAddress: businessAddress)
                 
             }
             

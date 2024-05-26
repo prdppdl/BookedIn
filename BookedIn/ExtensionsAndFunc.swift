@@ -228,4 +228,28 @@ struct CustomCorner: Shape {
 
 
 
+func timeDifference(from startDate: Date, to endDate: Date) -> TimeInterval {
+    return endDate.timeIntervalSince(startDate)
+}
+
+func timeDifferenceString(from startDate: Date, to endDate: Date) -> String {
+    let timeInterval = timeDifference(from: startDate, to: endDate)
+    
+    let formatter = DateComponentsFormatter()
+    formatter.unitsStyle = .full
+    formatter.allowedUnits = [.day, .hour, .minute, .second]
+    
+    guard let differenceString = formatter.string(from: abs(timeInterval)) else {
+        return "Invalid Date"
+    }
+    
+    return differenceString
+}
+
+func futureDateFromString(_ dateString: String, format: String) -> Date? {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = format
+    return dateFormatter.date(from: dateString)
+}
+
 

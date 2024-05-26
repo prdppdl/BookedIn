@@ -29,7 +29,7 @@ struct LaunchScreen: View {
                         .clipShape(RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)))
                         .shadow(radius: 30)
                     ProgressView()
-                        .foregroundColor(.accentColor)
+                        .foregroundStyle(.gray)
                         .padding(.vertical)
                     
                     Text("\(messageLabel)")
