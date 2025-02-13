@@ -24,31 +24,38 @@ struct MakeBookingView: View {
     @Binding var businessAddress: String
     
     var body: some View {
+        ZStack {
+            Color.creamy.ignoresSafeArea()
         VStack {
             Spacer()
-        HStack{
-            Image("AppLogo")
-                .resizable()
-                .frame(width: 75, height: 75)
-                .clipShape(RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)))
-                .shadow(radius: 20)
-                .padding(.leading)
-            Spacer()
-        }
+            HStack{
+                Image("AppLogo")
+                    .resizable()
+                    .frame(width: 75, height: 75)
+                    .clipShape(RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)))
+                    .shadow(radius: 20)
+                    .padding(.leading)
+                Spacer()
+            }
             HStack {
-                VStack{
+               
                     Text("Lets BookedIn.")
                         .font(.title)
                         .fontWeight(.bold)
+                        .foregroundStyle(.black)
                         .padding(.leading)
-                    Text("Enter your details to book in at \(businessName)")
-                        .font(.system(size: 12))
-                        .font(.subheadline)
-                        .padding(.leading)
-                }
                 Spacer()
+                }
+            HStack {
+                Text("Enter your details to book in at \(businessName)")
+                    .font(.system(size: 12))
+                    .font(.subheadline)
+                    .foregroundStyle(.black)
+                    .padding(.leading)
                 
+                Spacer()
             }
+            
             TextField(" ", text: $customerName)
                 .placeholder(when: customerName.isEmpty){
                     Text("Your Name")
@@ -138,10 +145,11 @@ struct MakeBookingView: View {
             .buttonStyle(.borderedProminent)
             .cornerRadius(5)
             
-    
-        
-    }
+            
+            
+        }
         .padding(.bottom)
+    }
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: CustomBackButton())
     }

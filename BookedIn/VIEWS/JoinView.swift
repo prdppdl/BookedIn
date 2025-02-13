@@ -26,19 +26,26 @@ struct JoinView: View {
     @State private var isSecure = true
     @State private var isJoiningAsBusiness = false
     @State private var userABN: String = ""
+    @State private var isAnimatingBack = false
     @State var messageLabel = "Create an account and discover thousands of best place to eat around you."
     
     var body: some View {
+        
+        VStack {
+            
+            
         VStack{
             Group {
                 Image(systemName: "chevron.up")
-                    .foregroundColor(.secondary)
-                    .padding(1)
-                Text("Go back")
-                    .font(.system(size: 14))
-                    .foregroundStyle(.secondary)
+                    .font(.system(size: 25, weight: .bold))
+                    .foregroundColor(.gray)
+                    .offset(x: isAnimatingBack ? 0 : 0, y: isAnimatingBack ? 0 : 7)
+                    .animation(.bouncy(duration: 0.4).repeatForever(autoreverses: true), value: isAnimatingBack)
                     .onTapGesture {
                         isPresented.wrappedValue.dismiss()
+                    }
+                    .onAppear{
+                        isAnimatingBack = true
                     }
             }
             Spacer()
@@ -60,6 +67,7 @@ struct JoinView: View {
                 VStack{
                     HStack{
                         Text("Join BookedIn.")
+                            .foregroundStyle(Color.black)
                             .font(.title)
                             .fontWeight(.bold)
                             .padding(.horizontal)
@@ -67,19 +75,20 @@ struct JoinView: View {
                     }
                     HStack {
                         Text("\(messageLabel)")
+                            .foregroundStyle(Color.black)
                             .fixedSize(horizontal: false, vertical: true)
                             .font(.system(size: 12))
                             .font(.subheadline)
                             .padding(.horizontal)
                         Spacer()
                     }
-                   
+                    
                 }
                 Spacer()
             }
             
             if isJoiningAsBusiness == false {
-    
+                
                 TextField(" ", text: $userFirstName)
                     .placeholder(when: userFirstName.isEmpty){
                         Text("First Name")
@@ -112,7 +121,7 @@ struct JoinView: View {
                 
                 TextField(" ", text: $userEmail)
                     .placeholder(when: userEmail.isEmpty){
-                        Text("Email or Username")
+                        Text("Email")
                             .font(.system(size: 12))
                             .foregroundColor(.gray)
                     }
@@ -176,11 +185,11 @@ struct JoinView: View {
                 HStack {
                     Toggle(isOn: $isJoiningAsBusiness, label: {
                         Text("Joining as Business")
-                            .foregroundStyle(.accent)
+                            .foregroundStyle(Color.accentColor)
                             .fontWeight(.semibold)
                         
                     })
-                    .foregroundStyle(.accent)
+                    .foregroundStyle(Color.accentColor)
                     .padding(.horizontal)
                     .padding(.top,20)
                     
@@ -191,10 +200,10 @@ struct JoinView: View {
             else {
                 VStack {
                     Spacer()
-
+                    
                     TextField(" ", text: $userEmail)
                         .placeholder(when: userEmail.isEmpty){
-                            Text("Email or Username")
+                            Text("Email")
                                 .font(.system(size: 12))
                                 .foregroundColor(.gray)
                         }
@@ -339,7 +348,7 @@ struct JoinView: View {
                             .padding(.horizontal)
                         
                         HStack {
-                            Text("Let your customer know where to go and make sure your address is correct.")
+                            Text("Let your customer know where to go.")
                                 .font(.system(size: 12))
                                 .font(.subheadline)
                                 .foregroundStyle(.gray)
@@ -360,61 +369,64 @@ struct JoinView: View {
                 
             }
             
-          
+            
         }
         
-                Button(action: {
-                    
-                    signUpUser()
-                    
-                }){
-                    Text("Sign Up")
-                        .fontWeight(.semibold)
-                        .frame(width: 320,height: 25)
-                        .foregroundColor(.white)
-                        .font(.system(size: 17))
-                    
-                }
-                .background(Color.accentColor)
-                .buttonStyle(.borderedProminent)
-                .cornerRadius(5)
-                .padding(7)
-                
-                HStack{
-                    Text("By joining, you agree to BookedIn's")
-                        .font(.system(size: 12))
-                        .font(.subheadline)
-                    Text("Terms of Service")
-                        .font(.system(size: 12))
-                        .font(.subheadline)
-                        .foregroundStyle(.accent)
-                }
-       
-                // Mark: Starting Different SIgnIn Options
-                
-                
-                //            Text("Or via social networks")
-                //                .font(.system(size: 12))
-                //                .font(.subheadline)
-                //                .foregroundStyle(.gray)
-                
-                
-                //Mark: SIgn Up WIth Apple Button Below
-                
-                
-                //            Button(action: {**Tell Button What to do**}){
-                //                Text("\(Image(system Name: "apple.logo")) Sign up with Apple")
-                //                    .frame(width: 320,height: 25)
-                //                    .foregroundColor(.black)
-                //                    .font(.system(size: 18))
-                //
-                //            }
-                //            .background(Color.color)
-                //            .buttonStyle(.bordered)
-                //            .cornerRadius(5)
-                Spacer()
-       
+        Button(action: {
+            
+            signUpUser()
+            
+        }){
+            Text("Sign Up")
+                .fontWeight(.semibold)
+                .frame(width: 320,height: 25)
+                .foregroundColor(.white)
+                .font(.system(size: 17))
+            
+        }
+        .background(Color.accentColor)
+        .buttonStyle(.borderedProminent)
+        .cornerRadius(5)
+        .padding(7)
+        
+        HStack{
+            Text("By joining, you agree to BookedIn's")
+                .foregroundStyle(Color.black)
+                .font(.system(size: 12))
+                .font(.subheadline)
+            Text("Terms of Service")
+                .font(.system(size: 12))
+                .font(.subheadline)
+                .foregroundStyle(.accent)
+        }
+        
+        // Mark: Starting Different SIgnIn Options
+        
+        
+        //            Text("Or via social networks")
+        //                .font(.system(size: 12))
+        //                .font(.subheadline)
+        //                .foregroundStyle(.gray)
+        
+        
+        //Mark: SIgn Up WIth Apple Button Below
+        
+        
+        //            Button(action: {**Tell Button What to do**}){
+        //                Text("\(Image(system Name: "apple.logo")) Sign up with Apple")
+        //                    .frame(width: 320,height: 25)
+        //                    .foregroundColor(.black)
+        //                    .font(.system(size: 18))
+        //
+        //            }
+        //            .background(Color.color)
+        //            .buttonStyle(.bordered)
+        //            .cornerRadius(5)
+        Spacer()
     }
+        .background(Color.color.ignoresSafeArea())
+    }
+       
     
     
     let joinedDate: DateFormatter = {

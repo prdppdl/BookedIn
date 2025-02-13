@@ -6,18 +6,27 @@
 //
 
 import SwiftUI
+import FirebaseAuth
+import Combine
+
 
 struct LaunchScreen: View {
     @State var isActive:Bool = false
     @State var messageLabel = " Checking For Update..."
     @State var checkingForUpdate = true
     @State var fadeInAnimation = false
+    private var authStateHandler: AuthStateDidChangeListenerHandle?
+    
     
     var body: some View {
         ZStack {
             Color.color.ignoresSafeArea()
             if self.isActive {
+                
                 HomepageView()
+                
+                
+                
             }
             else {
                 VStack {
@@ -29,8 +38,9 @@ struct LaunchScreen: View {
                         .clipShape(RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)))
                         .shadow(radius: 30)
                     ProgressView()
-                        .foregroundStyle(.gray)
+                        .foregroundStyle(Color.gray)
                         .padding(.vertical)
+                   
                     
                     Text("\(messageLabel)")
                         .font(.system(size: 14))
@@ -43,7 +53,7 @@ struct LaunchScreen: View {
                     fadeInAnimation = true
                     startTiming()
                     
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 4.25) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                         withAnimation {
                             self.isActive = true
                         }
@@ -54,7 +64,7 @@ struct LaunchScreen: View {
         }
     }
     func startTiming() {
-        Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { timer in
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { timer in
             if checkingForUpdate {
                 self.messageLabel = "Launching App..."
             }
@@ -62,6 +72,8 @@ struct LaunchScreen: View {
         }
         
     }
+    
+
 }
 
 

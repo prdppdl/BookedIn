@@ -3,32 +3,21 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		324114AB2B94A66E00A06CC8 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 324114AA2B94A66E00A06CC8 /* SDWebImageSwiftUI */; };
 		3249D5302B86CA70007804F0 /* backgroundVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 3249D52F2B86CA70007804F0 /* backgroundVideo.mp4 */; };
-		3249D5322B86ED07007804F0 /* MakeBookingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3249D5312B86ED07007804F0 /* MakeBookingView.swift */; };
-		32568EED2BD0CEEB003B494B /* SeeAllBusiness.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32568EEC2BD0CEEB003B494B /* SeeAllBusiness.swift */; };
-		3269D37A2B933B630046C622 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3269D3792B933B630046C622 /* ProfileView.swift */; };
 		32E895742B3B1BDC0089126C /* BookedInApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E895732B3B1BDC0089126C /* BookedInApp.swift */; };
-		32E895762B3B1BDC0089126C /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E895752B3B1BDC0089126C /* LaunchScreen.swift */; };
 		32E895782B3B1BDD0089126C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 32E895772B3B1BDD0089126C /* Assets.xcassets */; };
 		32E8957B2B3B1BDD0089126C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 32E8957A2B3B1BDD0089126C /* Preview Assets.xcassets */; };
-		32E895822B3B1C290089126C /* HomepageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E895812B3B1C290089126C /* HomepageView.swift */; };
-		32E895842B3B1DE20089126C /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E895832B3B1DE20089126C /* SignInView.swift */; };
-		32E895862B3B1EF50089126C /* JoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E895852B3B1EF50089126C /* JoinView.swift */; };
-		32E895882B3B20C80089126C /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E895872B3B20C80089126C /* DashboardView.swift */; };
-		32E8958A2B3C27410089126C /* ExtensionsAndFunc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E895892B3C27410089126C /* ExtensionsAndFunc.swift */; };
 		32E8958F2B3C34980089126C /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 32E8958E2B3C34980089126C /* FirebaseAnalytics */; };
 		32E895912B3C34980089126C /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 32E895902B3C34980089126C /* FirebaseAnalyticsOnDeviceConversion */; };
 		32E895932B3C34980089126C /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 32E895922B3C34980089126C /* FirebaseAnalyticsSwift */; };
 		32E895952B3C34980089126C /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 32E895942B3C34980089126C /* FirebaseAnalyticsWithoutAdIdSupport */; };
 		32E895972B3C34980089126C /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = 32E895962B3C34980089126C /* FirebaseAppCheck */; };
 		32E895992B3C35EA0089126C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 32E895982B3C35EA0089126C /* GoogleService-Info.plist */; };
-		32E895A12B3C3D5D0089126C /* ForgotPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E895A02B3C3D5D0089126C /* ForgotPassword.swift */; };
-		32E895A32B3C3D7B0089126C /* CustomBackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E895A22B3C3D7B0089126C /* CustomBackButton.swift */; };
 		32E895A72B4044380089126C /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 32E895A62B4044380089126C /* FirebaseAnalytics */; };
 		32E895A92B4044380089126C /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 32E895A82B4044380089126C /* FirebaseAnalyticsOnDeviceConversion */; };
 		32E895AB2B4044380089126C /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 32E895AA2B4044380089126C /* FirebaseAnalyticsSwift */; };
@@ -56,31 +45,30 @@
 		32E895D72B4044380089126C /* FirebaseRemoteConfigSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 32E895D62B4044380089126C /* FirebaseRemoteConfigSwift */; };
 		32E895D92B4044380089126C /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 32E895D82B4044380089126C /* FirebaseStorage */; };
 		32E895DB2B4044380089126C /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 32E895DA2B4044380089126C /* FirebaseStorageCombine-Community */; };
-		32E895DD2B404A490089126C /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E895DC2B404A490089126C /* UserData.swift */; };
+		3F971A0F2C5E41E300C1AB8C /* NewDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F971A0E2C5E41E300C1AB8C /* NewDashboardView.swift */; };
+		3F971A112C5E6ED200C1AB8C /* NewBusinessDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F971A102C5E6ED200C1AB8C /* NewBusinessDashboardView.swift */; };
+		92E8064D2D6FE1DF00966E0F /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E8064C2D6FE1AE00966E0F /* Settings.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3249D52F2B86CA70007804F0 /* backgroundVideo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = backgroundVideo.mp4; sourceTree = "<group>"; };
-		3249D5312B86ED07007804F0 /* MakeBookingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeBookingView.swift; sourceTree = "<group>"; };
-		32568EEC2BD0CEEB003B494B /* SeeAllBusiness.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeeAllBusiness.swift; sourceTree = "<group>"; };
-		3269D3792B933B630046C622 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		32E895702B3B1BDC0089126C /* BookedIn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BookedIn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		32E895732B3B1BDC0089126C /* BookedInApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookedInApp.swift; sourceTree = "<group>"; };
-		32E895752B3B1BDC0089126C /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
 		32E895772B3B1BDD0089126C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		32E8957A2B3B1BDD0089126C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		32E895812B3B1C290089126C /* HomepageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomepageView.swift; sourceTree = "<group>"; };
-		32E895832B3B1DE20089126C /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
-		32E895852B3B1EF50089126C /* JoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinView.swift; sourceTree = "<group>"; };
-		32E895872B3B20C80089126C /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
-		32E895892B3C27410089126C /* ExtensionsAndFunc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionsAndFunc.swift; sourceTree = "<group>"; };
 		32E895982B3C35EA0089126C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		32E8959F2B3C36CA0089126C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		32E895A02B3C3D5D0089126C /* ForgotPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPassword.swift; sourceTree = "<group>"; };
-		32E895A22B3C3D7B0089126C /* CustomBackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBackButton.swift; sourceTree = "<group>"; };
-		32E895DC2B404A490089126C /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		32FC04E42B56267E00FE05A0 /* BookedIn.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BookedIn.entitlements; sourceTree = "<group>"; };
+		3F971A0E2C5E41E300C1AB8C /* NewDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDashboardView.swift; sourceTree = "<group>"; };
+		3F971A102C5E6ED200C1AB8C /* NewBusinessDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBusinessDashboardView.swift; sourceTree = "<group>"; };
+		92E8064C2D6FE1AE00966E0F /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		923587A82E557D5800B36587 /* VIEWS */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = VIEWS; sourceTree = "<group>"; };
+		923587A92E557D9500B36587 /* DATA CONTROL */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "DATA CONTROL"; sourceTree = "<group>"; };
+		923587AA2E557DB600B36587 /* CUSTOMS AND EXTENSIONS */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "CUSTOMS AND EXTENSIONS"; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		32E8956D2B3B1BDC0089126C /* Frameworks */ = {
@@ -149,18 +137,12 @@
 				32E8959F2B3C36CA0089126C /* Info.plist */,
 				3249D52F2B86CA70007804F0 /* backgroundVideo.mp4 */,
 				32E895732B3B1BDC0089126C /* BookedInApp.swift */,
-				32E895DC2B404A490089126C /* UserData.swift */,
-				32E895752B3B1BDC0089126C /* LaunchScreen.swift */,
-				32E895812B3B1C290089126C /* HomepageView.swift */,
-				32E895832B3B1DE20089126C /* SignInView.swift */,
-				32E895852B3B1EF50089126C /* JoinView.swift */,
-				32E895872B3B20C80089126C /* DashboardView.swift */,
-				32568EEC2BD0CEEB003B494B /* SeeAllBusiness.swift */,
-				3249D5312B86ED07007804F0 /* MakeBookingView.swift */,
-				3269D3792B933B630046C622 /* ProfileView.swift */,
-				32E895A02B3C3D5D0089126C /* ForgotPassword.swift */,
-				32E895892B3C27410089126C /* ExtensionsAndFunc.swift */,
-				32E895A22B3C3D7B0089126C /* CustomBackButton.swift */,
+				923587A92E557D9500B36587 /* DATA CONTROL */,
+				923587A82E557D5800B36587 /* VIEWS */,
+				3F971A0E2C5E41E300C1AB8C /* NewDashboardView.swift */,
+				3F971A102C5E6ED200C1AB8C /* NewBusinessDashboardView.swift */,
+				92E8064C2D6FE1AE00966E0F /* Settings.swift */,
+				923587AA2E557DB600B36587 /* CUSTOMS AND EXTENSIONS */,
 				32E895772B3B1BDD0089126C /* Assets.xcassets */,
 				32E895982B3C35EA0089126C /* GoogleService-Info.plist */,
 				32E895792B3B1BDD0089126C /* Preview Content */,
@@ -190,6 +172,11 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				923587A82E557D5800B36587 /* VIEWS */,
+				923587A92E557D9500B36587 /* DATA CONTROL */,
+				923587AA2E557DB600B36587 /* CUSTOMS AND EXTENSIONS */,
 			);
 			name = BookedIn;
 			packageProductDependencies = (
@@ -287,19 +274,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				32E895822B3B1C290089126C /* HomepageView.swift in Sources */,
-				32E895882B3B20C80089126C /* DashboardView.swift in Sources */,
-				3249D5322B86ED07007804F0 /* MakeBookingView.swift in Sources */,
-				32E895762B3B1BDC0089126C /* LaunchScreen.swift in Sources */,
-				3269D37A2B933B630046C622 /* ProfileView.swift in Sources */,
-				32E895A12B3C3D5D0089126C /* ForgotPassword.swift in Sources */,
-				32E895DD2B404A490089126C /* UserData.swift in Sources */,
-				32E895842B3B1DE20089126C /* SignInView.swift in Sources */,
-				32568EED2BD0CEEB003B494B /* SeeAllBusiness.swift in Sources */,
-				32E895862B3B1EF50089126C /* JoinView.swift in Sources */,
-				32E895A32B3C3D7B0089126C /* CustomBackButton.swift in Sources */,
+				3F971A112C5E6ED200C1AB8C /* NewBusinessDashboardView.swift in Sources */,
+				92E8064D2D6FE1DF00966E0F /* Settings.swift in Sources */,
+				3F971A0F2C5E41E300C1AB8C /* NewDashboardView.swift in Sources */,
 				32E895742B3B1BDC0089126C /* BookedInApp.swift in Sources */,
-				32E8958A2B3C27410089126C /* ExtensionsAndFunc.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -440,6 +418,7 @@
 				INFOPLIST_FILE = BookedIn/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = BookedIn;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Please allow location to find nearby places for you.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -447,6 +426,7 @@
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -479,6 +459,7 @@
 				INFOPLIST_FILE = BookedIn/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = BookedIn;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Please allow location to find nearby places for you.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -486,6 +467,7 @@
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

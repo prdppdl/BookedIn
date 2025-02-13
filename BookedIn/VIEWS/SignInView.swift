@@ -15,14 +15,17 @@ struct SignInView: View {
     @Environment(\.presentationMode) var isPresented
     
     
-    @State private var userEmail: String = ""
-    @State private var userPassword: String = ""
+    @State private var userEmail: String = "prdppoudel123@icloud.com"
+    @State private var userPassword: String = "1234567890@@"
     @State var forgotPasswordIsTapped = false
-    @State var isSignedIn = false
+    @State var isSignedInCustomer = false
+    @State var isSignedInBusiness = false
     @Binding var isCustomerIsTapped: Bool
     @Binding var isBusinessIsTapped: Bool
     @State var retrievingbusinessDetails = RetrievingBusinessDetails()
     @State var retrievingcustomerDetails = RetrievingCustomerDetails()
+    @State private var isAnimatingBack = false
+    
     
     var body: some View {
         NavigationStack{
@@ -31,13 +34,15 @@ struct SignInView: View {
                 VStack{
                     Group {
                         Image(systemName: "chevron.up")
+                            .font(.system(size: 25, weight: .bold))
                             .foregroundColor(.gray)
-                            .padding(1)
-                        Text("Go back")
-                            .font(.system(size: 14))
-                            .foregroundStyle(.gray)
+                            .offset(x: isAnimatingBack ? 0 : 0, y: isAnimatingBack ? 0 : 7)
+                            .animation(.bouncy(duration: 0.4).repeatForever(autoreverses: true), value: isAnimatingBack)
                             .onTapGesture {
                                 isPresented.wrappedValue.dismiss()
+                            }
+                            .onAppear{
+                                isAnimatingBack = true
                             }
                     }
                     Spacer()
@@ -70,7 +75,7 @@ struct SignInView: View {
                     }
                     TextField(" ", text: $userEmail)
                         .placeholder(when: userEmail.isEmpty){
-                            Text("Email or Username")
+                            Text("Email ")
                                 .font(.system(size: 12))
                                 .foregroundColor(.gray)
                         }
@@ -102,19 +107,12 @@ struct SignInView: View {
                     .buttonStyle(.borderedProminent)
                     .cornerRadius(5)
                     .padding(.bottom, 15)
-                    
-                    if isCustomerIsTapped {
-                        NavigationLink(destination: DashboardViewCustomer(isCustomerProfileTapped: $isCustomerIsTapped), isActive: $isSignedIn){}
-                    }
-                    else {
-                        
-                        NavigationLink(destination: DashboardViewBusiness(isBusinessProfileTapped: $isBusinessIsTapped), isActive: $isSignedIn){}
-                    }
+                  
                     // Mark: Starting Different SIgnIn Options
                     
                     
                     //            Text("Or via social networks")
-                    //                .font(.system(size: 12))
+                    //                .font(.system(si)ze: 12))
                     //                .font(.subheadline)
                     //                .foregroundStyle(.gray)
                     
@@ -138,7 +136,7 @@ struct SignInView: View {
                     Spacer()
                     Text("Forgot Password?")
                         .fontWeight(.semibold)
-                        .foregroundStyle(.accent)
+                        .foregroundStyle(Color.accentColor)
                         .font(.system(size: 16))
                         .font(.subheadline)
                         .padding(.horizontal)
@@ -146,11 +144,23 @@ struct SignInView: View {
                         .onTapGesture {
                             forgotPasswordIsTapped = true
                         }
-                    NavigationLink(destination: ForgotPassword(), isActive: $forgotPasswordIsTapped){}
+                   
                 }
             }
             }
+            
+            .navigationDestination(isPresented: $isSignedInCustomer) {
+                NewDashboardView(isCustomerProfileTapped: $isCustomerIsTapped)
+            
+            }
+            .navigationDestination(isPresented: $isSignedInBusiness){
+                NewBusinessDashboardView(isBusinessProfileTapped: $isBusinessIsTapped)
+            }
+            .navigationDestination(isPresented: $forgotPasswordIsTapped){
+                ForgotPassword()
+            }
         }
+       
     }
     
     
@@ -167,8 +177,13 @@ struct SignInView: View {
                 return
                 }
         
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-                self.isSignedIn = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {
+                if isCustomerIsTapped {
+                    self.isSignedInCustomer = true
+                }
+                else {
+                    self.isSignedInBusiness = false
+                }
             }
             
             
