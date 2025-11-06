@@ -20,8 +20,6 @@ struct SignInView: View {
     @State var forgotPasswordIsTapped = false
     @State var isSignedInCustomer = false
     @State var isSignedInBusiness = false
-    @Binding var isCustomerIsTapped: Bool
-    @Binding var isBusinessIsTapped: Bool
     @State var retrievingbusinessDetails = RetrievingBusinessDetails()
     @State var retrievingcustomerDetails = RetrievingCustomerDetails()
     @State private var isAnimatingBack = false
@@ -31,13 +29,14 @@ struct SignInView: View {
         NavigationStack{
             ZStack{
                 Color.color.ignoresSafeArea()
+                
                 VStack{
                     Group {
                         Image(systemName: "chevron.up")
                             .font(.system(size: 25, weight: .bold))
                             .foregroundColor(.gray)
                             .offset(x: isAnimatingBack ? 0 : 0, y: isAnimatingBack ? 0 : 7)
-                            .animation(.bouncy(duration: 0.4).repeatForever(autoreverses: true), value: isAnimatingBack)
+                            //.animation(.bouncy(duration: 0.4).repeatForever(autoreverses: true), value: isAnimatingBack)
                             .onTapGesture {
                                 isPresented.wrappedValue.dismiss()
                             }
@@ -107,7 +106,7 @@ struct SignInView: View {
                     .buttonStyle(.borderedProminent)
                     .cornerRadius(5)
                     .padding(.bottom, 15)
-                  
+                    
                     // Mark: Starting Different SIgnIn Options
                     
                     
@@ -130,31 +129,29 @@ struct SignInView: View {
                     //            .background(Color.color)
                     //            .buttonStyle(.bordered)
                     //            .cornerRadius(5)
-                
-                
-                HStack{
-                    Spacer()
-                    Text("Forgot Password?")
-                        .fontWeight(.semibold)
-                        .foregroundStyle(Color.accentColor)
-                        .font(.system(size: 16))
-                        .font(.subheadline)
-                        .padding(.horizontal)
-                        .padding(.top, 15)
-                        .onTapGesture {
-                            forgotPasswordIsTapped = true
-                        }
-                   
+                    
+                    
+                    HStack{
+                        Spacer()
+                        Text("Forgot Password?")
+                            .fontWeight(.semibold)
+                            .foregroundStyle(Color.accentColor)
+                            .font(.system(size: 16))
+                            .font(.subheadline)
+                            .padding(.horizontal)
+                            .padding(.top, 15)
+                            .onTapGesture {
+                                forgotPasswordIsTapped = true
+                            }
+                        
+                    }
                 }
-            }
+            
             }
             
             .navigationDestination(isPresented: $isSignedInCustomer) {
-                NewDashboardView(isCustomerProfileTapped: $isCustomerIsTapped)
+                CustomerDashboardView()
             
-            }
-            .navigationDestination(isPresented: $isSignedInBusiness){
-                NewBusinessDashboardView(isBusinessProfileTapped: $isBusinessIsTapped)
             }
             .navigationDestination(isPresented: $forgotPasswordIsTapped){
                 ForgotPassword()
@@ -177,16 +174,7 @@ struct SignInView: View {
                 return
                 }
         
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {
-                if isCustomerIsTapped {
                     self.isSignedInCustomer = true
-                }
-                else {
-                    self.isSignedInBusiness = false
-                }
-            }
-            
-            
             
         })
         

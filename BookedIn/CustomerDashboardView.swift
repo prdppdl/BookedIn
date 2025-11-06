@@ -15,14 +15,12 @@ import WeatherKit
 import SDWebImageSwiftUI
 import Combine
 
-struct NewDashboardView: View {
+struct CustomerDashboardView: View {
     
-    @State private var retrieveBusinessDetails = RetrievingBusinessDetails()
-    @State private var retrieveBookingDetails = RetrievingBookingDetails()
-    @State private var retrieveCustomerDetails = RetrievingCustomerDetails()
+    @StateObject private var retrieveBusinessDetails = RetrievingBusinessDetails()
+    @StateObject private var retrieveBookingDetails = RetrievingBookingDetails()
+    @StateObject private var retrieveCustomerDetails = RetrievingCustomerDetails()
     @State private var currentUserEmail = Auth.auth().currentUser?.email
-    @Binding public var isCustomerProfileTapped: Bool
-    @State var isBusinessProfileTapped = false
     @State var makeBookingView: Bool = false
     @State var selectedBusinessName = ""
     @State var selectedBusinessEmail = ""
@@ -41,7 +39,7 @@ struct NewDashboardView: View {
             Group {
                 if #available(iOS 18, *) {
                     TabView(selection: $activeTab) {
-                        Tab.init(value: .home) {
+                        Tab.init("Home", systemImage: "house.fill", value: .home) {
                             
                             ZStack {
                                 Color.color.ignoresSafeArea()
@@ -398,7 +396,7 @@ struct NewDashboardView: View {
                                         
                                     }
                                     .onAppear {
-                                        retrieveCustomerDetails.retrieveCustomerData(){}
+                                       _ = retrieveCustomerDetails.retrieveCustomerData(){}
                                         retrieveBusinessDetails.retrieveBusinessDetailsForCustomerBooking()
                                         retrieveBookingDetails.retrieveBooking()
                                        
@@ -411,70 +409,35 @@ struct NewDashboardView: View {
                                 }
                                 
                             }
+
                         }
                         
-                        Tab.init(value: .search) {
+                        Tab.init("Places", systemImage: "map.fill", value: .search) {
                             
                             SeeAllBusiness()
-                            
+                                
                         }
                         
-                        Tab.init(value: .notifications) {
+                        Tab.init("BookedIns", systemImage: "book.fill", value: .notifications) {
                             SeeAllBookings()
                               
                         }
                         
-                        Tab.init(value: .settings) {
+                        Tab.init("Settings", systemImage: "gear", value: .settings) {
                             
                             Settings()
                               
                         }
                     }
-                } else {
-                    TabView(selection: $activeTab) {
-                        HomeView()
-                            .tag(TabModel.home)
-                            .overlay {
-                                if !isTabBarHidden {
-                                    HideTabBar {
-                                        isTabBarHidden = true
-                                    }
-                                }
-                            }
-                        
-                        Text("Search")
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .background(Color.primary.opacity(0.07))
-                            .tag(TabModel.search)
-                        
-                        Text("Notifications")
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .background(Color.primary.opacity(0.07))
-                            .tag(TabModel.notifications)
-                        
-                        Text("Settings")
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .background(Color.primary.opacity(0.07))
-                            .tag(TabModel.settings)
-                    }
                 }
             }
-            
-            CustomTabBar(activeTab: $activeTab)
         }
-        
-        
-        
-        
-        
-        
       
         
     
         .navigationBarBackButtonHidden(true)
         
     }
-    
     
     public func convertSecondsToDHMS(seconds: Double) -> (days: Int, hours: Int, minutes: Int, seconds: Int) {
         let days = Int(seconds / (60 * 60 * 24))
@@ -511,5 +474,5 @@ struct NewDashboardView: View {
 }
 
 #Preview {
-    NewDashboardView(isCustomerProfileTapped: .constant(true))
+    CustomerDashboardView()
 }

@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import FirebaseAuth
 import FirebaseStorage
+import _WebKit_SwiftUI
 
 
 struct Settings: View {
@@ -88,12 +89,31 @@ struct Settings: View {
                                     .foregroundColor(.gray)
                                 
                             }
+                            
                             Text("\(details.userEmail)")
                                 .font(.system(size: 15))
                                 .font(.subheadline)
                                 .foregroundStyle(.black)
                             
                         }
+                        
+                        HStack {
+                            Image(systemName: "phone.circle.fill")
+                                .resizable()
+                                .frame(width: 25, height: 25)
+                                .foregroundStyle(Color.accent)
+                            
+                            Text("\(details.contactNumber)")
+                                .font(.system(size: 15))
+                                .font(.subheadline)
+                                .foregroundStyle(.black)
+                        }
+                        
+                        
+                        
+                        
+                        
+                        
                         Text("Member Since: \(details.joinedDate)")
                             .font(.system(size: 12))
                             .font(.subheadline)
@@ -102,7 +122,7 @@ struct Settings: View {
                     
                 }
                 .onAppear{
-                    retrieveCustomerDetails.retrieveCustomerData{}
+                   _ = retrieveCustomerDetails.retrieveCustomerData{}
                     emailVerifier()
                 }
                         NavigationView {
@@ -128,7 +148,7 @@ struct Settings: View {
                                     }
                                     
                                         
-                                        NavigationLink(destination: SavedPlacesView()) {
+                                        NavigationLink(destination: VisitedPlaces()) {
                                             Label{
                                                 Text("Visited Places")
                                                     .foregroundStyle(.black)
@@ -147,19 +167,9 @@ struct Settings: View {
                                   
 
                                   Section(header: Text("Account").foregroundStyle(.gray)) {
-                                      NavigationLink(destination: AccountSettingsView()) {
-                                          Label{
-                                              Text("Account Settings")
-                                                  .foregroundStyle(.black)
-                                          } icon: {
-                                              Image(systemName: "person.fill")
-                                                  .foregroundColor(Color.accentColor)
-                                          }
-                                            
-                                      }
                                      
                                       Button(action: handleLogout) {
-                                          Label("Logout", systemImage: "arrow.right.circle.fill")
+                                          Label("Logout", systemImage: "rectangle.portrait.and.arrow.forward.fill")
                                               .foregroundStyle(Color.red)
                                       }
                                       
@@ -192,7 +202,20 @@ struct Settings: View {
                           
                                     
                                     
-                                  Section(header: Text("Privacy").foregroundStyle(.gray)) {
+                                  Section(header: Text("Privacy and Contact").foregroundStyle(.gray)) {
+                                      NavigationLink(destination: ContactUs()) {
+                                          Label{
+                                              Text("Contact Us")
+                                                  .foregroundStyle(.black)
+                                              Text("If you have any feedback, questions or changing details, please reach out.")
+                                                  .font(.caption)
+                                                  .foregroundStyle(Color.secondary)
+                                                  .foregroundStyle(.black)
+                                          } icon: {
+                                              Image(systemName: "envelope.fill")
+                                                  .foregroundStyle(Color.accentColor)
+                                          }
+                                      }
                                       NavigationLink(destination: TermsOfServiceView()) {
                                           Label{
                                               Text("Terms of Service")
@@ -238,7 +261,8 @@ struct Settings: View {
     
     //MARK: THIS FUNCTION VERIFIES IF USER VERIFIED THEIR EMAIL OR NOT
     
-    func emailVerifier(){
+   
+   private func emailVerifier(){
         
         guard let user = Auth.auth().currentUser else {
             
@@ -260,36 +284,6 @@ struct Settings: View {
 }
 
 
-// Sample destination views
-
-struct SavedPlacesView: View {
-    var body: some View {
-        Text("Saved Places Page")
-            .navigationTitle("Saved Places")
-    }
-}
-
-struct AccountSettingsView: View {
-    var body: some View {
-        Text("Account Settings Page")
-            .navigationTitle("Account Settings")
-    }
-}
-
-struct TermsOfServiceView: View {
-    var body: some View {
-        Text("Terms of Service Page")
-            .navigationTitle("Terms of Service")
-    }
-}
-
-struct PrivacyPolicyView: View {
-    var body: some View {
-        Text("Privacy Policy Page")
-            .navigationTitle("Privacy Policy")
-    }
-}
-
 struct ShareSheet: UIViewControllerRepresentable {
     var items: [Any]
     
@@ -299,3 +293,8 @@ struct ShareSheet: UIViewControllerRepresentable {
     
     func updateUIViewController(_ vc: UIActivityViewController, context: Context) {}
 }
+
+
+
+
+

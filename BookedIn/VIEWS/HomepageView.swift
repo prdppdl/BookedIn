@@ -15,7 +15,7 @@ struct HomepageView: View {
     @State private var leftMessageIndex = 0
     @State private var leftCardViewMessage = ["Hungry?","Book","Eat"]
     @State private var rightMessageIndex = 0
-    @State private var rightCardViewMessage = ["Selling Food?","Take Bookings","Earn"]
+    @State private var rightCardViewMessage = ["Join the group","Wanna Eat?"]
     @State private var isCustomerSignInTapped = false
     @State private var isBusinessSignInTapped = false
     @State private var isPopoverTrue = false
@@ -83,7 +83,6 @@ struct HomepageView: View {
                         .onTapGesture {
                             isPopoverTrue = true
                             isCustomerSignInTapped = true
-                            isBusinessSignInTapped = false
                         }
                     
                         .padding()
@@ -104,38 +103,31 @@ struct HomepageView: View {
                                     .font(.system(size: 17))
                                     .foregroundStyle(Color.black)
                                 
-                                Text("I'd Like to offer food to eaters")
+                                Text("I'd Like to join a group")
                                     .font(.system(size: 12))
                                     .foregroundColor(.gray)
                             }
                         )
                         .onTapGesture {
-                            isPopoverTrue = true
-                            isBusinessSignInTapped = true
-                            isCustomerSignInTapped = false
+                            //isPopoverTrue = true
+                            isJoinViewTrue = true
                         }
                         .padding()
-                        .fullScreenCover(isPresented: $isPopoverTrue, content: {
-                            SignInView(isCustomerIsTapped: $isCustomerSignInTapped, isBusinessIsTapped: $isBusinessSignInTapped)
-                        })
+                       
                 }
                 
-                
-                Button(action: {
-                    isJoinViewTrue = true
-                }){
-                    Text("Join")
+                    Text("Don't let yourself starve mate!")
                         .foregroundStyle(Color.color)
                         .fontWeight(.bold)
                         .padding(.horizontal)
                         .background(Color.clear)
-                }
-                .padding(.leading, 290)
-                .padding(.bottom, 10)
-                .fullScreenCover(isPresented: $isJoinViewTrue, content: {
-                    JoinView()
-                })
-                
+                        .padding(.bottom, 10)
+                        .fullScreenCover(isPresented: $isJoinViewTrue, content: {
+                            JoinView()
+                        })
+                        .fullScreenCover(isPresented: $isPopoverTrue, content: {
+                            SignInView()
+                        })
                 
                 
                 
